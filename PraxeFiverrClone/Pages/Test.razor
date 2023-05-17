@@ -1,0 +1,20 @@
+﻿@page "/test"
+
+@foreach(int i in GetList())
+{
+    <p>@i</p>
+}
+
+@code {
+    public List<int> list = new();
+
+    private int[] GetList()
+    {
+        Random random = new Random();
+        for(int i = 0; i < 100; i++)
+        {
+            list.Add(random.Next(100));
+        }
+        return list.ToArray();
+    }
+}
