@@ -1,0 +1,26 @@
+﻿@page "/signup"
+
+<h3>Signup</h3>
+<br />
+<p>Username:</p>
+<input type="text" @bind="@UsernameValue" @oninput="@((e) => { UsernameValue=(string)e.Value;})" />
+<p>Password:</p>
+<input type="password" @bind="@PasswordValue" @oninput="@((e) => { PasswordValue=(string)e.Value;})" />
+<p>Confirm password:</p>
+<input type="password" @bind="@PasswordValue" @oninput="@((e) => { PasswordValue=(string)e.Value;})" />
+
+<br />
+<br />
+
+<button>Sign up</button>
+
+<br />
+<br />
+
+<p>Allready have an account?'</p> <a href="/login">log in</a>
+
+@code {
+    private string UsernameValue { get; set; }
+    private string PasswordValue { get; set; }
+    private string PasswordValue2 { get; set; }
+}
