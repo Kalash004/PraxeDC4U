@@ -10,7 +10,8 @@
 <br />
 <br />
 
-<button>Log in</button>
+<p style="color:red;">@WarningText</p>
+<button @onclick="login">Log in</button>
 
 <br/>
 <br/>
@@ -20,4 +21,11 @@
 @code {
     private string UsernameValue { get; set; }
     private string PasswordValue { get; set; }
+
+    private string WarningText = "";
+
+    public void login()
+    {
+        WarningText = "login failed";
+    }
 }
