@@ -1,4 +1,7 @@
 ﻿@page "/login"
+@using DataAccessLibrary
+@using DataAccessLibrary.Models;
+@inject DBManager dbManager;
 
 <h3>Login</h3>
 <br />
@@ -26,6 +29,15 @@
 
     public void login()
     {
-        WarningText = "login failed";
+        try
+        {
+            DBUser user = new DBUser(UsernameValue, PasswordValue);
+            dbManager.
+
+        } 
+        catch (Exception)
+        {
+            WarningText = "login failed";
+        }
     }
 }
