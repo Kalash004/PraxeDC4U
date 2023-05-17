@@ -17,7 +17,7 @@ namespace DataAccessLibrary
         /// </summary>
         /// <param name="user">User to save</param>
         /// <returns>Original user with updated id</returns>
-        public User SingUpUser(User user)
+        public DBUser SingUpUser(DBUser user)
         {
             return userManager.SingUpUser(user);
         }
@@ -27,7 +27,7 @@ namespace DataAccessLibrary
         /// </summary>
         /// <param name="name">Name of the user you want to read</param>
         /// <returns>User from database with the specified name</returns>
-        public User ReadUserByName(string name)
+        public DBUser ReadUserByName(string name)
         {
             return userManager.GetUserByName(name);
         }

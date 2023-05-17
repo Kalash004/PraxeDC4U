@@ -12,7 +12,7 @@ namespace DataAccessLibrary
     {
         UsersDAO usersDAO = new UsersDAO();
 
-        public User SingUpUser(User user)
+        public DBUser SingUpUser(DBUser user)
         {
             if (usersDAO.GetByName(user) != null)
             {
@@ -23,13 +23,13 @@ namespace DataAccessLibrary
             return user;
         }
 
-        public User GetUserByName(string name)
+        public DBUser GetUserByName(string name)
         {
-            User returned = usersDAO.GetByName(name);
+            DBUser returned = usersDAO.GetByName(name);
             return returned;
         }
 
-        public void RemoveUser(User user)
+        public void RemoveUser(DBUser user)
         {
             usersDAO.Delete(user.ID);
         }

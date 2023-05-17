@@ -13,11 +13,11 @@ namespace DBMSTest
             Random rand = new Random();
             string name = rand.Next().ToString();
             string pass = rand.Next().ToString();
-            User user = new User(name,pass,0);
+            DBUser user = new DBUser(name,pass,0);
             DBUserManager manager = new DBUserManager();
             // Act
             manager.SingUpUser(user);
-            User taken_user = manager.GetUserByName(user.Name);
+            DBUser taken_user = manager.GetUserByName(user.Name);
             manager.RemoveUser(user);
             // Assert
             Assert.AreEqual(user.Name,taken_user.Name);

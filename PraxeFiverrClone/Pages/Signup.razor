@@ -1,4 +1,8 @@
 ﻿@page "/signup"
+@using DataAccessLibrary
+ @using DataAccessLibrary.Models;
+ @inject DBManager dbManager;
+
 
 <h3>Signup</h3>
 <br />
@@ -7,20 +11,27 @@
 <p>Password:</p>
 <input type="password" @bind="@PasswordValue" @oninput="@((e) => { PasswordValue=(string)e.Value;})" />
 <p>Confirm password:</p>
-<input type="password" @bind="@PasswordValue" @oninput="@((e) => { PasswordValue=(string)e.Value;})" />
+<input type="password" @bind="@PasswordValue2" @oninput="@((e) => { PasswordValue2=(string)e.Value;})" />
 
 <br />
 <br />
 
-<button>Sign up</button>
+<button @onclick="CreateUser">Sign up</button>
 
-<br />
+<br />  
 <br />
 
 <p>Allready have an account?'</p> <a href="/login">log in</a>
 
 @code {
+
     private string UsernameValue { get; set; }
     private string PasswordValue { get; set; }
     private string PasswordValue2 { get; set; }
+    // TODO: Password confirm
+    public void CreateUser() {
+        DBUser user = new DBUser(UsernameValue,PasswordValue);
+        dbManager.SingUpUser(user);
+    }
+
 }
