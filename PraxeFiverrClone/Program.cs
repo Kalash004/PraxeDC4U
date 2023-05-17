@@ -1,3 +1,4 @@
+using DataAccessLibrary;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -12,7 +13,7 @@ namespace PraxeFiverrClone
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
-
+            builder.Services.AddSingleton<DBManager>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

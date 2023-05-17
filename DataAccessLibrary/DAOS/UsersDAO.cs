@@ -10,7 +10,7 @@ using MySql.Data.MySqlClient;
 
 namespace DataAccessLibrary.DAOS
 {
-    internal class UsersDAO : AbstractDAO<User>, IDAO<User>
+    internal class UsersDAO : AbstractDAO<DBUser>, IDAO<DBUser>
     {
         private static string table_n = "Users";
         private String C_CREATE = $"INSERT INTO {table_n} (name, hashedPassword, current_credits) VALUES (@name, @hashedPassword, @current_credits)";
@@ -20,7 +20,7 @@ namespace DataAccessLibrary.DAOS
         private String C_DELETE = $"DELETE FROM {table_n} WHERE id = @id";
         private String C_GET_BY_NAME = $"SELECT * FROM {table_n} WHERE name = @name";
 
-        public int Create(User element)
+        public int Create(DBUser element)
         {
             return Create(C_CREATE, element);
         }
@@ -30,34 +30,34 @@ namespace DataAccessLibrary.DAOS
             Delete(C_DELETE, id);
         }
 
-        public List<User> GetAll()
+        public List<DBUser> GetAll()
         {
             return GetAll(C_READ_ALL);
         }
 
-        public User? GetByID(int id)
+        public DBUser? GetByID(int id)
         {
             return GetByID(C_READ_BY_ID, id);
         }
 
-        public void Save(User element)
+        public void Save(DBUser element)
         {
             Update(C_UPDATE, element, element.ID);
         }
 
-        public User GetByName(string name)
+        public DBUser GetByName(string name)
         {
            return GetByName(C_GET_BY_NAME,"@name",name);
         }
 
-        public User GetByName(User element)
+        public DBUser GetByName(DBUser element)
         {
             return GetByName(element.Name);
         }
 
-        protected override User Map(MySqlDataReader reader)
+        protected override DBUser Map(MySqlDataReader reader)
         {
-            return new User(
+            return new DBUser(
                 Convert.ToInt32(reader[0].ToString()),
                 reader[1].ToString(),
                 reader[2].ToString(),
@@ -65,7 +65,7 @@ namespace DataAccessLibrary.DAOS
             );
         }
 
-        protected override List<MySqlParameter> Map(User obj)
+        protected override List<MySqlParameter> Map(DBUser obj)
         {
             return new List<MySqlParameter>()
             {
