@@ -3,7 +3,7 @@
 @using DataAccessLibrary.Models;
 @inject DBManager dbManager;
 @inject NavigationManager NavManager;
-    
+
 
 <h3>Signup</h3>
 <br />
@@ -27,30 +27,27 @@
 
 @code {
 
-    private string UsernameValue { get; set; }
-    private string PasswordValue { get; set; }
-    private string PasswordValue2 { get; set; }
+	private string UsernameValue { get; set; }
+	private string PasswordValue { get; set; }
+	private string PasswordValue2 { get; set; }
 
-    private string WarningText = "";
-    public void CreateUser() {
-
-        if (PasswordValue == PasswordValue2) {
-            try
-            {
-                DBUser user = new DBUser(UsernameValue, PasswordValue);
-                dbManager.SingUpUser(user);
-                NavManager.NavigateTo("/login");
-            } 
-            catch(Exception e)
-            {
-                WarningText = "username already in use!";
-            }
-        } else
-        {
-            WarningText = "the passwords must match!";
-        }
-
-
-    }
+	private string WarningText = "";
+	public void CreateUser()
+	{
+		if (PasswordValue != PasswordValue2)
+		{
+			WarningText = "The passwords must match!";
+			return;
+		}
+		DBUser? user = new DBUser(UsernameValue, PasswordValue);
+		var response = dbManager.SingUpUser(user);
+		user = response.Result;
+		if (user == null)
+		{
+			WarningText = response.Message;
+			return;
+		}
+		NavManager.NavigateTo("/login");
+	}
 
 }
