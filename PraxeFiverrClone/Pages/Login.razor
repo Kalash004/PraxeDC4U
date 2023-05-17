@@ -32,12 +32,12 @@
         try
         {
             DBUser user = new DBUser(UsernameValue, PasswordValue);
-            dbManager.
-
+            // TODO: Session System 
+            WarningText = dbManager.LogUserIn(user).ToString(); 
         } 
-        catch (Exception)
+        catch (Exception e)
         {
-            WarningText = "login failed";
+            WarningText = e.Message;
         }
     }
 }

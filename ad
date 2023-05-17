@@ -1,0 +1,29 @@
+[33mcommit 1f919f8d527b297157a6eb62e4c3d49d4d75f3a1[m[33m ([m[1;36mHEAD -> [m[1;32mAntonBranch[m[33m, [m[1;31morigin/AntonBranch[m[33m)[m
+Author: Anton Kalashnikov <kalashnikov004@gmail.com>
+Date:   Wed May 17 13:41:38 2023 +0200
+
+    login function
+
+[33mcommit 6c5e9610935856f2235fd9a558eff025a4f28e16[m
+Author: Anton Kalashnikov <kalashnikov004@gmail.com>
+Date:   Wed May 17 13:09:29 2023 +0200
+
+    connected login page with db
+
+[33mcommit ec2c5b431f58324660f7b425b5ad5452e00e1f9b[m
+Author: Anton Kalashnikov <kalashnikov004@gmail.com>
+Date:   Wed May 17 12:36:48 2023 +0200
+
+    resend of databasecontroller and unit tests
+
+[33mcommit 3815874d0ef811d9a439275009d7db411bc49d57[m[33m ([m[1;32mmain[m[33m)[m
+Author: Maxwell Olsbro <max.olsbro@gmail.com>
+Date:   Wed May 17 12:21:54 2023 +0200
+
+    origin
+
+[33mcommit f32598fd2b925e87ec1663b1abfad1888968ed37[m
+Author: Maxwell Olsbro <max.olsbro@gmail.com>
+Date:   Wed May 17 12:16:10 2023 +0200
+
+    cm
