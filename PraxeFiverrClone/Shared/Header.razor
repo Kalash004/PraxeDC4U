@@ -36,15 +36,15 @@
 <div class="header-space"></div>
 
 @code{
-    private bool mobileMenu { get; set; }
+    private bool isMenuShown { get; set; }
 
     private void ToggleMenu()
     {
-        mobileMenu = !mobileMenu;
+        isMenuShown = !isMenuShown;
     }
 
     private string GetMenuClass()
     {
-        return mobileMenu ? "menu-shown" : "";
+        return isMenuShown ? "menu-shown" : "";
     }
 }
