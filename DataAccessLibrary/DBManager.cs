@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLibrary.DAOS;
 using DataAccessLibrary.Models;
+using Org.BouncyCastle.Security;
 
 namespace DataAccessLibrary
 {
@@ -30,6 +31,14 @@ namespace DataAccessLibrary
         public DBUser ReadUserByName(string name)
         {
             return userManager.GetUserByName(name);
+        }
+
+        public bool LogUserIn(DBUser user)
+        {
+            var data = userManager.LogUserIn(user);
+            bool isCredentialsGood = data.Result;
+            if (isCredentialsGood) return isCredentialsGood;
+            else throw new Exception(data.Message);
         }
              
     }
