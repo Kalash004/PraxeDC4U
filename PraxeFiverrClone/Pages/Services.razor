@@ -1,0 +1,14 @@
+﻿@page "/services";
+@using PraxeFiverrClone.Data;
+@inject DBManager dbManager;
+
+<div class="services-wrapper">
+    @foreach(Service service in dbManager.GetAllServices())
+    {
+        <ServiceCard service=@service/>
+    }
+</div>
+
+@code {
+
+}

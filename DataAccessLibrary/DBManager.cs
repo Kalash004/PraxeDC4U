@@ -7,7 +7,7 @@ using DataAccessLibrary.DAOS;
 using DataAccessLibrary.Models;
 using Org.BouncyCastle.Security;
 
-namespace DataAccessLibrary
+namespace DataTemplateLibrary
 {
     public class DBManager
     {
@@ -20,7 +20,10 @@ namespace DataAccessLibrary
         /// <returns>Original user with updated id</returns>
         public ReturnData<DBUser?,string> SingUpUser(DBUser user)
         {
-            return userManager.SingUpUser(user);
+            // return userManager.SingUpUser(user);
+            var data = userManager.SingUpUser(user);
+            if (data != null) return data.Result;
+            else throw new Exception(data.Message);
         }
 
         /// <summary>

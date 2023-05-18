@@ -1,3 +1,5 @@
+using PraxeFiverrClone.Data;
+
 namespace PraxeFiverrClone
 {
     public class Program
@@ -9,8 +11,15 @@ namespace PraxeFiverrClone
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
+            builder.Services.AddSingleton<DBManager>();
+
+            string? conStr = builder.Configuration["ConnectionStrings:DefaultConnection"];
+            if (conStr != null)
+            {
+                DBConnection.ConStr = conStr;
+            }
+
             var app = builder.Build();
-            
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {

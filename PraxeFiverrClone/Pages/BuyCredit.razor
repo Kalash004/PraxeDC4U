@@ -1,0 +1,15 @@
+﻿@page "/user/credit"
+
+<h3>buyCredit</h3>
+<br />
+<br />
+<h4>ammount:</h4>
+<input type="text" @bind="@Ammount" @oninput="@((e) => { Ammount=(int)e.Value;})" />
+<br />
+<br />
+<button>buy</button>
+
+
+@code {
+    public int Ammount = 0;
+}

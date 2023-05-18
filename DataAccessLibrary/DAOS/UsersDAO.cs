@@ -4,11 +4,11 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessLibrary.Interfaces;
-using DataAccessLibrary.Models;
+using DataTemplateLibrary.Interfaces;
+using DataTemplateLibrary.Models;
 using MySql.Data.MySqlClient;
 
-namespace DataAccessLibrary.DAOS
+namespace DataTemplateLibrary.DAOS
 {
     internal class UsersDAO : AbstractDAO<DBUser>, IDAO<DBUser>
     {

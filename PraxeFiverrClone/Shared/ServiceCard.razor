@@ -1,0 +1,54 @@
+﻿@using PraxeFiverrClone.Data;
+
+<div class="service-wrapper">
+    <a href="/service/">
+
+        <div>
+            <h3>@ServiceName</h3>
+            <p>@ServiceOwner</p>
+            <p>@ServiceDescription</p>
+        </div>
+
+        <div class="service-price">
+            <h3>@GetServicePriceString()</h3>
+        </div>
+    </a>
+</div>
+
+@code {
+
+    [Parameter]
+    public Service? service { get; set; }
+
+    private string ServiceName { 
+        get {
+            return service != null ? service.Name : ""; ;
+        }
+    }
+    private string ServiceDescription
+    {
+        get
+        {
+            return service != null ? service.Description : "";
+        }
+    }
+    private int ServicePrice
+    {
+        get
+        {
+            return service != null ? service.Price : 0;
+        }
+    }
+    private int ServiceOwner { 
+        get
+        {
+            return service != null ? service.Owner : 0;
+        }
+    }
+
+
+    private string GetServicePriceString()
+    {
+        return ServicePrice + "$";
+    }
+}
