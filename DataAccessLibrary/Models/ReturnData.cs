@@ -1,6 +1,6 @@
 ﻿namespace DataAccessLibrary.Models
 {
-    internal class ReturnData<T,K>
+    public class ReturnData<T,K>
     {
         private T result;
         private K message;

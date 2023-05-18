@@ -12,21 +12,25 @@ namespace DataAccessLibrary
     {
         UsersDAO usersDAO = new UsersDAO();
 
-        public DBUser SingUpUser(DBUser user)
+        public ReturnData<DBUser?,string> SingUpUser(DBUser user)
         {
             if (usersDAO.GetByName(user) != null)
             {
-                throw new Exception("User name already exists in database");
+                return new ReturnData<DBUser?, string>(null,"User already exists in the database");
             }
             int id = usersDAO.Create(user);
             user.ID = id;
-            return user;
+            return new ReturnData<DBUser?, string>(user,"Signed up");
         }
 
-        public DBUser GetUserByName(string name)
+        public DBUser? GetUserByName(string name)
         {
             DBUser returned = usersDAO.GetByName(name);
-            return returned;
+            if (returned.ID > 0)
+            {
+                return returned;
+            }
+            else return null;
         }
 
         public void RemoveUser(DBUser user)
