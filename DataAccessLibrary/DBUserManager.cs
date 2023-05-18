@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessLibrary.DAOS;
-using DataAccessLibrary.Models;
+using DataTemplateLibrary.DAOS;
+using DataTemplateLibrary.Models;
 
-namespace DataAccessLibrary
+namespace DataTemplateLibrary
 {
     public class DBUserManager
     {
@@ -38,14 +38,14 @@ namespace DataAccessLibrary
             usersDAO.Delete(user.ID);
         }
 
-        internal ReturnData<bool,string> LogUserIn(DBUser hypothetical_user)
+        internal ReturnData<DBUser?,string> LogUserIn(DBUser hypothetical_user)
         {
             DBUser user_in_db = GetUserByName(hypothetical_user.Name);
             // CHECK : Might get error instead of null from db if user is null
-            if (user_in_db == null) return new ReturnData<bool,string>(false,"User doesnt exist in database");
+            if (user_in_db == null) return new ReturnData<DBUser?,string>(null,"User doesnt exist in database");
             // CHECK : If db send all lower case data or not
-            if (!user_in_db.HashedPassword.ToLower().Equals(hypothetical_user.HashedPassword.ToLower())) return new ReturnData<bool,string>(false,"Wrong password");
-            return new ReturnData<bool, string>(true,"Welcome");
+            if (!user_in_db.HashedPassword.ToLower().Equals(hypothetical_user.HashedPassword.ToLower())) return new ReturnData<DBUser?,string>(null,"Wrong password");
+            return new ReturnData<DBUser?, string>(user_in_db,"Welcome");
         }
     }
 }

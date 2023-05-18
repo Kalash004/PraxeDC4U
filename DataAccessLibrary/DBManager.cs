@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessLibrary.DAOS;
-using DataAccessLibrary.Models;
+using DataTemplateLibrary.DAOS;
+using DataTemplateLibrary.Models;
 using Org.BouncyCastle.Security;
+using SessionService;
+using SessionService.SessionTemplate_Creater;
 
-namespace DataAccessLibrary
+namespace DataTemplateLibrary
 {
     public class DBManager
     {
@@ -22,7 +24,7 @@ namespace DataAccessLibrary
         {
             // return userManager.SingUpUser(user);
             var data = userManager.SingUpUser(user);
-            if (data.Result != null) return data.Result;
+            if (data != null) return data.Result;
             else throw new Exception(data.Message);
         }
 
@@ -36,13 +38,23 @@ namespace DataAccessLibrary
             return userManager.GetUserByName(name);
         }
 
-        public bool LogUserIn(DBUser user)
+        public ReturnData<bool, DBUser> LogUserIn(DBUser user)
         {
             var data = userManager.LogUserIn(user);
-            bool isCredentialsGood = data.Result;
-            if (isCredentialsGood) return isCredentialsGood;
-            else throw new Exception(data.Message);
+            var user_from_db = data.Result;
+            if (user_from_db != null) return new ReturnData<bool, DBUser>(true, user_from_db);
+            else return new ReturnData<bool, DBUser>(false, null);
         }
-             
+        public ReturnData<SessionId,DBUser> LogUserInCreateSession(DBUser user)
+        {
+            var returned_user_data = LogUserIn(user);
+            if (returned_user_data.Result)
+            {
+                var sessionId = ServerSideSessionSaverService.GetInstance().AddSession(returned_user_data.Message);
+                return new ReturnData<SessionId, DBUser>(sessionId,returned_user_data.Message);
+            }
+            else throw new Exception("User wasnt found in the database");
+        }
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿@page "/login"
-@using DataAccessLibrary
-@using DataAccessLibrary.Models;
+@using DataTemplateLibrary
+@using DataTemplateLibrary.Models;
 @inject DBManager dbManager;
 
 <h3>Login</h3>
@@ -33,7 +33,7 @@
         {
             DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
             // TODO: Session System 
-            WarningText = dbManager.LogUserIn(user).ToString(); 
+            WarningText = dbManager.LogUserInCreateSession(user).Result.ToString(); 
         } 
         catch (Exception e)
         {
@@ -41,7 +41,7 @@
         }
     }
 
-    static string HashString(string text, string salt = "DC4U")
+    private static string HashString(string text, string salt = "DC4U")
     {
         if (String.IsNullOrEmpty(text))
         {

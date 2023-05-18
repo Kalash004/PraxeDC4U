@@ -1,10 +1,10 @@
-using DataAccessLibrary.Models;
-using DataAccessLibrary;
+using DataTemplateLibrary.Models;
+using DataTemplateLibrary;
 
 namespace DBMSTest
 {
     [TestClass]
-    public class UnitTest1
+    public class DBUserCreateTest
     {
         [TestMethod]
         public void CreationTesting()
@@ -22,7 +22,6 @@ namespace DBMSTest
             // Assert
             Assert.AreEqual(user.Name,taken_user.Name);
             Assert.AreEqual(user.ID, taken_user.ID);
-
         }
     }
 }
