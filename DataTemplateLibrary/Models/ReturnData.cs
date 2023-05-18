@@ -1,4 +1,4 @@
-﻿namespace DataAccessLibrary.Models
+﻿namespace DataTemplateLibrary.Models
 {
     public class ReturnData<T,K>
     {

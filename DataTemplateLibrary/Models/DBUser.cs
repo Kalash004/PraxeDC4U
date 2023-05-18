@@ -5,9 +5,9 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessLibrary.Interfaces;
+using DataTemplateLibrary.Interfaces;
 
-namespace DataAccessLibrary.Models
+namespace DataTemplateLibrary.Models
 {
     public class DBUser : IBaseClass
     {

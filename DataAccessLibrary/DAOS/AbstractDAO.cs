@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Data.SqlClient;
 using System.Data;
-using DataAccessLibrary.Interfaces;
+using DataTemplateLibrary.Interfaces;
 using MySql.Data.MySqlClient;
 
-namespace DataAccessLibrary.DAOS
+namespace DataTemplateLibrary.DAOS
 {
     public abstract class AbstractDAO<T> where T : IBaseClass
     {
