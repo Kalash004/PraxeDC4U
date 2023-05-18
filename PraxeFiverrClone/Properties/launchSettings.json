@@ -1,4 +1,7 @@
 {
+  "ConnectionStrings": {
+    "DefaultConnection": "server=93.99.225.235 port=3306; database=praxedb; Uid=root; pwd=Ppraxe+01;"
+  },
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
