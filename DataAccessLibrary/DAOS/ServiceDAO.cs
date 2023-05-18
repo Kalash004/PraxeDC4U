@@ -13,46 +13,76 @@ namespace DataAccessLibrary.DAOS
 {
     public class ServiceDAO : AbstractDAO<DBService>, IDAO<DBService>
     {
-        private static string table_n = "Services";
-        private String C_CREATE = $"INSERT INTO {table_n} (name, hashedPassword, current_credits, isAdmin) VALUES (@name, @hashedPassword, @current_credits, @isAdmin)";
-        private String C_UPDATE = $"UPDATE {table_n} SET name = @name, hashedPassword = @hashedPassword, current_credits = @current_credits, WHERE id = @id";
+        private static string table_n = "services";
+        private String C_CREATE = $"INSERT INTO {table_n} (user_id, ser_name, current_price, creation, update, isShown, short_description, long_description, link) VALUES (@user_id, @ser_name, @current_price, @creation, @update, @isShown, @short_description, @long_description, @link)";
+        private String C_UPDATE = $"UPDATE {table_n} SET user_id = @user_id, ser_name = @ser_name, current_price = @current_price, creation = @creation, update = @update, isShown = @isShown, short_description = @short_description, long_description = @long_description, link = @link WHERE id = @id";
         private String C_READ_ALL = $"SELECT * FROM {table_n}";
         private String C_READ_BY_ID = $"SELECT * FROM {table_n} WHERE id = @id";
         private String C_DELETE = $"DELETE FROM {table_n} WHERE id = @id";
-        private String C_GET_BY_NAME = $"SELECT * FROM {table_n} WHERE name = @name";
+        private String C_GET_BY_USER_ID = $"SELECT * FROM {table_n} WHERE user_id = @user_id";
         public int Create(DBService element)
         {
-            throw new NotImplementedException();
+            return Create(C_CREATE,element);
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            Delete(C_DELETE,id);
         }
 
         public List<DBService> GetAll()
         {
-            throw new NotImplementedException();
+            return GetAll(C_READ_ALL);
         }
 
         public DBService? GetByID(int id)
         {
-            throw new NotImplementedException();
+            return GetByID(C_READ_BY_ID, id);
         }
 
         public void Save(DBService element)
         {
-            throw new NotImplementedException();
+            Update(C_UPDATE,element,element.ID);
+        }
+        //test
+        public List<DBService> GetAllByUserID(int id)
+        {
+            return Get(C_GET_BY_USER_ID, new List<MySqlParameter>()
+            {
+                new MySqlParameter("@user_id",id)
+            });
         }
 
         protected override DBService Map(MySqlDataReader reader)
         {
-            throw new NotImplementedException();
+            return new DBService(
+                Convert.ToInt32(reader[0].ToString()),
+                Convert.ToInt32(reader[1].ToString()),
+                reader[2].ToString(),
+                Convert.ToInt32(reader[3].ToString()),
+                DateOnly.Parse(reader[4].ToString()),
+                (reader[5] != null) ? DateOnly.Parse(reader[5].ToString()) : null,
+                (bool)reader[6],
+                reader[7].ToString(),
+                reader[8].ToString(),
+                reader[9].ToString()
+                );
         }
 
         protected override List<MySqlParameter> Map(DBService obj)
         {
-            throw new NotImplementedException();
+            return new List<MySqlParameter>()
+            {
+                new MySqlParameter("@user_id",obj.UserId),
+                new MySqlParameter("@ser_name",obj.ServiceName),
+                new MySqlParameter("@current_price",obj.CurrentPrice),
+                new MySqlParameter("@creation",obj.Created),
+                new MySqlParameter("@update",obj.Updated),
+                new MySqlParameter("@isShown",obj.IsShown),
+                new MySqlParameter("@short_description",obj.ShortDescription),
+                new MySqlParameter("@long_description",obj.LongDescription),
+                new MySqlParameter("@link",obj.LinkToImage)
+            };
         }
     }
 }
