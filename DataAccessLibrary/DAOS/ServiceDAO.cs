@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -14,7 +15,7 @@ namespace DataAccessLibrary.DAOS
     public class ServiceDAO : AbstractDAO<DBService>, IDAO<DBService>
     {
         private static string table_n = "services";
-        private String C_CREATE = $"INSERT INTO {table_n} (user_id, ser_name, current_price, creation, update, isShown, short_description, long_description, link) VALUES (@user_id, @ser_name, @current_price, @creation, @update, @isShown, @short_description, @long_description, @link)";
+        private String C_CREATE = $"INSERT INTO {table_n} (user_id, ser_name, current_price, creation,`update`, isShown, short_description, long_description, link) VALUES (@user_id, @ser_name, @current_price, @creation, @update, @isShown, @short_description, @long_description, @link)";
         private String C_UPDATE = $"UPDATE {table_n} SET user_id = @user_id, ser_name = @ser_name, current_price = @current_price, creation = @creation, update = @update, isShown = @isShown, short_description = @short_description, long_description = @long_description, link = @link WHERE id = @id";
         private String C_READ_ALL = $"SELECT * FROM {table_n}";
         private String C_READ_BY_ID = $"SELECT * FROM {table_n} WHERE id = @id";
@@ -44,7 +45,7 @@ namespace DataAccessLibrary.DAOS
         {
             Update(C_UPDATE,element,element.ID);
         }
-        //test
+        //TODO : TEST THIS !
         public List<DBService> GetAllByUserID(int id)
         {
             return Get(C_GET_BY_USER_ID, new List<MySqlParameter>()
@@ -76,7 +77,7 @@ namespace DataAccessLibrary.DAOS
                 new MySqlParameter("@user_id",obj.UserId),
                 new MySqlParameter("@ser_name",obj.ServiceName),
                 new MySqlParameter("@current_price",obj.CurrentPrice),
-                new MySqlParameter("@creation",obj.Created),
+                new MySqlParameter("@creation",obj.Created.ToString("de-DE")),
                 new MySqlParameter("@update",obj.Updated),
                 new MySqlParameter("@isShown",obj.IsShown),
                 new MySqlParameter("@short_description",obj.ShortDescription),

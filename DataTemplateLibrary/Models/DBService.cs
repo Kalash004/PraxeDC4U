@@ -32,7 +32,7 @@ namespace DataTemplateLibrary.Models
             LongDescription = longDescription;
             LinkToImage = linkToImage;
         }
-        public DBService(int userId, string serviceName, int currentPrice, DateOnly created, DateOnly updated, bool isShown, string shortDescription, string longDescription, string linkToImage)
+        public DBService(int userId, string serviceName, int currentPrice, DateOnly created, DateOnly? updated, bool isShown, string shortDescription, string? longDescription, string? linkToImage)
         {
             this.userId = userId;
             this.serviceName = serviceName;

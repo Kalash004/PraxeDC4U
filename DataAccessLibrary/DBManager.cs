@@ -13,7 +13,7 @@ namespace DataAccessLibrary
     public class DBManager
     {
         private DBUserManager userManager = new DBUserManager();
-
+        private DBServiceManager serviceManager = new DBServiceManager();   
         /// <summary>
         /// Saves user to database and creates and retrievs his id
         /// </summary>
@@ -26,7 +26,6 @@ namespace DataAccessLibrary
             if (data != null) return data.Result;
             else throw new Exception(data.Message);
         }
-
         /// <summary>
         /// Reads database and returns a user with specific name
         /// </summary>
@@ -36,14 +35,24 @@ namespace DataAccessLibrary
         {
             return userManager.GetUserByName(name);
         }
-
-        public ReturnData<bool, DBUser> LogUserIn(DBUser user)
+        /// <summary>
+        /// Check if user exists in the database and credentials
+        /// </summary>
+        /// <param name="user">Hypothetical user to check he exists in the database and if password is same</param>
+        /// <returns>True in result if user exists and credentials are right, User from database.</returns>
+        public ReturnData<bool, DBUser?> LogUserIn(DBUser user)
         {
             var data = userManager.LogUserIn(user);
             var user_from_db = data.Result;
-            if (user_from_db != null) return new ReturnData<bool, DBUser>(true, user_from_db);
-            else return new ReturnData<bool, DBUser>(false, null);
+            if (user_from_db != null) return new ReturnData<bool, DBUser?>(true, user_from_db);
+            else return new ReturnData<bool, DBUser?>(false, null);
         }
+        /// <summary>
+        /// Checks if user exists and credentials are right, asks for a new session id and puts it into the session manager
+        /// </summary>
+        /// <param name="user">Hypothetical user to check if the credentials are right</param>
+        /// <returns>Session id in Result and User from database in Message</returns>
+        /// <exception cref="Exception"></exception>
         public ReturnData<SessionId,DBUser> LogUserInCreateSession(DBUser user)
         {
             var returned_user_data = LogUserIn(user);
@@ -55,5 +64,9 @@ namespace DataAccessLibrary
             else throw new Exception("User wasnt found in the database");
         }
 
+        public DBService? CreateService(DBService service)
+        {
+            return serviceManager.CreateService(service).Result;
+        }
     }
 }
