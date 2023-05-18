@@ -1,0 +1,76 @@
+﻿
+<style>
+    .block {
+        background-color: darkgray;
+        margin-right: 5Vw;
+    }
+
+    #name {
+        margin-left: 5Vw;
+        font-size: 5Vh;
+    }
+
+    #smallText {
+        margin-left: 5Vw;
+        font-size: 3Vh;
+    }
+
+</style>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    @foreach (Service s in services)
+    {
+        <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+                <big>@s.name</big>
+                <br />
+                <big style="color:green;">@s.price ₭</big>
+                <p class="card-text">@s.description</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <a href="/servis/@s.id"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+
+                    </div>
+                    @if (Owner == true)
+                    {
+                        <a href="/edit/@s.id"><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public bool Owner { get; set; }
+
+    public List<Service> services = new List<Service>();
+
+    public void AddServis(string name, string description, int id, int price)
+    {
+        services.Add(new Service(name, description, id, price));
+    }
+    protected override void OnInitialized()
+    {
+        AddServis("doers", "doing stuff", 1, 100);
+        AddServis("diggers", "digging inc.", 2, 76);
+        AddServis("miners", "mining co.", 3 , 88);
+
+        AddServis("doers", "doing stuff", 1, 100);
+        AddServis("diggers", "digging inc.", 2, 76);
+        AddServis("miners", "mining co.", 3 , 88);
+
+        AddServis("doers", "doing stuff", 1, 100);
+        AddServis("diggers", "digging inc.", 2, 76);
+        AddServis("miners", "mining co.", 3, 88);
+
+        
+
+    }
+
+
+
+}
+
