@@ -1,0 +1,164 @@
+/*NORMAL - HEADER*/
+.header {
+    position: fixed;
+    top: 0;
+    display: flex;
+    align-items: center;
+    background-color: #212A3E;
+    width: 100%;
+    height: 60px;
+    padding: 5px 20px 5px 20px;
+    z-index: 9998;
+}
+.header .navigation{
+    display:flex;
+    margin-left: auto;
+    width: auto;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
+}
+.header .logo {
+    height: 50px;
+    width: 100px;
+    background-image: url("../Images/Fiverr.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.header-space{
+    display: flex;
+    min-height: 60px;
+    width: auto;
+}
+.header a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+
+    text-decoration: none;
+    text-align: center;
+    color: white;
+
+    padding: 5px 15px 5px 15px;
+    border-radius: 4px;
+}
+
+/*NORMAL - REGISTER BUTTON*/
+.navigation .header-register{
+    outline-style: solid;
+    outline-color: white;
+    outline-width: 2px;
+    transition: background-color, color  0.2s;
+}
+.navigation .header-register:hover{
+     background-color: white;
+     color: black;
+}
+.navigation .header-register:active {
+    background-color: white;
+    color: black;
+}
+
+/*MOBILE - NAVIGATION*/
+.hamburger{
+    display: none;
+    position: relative;
+    flex-direction: column;
+    margin-left: auto;
+    border: none;
+    width: 30px;
+    height: 20px;
+    color:none;
+    background: none;
+}
+.hamburger span{
+    display: block;
+    position: absolute;
+    transition: opacity 0.2s, top 0.2s, transform 0.5s;
+    transform-origin: center;
+    background-color: white;
+    width: 100%;
+    height: 2px;
+}
+
+/*HAMBURGER NORMAL STATE*/
+.hamburger span:first-child{
+    transform: rotate(0deg);
+    top: 0px;
+}
+.hamburger span:nth-child(2){
+    top: 10px;
+    opacity: 100%
+}
+.hamburger span:last-child{
+    transform: rotate(0deg);
+    top: 20px;
+}
+
+/*HAMBURGER MENU SHOWN STATE*/
+.hamburger.menu-shown span:first-child{
+    transform: rotate(45deg);
+    top: 10px;
+}
+.hamburger.menu-shown span:nth-child(2){
+    opacity: 0%;
+}
+.hamburger.menu-shown span:last-child{
+    transform: rotate(-45deg);
+    top: 10px;
+}
+
+.mobile-navigation {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    top: 60px;
+    height: calc(100vh - 60px);
+    width: 100vw;
+    z-index: 9999;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #212A3E;
+    left: 100vw;
+    gap: 10px;
+    transition: left 0.1s;
+}
+.mobile-navigation a{
+    text-decoration: none;
+    text-align: center;
+    color: white;
+
+    padding: 5px 15px 5px 15px;
+    border-radius: 4px;
+}
+.mobile-navigation.menu-shown {
+    left: 0
+}
+
+/*MOBILE - REGISTER BUTTON*/
+.mobile-navigation .header-register{
+    outline-style: solid;
+    outline-color: white;
+    outline-width: 2px;
+    transition: background-color, color  0.2s;
+}
+.mobile-navigation .header-register:hover{
+     background-color: white;
+     color: black;
+}
+.mobile-navigation .header-register:active {
+    background-color: white;
+    color: black;
+}
+
+@media only screen and (max-width: 780px) {
+    .hamburger{
+        display: flex;
+    }
+    .header .navigation{
+        display: none;
+    }
+}
