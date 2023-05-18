@@ -10,7 +10,7 @@ using MySql.Data.MySqlClient;
 
 namespace DataAccessLibrary.DAOS
 {
-    internal class UsersDAO : AbstractDAO<DBUser>, IBaseClass<DBUser>
+    internal class UsersDAO : AbstractDAO<DBUser>, IDAO<DBUser>
     {
         private static string table_n = "Users";
         private String C_CREATE = $"INSERT INTO {table_n} (name, hashedPassword, current_credits, isAdmin) VALUES (@name, @hashedPassword, @current_credits, @isAdmin)";
