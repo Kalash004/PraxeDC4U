@@ -1,0 +1,43 @@
+﻿@page "/login"
+@using DataAccessLibrary
+@using DataAccessLibrary.Models;
+@inject DBManager dbManager;
+
+<h3>Login</h3>
+<br />
+<p>Username:</p>
+<input type="text" @bind="@UsernameValue" @oninput="@((e) => { UsernameValue=(string)e.Value;})" />
+<p>Password:</p>
+<input type="password" @bind="@PasswordValue" @oninput="@((e) => { PasswordValue=(string)e.Value;})" />
+
+<br />
+<br />
+
+<p style="color:red;">@WarningText</p>
+<button @onclick="login">Log in</button>
+
+<br/>
+<br/>
+
+<p>don't have an account?'</p> <a href="/signup">Sign up</a>
+
+@code {
+    private string UsernameValue { get; set; }
+    private string PasswordValue { get; set; }
+
+    private string WarningText = "";
+
+    public void login()
+    {
+        try
+        {
+            DBUser user = new DBUser(UsernameValue, PasswordValue);
+            // TODO: Session System 
+            WarningText = dbManager.LogUserIn(user).ToString(); 
+        } 
+        catch (Exception e)
+        {
+            WarningText = e.Message;
+        }
+    }
+}

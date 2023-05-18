@@ -13,7 +13,7 @@ namespace DataAccessLibrary.DAOS
     internal class UsersDAO : AbstractDAO<DBUser>, IDAO<DBUser>
     {
         private static string table_n = "Users";
-        private String C_CREATE = $"INSERT INTO {table_n} (name, hashedPassword, current_credits) VALUES (@name, @hashedPassword, @current_credits)";
+        private String C_CREATE = $"INSERT INTO {table_n} (name, hashedPassword, current_credits, isAdmin) VALUES (@name, @hashedPassword, @current_credits, @isAdmin)";
         private String C_UPDATE = $"UPDATE {table_n} SET name = @name, hashedPassword = @hashedPassword, current_credits = @current_credits, WHERE id = @id";
         private String C_READ_ALL = $"SELECT * FROM {table_n}";
         private String C_READ_BY_ID = $"SELECT * FROM {table_n} WHERE id = @id";
@@ -61,7 +61,8 @@ namespace DataAccessLibrary.DAOS
                 Convert.ToInt32(reader[0].ToString()),
                 reader[1].ToString(),
                 reader[2].ToString(),
-                Convert.ToInt32(reader[3].ToString())
+                Convert.ToInt32(reader[3].ToString()),
+                ConvertStringToBool(reader[4].ToString())
             );
         }
 
@@ -71,8 +72,14 @@ namespace DataAccessLibrary.DAOS
             {
                 new MySqlParameter("@name",obj.Name),
                 new MySqlParameter("@hashedPassword",obj.HashedPassword),
-                new MySqlParameter("@current_credits",obj.CurrentCredits)
+                new MySqlParameter("@current_credits",obj.CurrentCredits),
+                new MySqlParameter("@isAdmin",obj.IsAdmin) 
             };
         }
+
+        private bool ConvertStringToBool(string num)
+        {
+            return (num == "1");
+        } 
     }
 }

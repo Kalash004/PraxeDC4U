@@ -12,26 +12,40 @@ namespace DataAccessLibrary
     {
         UsersDAO usersDAO = new UsersDAO();
 
-        public DBUser SingUpUser(DBUser user)
+        public ReturnData<DBUser?,string> SingUpUser(DBUser user)
         {
             if (usersDAO.GetByName(user) != null)
             {
-                throw new Exception("User name already exists in database");
+                return new ReturnData<DBUser?, string>(null,"User already exists in the database");
             }
             int id = usersDAO.Create(user);
             user.ID = id;
-            return user;
+            return new ReturnData<DBUser?, string>(user,"Signed up");
         }
 
-        public DBUser GetUserByName(string name)
+        public DBUser? GetUserByName(string name)
         {
             DBUser returned = usersDAO.GetByName(name);
-            return returned;
+            if (returned.ID > 0)
+            {
+                return returned;
+            }
+            else return null;
         }
 
         public void RemoveUser(DBUser user)
         {
             usersDAO.Delete(user.ID);
+        }
+
+        internal ReturnData<bool,string> LogUserIn(DBUser hypothetical_user)
+        {
+            DBUser user_in_db = GetUserByName(hypothetical_user.Name);
+            // CHECK : Might get error instead of null from db if user is null
+            if (user_in_db == null) return new ReturnData<bool,string>(false,"User doesnt exist in database");
+            // CHECK : If db send all lower case data or not
+            if (!user_in_db.HashedPassword.ToLower().Equals(hypothetical_user.HashedPassword.ToLower())) return new ReturnData<bool,string>(false,"Wrong password");
+            return new ReturnData<bool, string>(true,"Welcome");
         }
     }
 }
