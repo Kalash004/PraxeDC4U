@@ -18,9 +18,12 @@ namespace DataAccessLibrary
         /// </summary>
         /// <param name="user">User to save</param>
         /// <returns>Original user with updated id</returns>
-        public ReturnData<DBUser?,string> SingUpUser(DBUser user)
+        public DBUser? SingUpUser(DBUser user)
         {
-            return userManager.SingUpUser(user);
+            // return userManager.SingUpUser(user);
+            var data = userManager.SingUpUser(user);
+            if (data.Result != null) return data.Result;
+            else throw new Exception(data.Message);
         }
 
         /// <summary>

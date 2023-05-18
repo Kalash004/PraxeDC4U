@@ -34,19 +34,27 @@
 	private string WarningText = "";
 	public void CreateUser()
 	{
+		if (UsernameValue == null) {
+			WarningText = "The username cant be empty";
+		}
+		if (PasswordValue == null) {
+			WarningText = "The password cant be empty";
+			return;
+		}
 		if (PasswordValue != PasswordValue2)
 		{
 			WarningText = "The passwords must match!";
 			return;
 		}
 		DBUser? user = new DBUser(UsernameValue, HashString(PasswordValue));
-		var response = dbManager.SingUpUser(user);
-		user = response.Result;
-		if (user == null)
-		{
-			WarningText = response.Message;
+		DBUser? returned_user = null;
+
+		try {
+			returned_user = dbManager.SingUpUser(user);
+		} catch (Exception e) {
+			WarningText = e.Message;
 			return;
-		}
+		} 
 		NavManager.NavigateTo("/login");
 	}
 
