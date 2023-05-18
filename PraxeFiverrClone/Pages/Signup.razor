@@ -39,7 +39,7 @@
 			WarningText = "The passwords must match!";
 			return;
 		}
-		DBUser? user = new DBUser(UsernameValue, PasswordValue);
+		DBUser? user = new DBUser(UsernameValue, HashString(PasswordValue));
 		var response = dbManager.SingUpUser(user);
 		user = response.Result;
 		if (user == null)
@@ -48,6 +48,29 @@
 			return;
 		}
 		NavManager.NavigateTo("/login");
+	}
+
+	static string HashString(string text, string salt = "DC4U")
+	{
+		if (String.IsNullOrEmpty(text))
+		{
+			return String.Empty;
+		}
+
+		// Uses SHA256 to create the hash
+		using (var sha = new System.Security.Cryptography.SHA256Managed())
+		{
+			// Convert the string to a byte array first, to be processed
+			byte[] textBytes = System.Text.Encoding.UTF8.GetBytes(text + salt);
+			byte[] hashBytes = sha.ComputeHash(textBytes);
+
+			// Convert back to a string, removing the '-' that BitConverter adds
+			string hash = BitConverter
+				.ToString(hashBytes)
+				.Replace("-", String.Empty);
+
+			return hash;
+		}
 	}
 
 }
