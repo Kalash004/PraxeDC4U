@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataTemplateLibrary.DAOS;
 using DataTemplateLibrary.Models;
 using Org.BouncyCastle.Security;
 using SessionService;
 using SessionService.SessionTemplate_Creater;
 
-namespace DataTemplateLibrary
+namespace DataAccessLibrary
 {
     public class DBManager
     {

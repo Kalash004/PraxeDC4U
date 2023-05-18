@@ -1,7 +1,8 @@
 using DataTemplateLibrary.Models;
 using DataTemplateLibrary;
+using DataAccessLibrary;
 
-namespace DBMSTest
+namespace Tests
 {
     [TestClass]
     public class DBUserCreateTest

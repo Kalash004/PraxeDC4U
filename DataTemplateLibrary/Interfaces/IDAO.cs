@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataTemplateLibrary.Interfaces
 {
-    public interface IDAO<T> where T : IBaseClass
+    public interface IBaseClass<T> where T : IBaseClass
     {
         T? GetByID(int id);
         List<T> GetAll();

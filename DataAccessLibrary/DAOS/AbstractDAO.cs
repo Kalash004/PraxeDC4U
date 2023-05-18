@@ -9,7 +9,7 @@ using System.Data;
 using DataTemplateLibrary.Interfaces;
 using MySql.Data.MySqlClient;
 
-namespace DataTemplateLibrary.DAOS
+namespace DataAccessLibrary.DAOS
 {
     public abstract class AbstractDAO<T> where T : IBaseClass
     {
