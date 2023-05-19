@@ -22,8 +22,8 @@ namespace Tests
             string pass = rand.Next().ToString();
             DBUser user = new DBUser(name, pass);
             user = manager.SingUpUser(user);
-            DBService service = new DBService(user.ID, "test", 0, DateOnly.Parse("2023-05-18"), null, true, "testingtesting", null, null);
-            DBService updating_to = new DBService(user.ID, "updatedtest", 10, DateOnly.Parse("2000-01-01"), null, true, "updatedtest", null, null);
+            DBService service = new DBService(user.ID, "test", 0, DateOnly.Parse("2023-05-18"), null, true, "testingtesting", null, null,false);
+            DBService updating_to = new DBService(user.ID, "updatedtest", 10, DateOnly.Parse("2000-01-01"), null, true, "updatedtest", null, null,false);
             // Act
             var id = manager.LogUserInCreateSession(user).Result;
             DBService service_from_db = manager.CreateService(id,service);
