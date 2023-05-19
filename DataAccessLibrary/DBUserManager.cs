@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataTemplateLibrary.DAOS;
 using DataTemplateLibrary.Models;
+using DataAccessLibrary.DAOS;
 
-namespace DataTemplateLibrary
+namespace DataAccessLibrary
 {
     public class DBUserManager
     {
