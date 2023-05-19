@@ -14,7 +14,7 @@ namespace PraxeFiverrClone
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<DBManager>();
-            builder.Services.AddScoped<SessionConnector>();
+            builder.Services.AddSingleton<MyIdService>();
             var app = builder.Build();
             
             // Configure the HTTP request pipeline.

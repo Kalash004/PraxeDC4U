@@ -3,6 +3,8 @@
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
 @inject DBManager dbManager;
+@inject MyIdService IdService;
+@inject NavigationManager NavManager;
 
 <h3>Login</h3>
 <br />
@@ -34,12 +36,14 @@
         {
             DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
             // TODO: Session System 
-            WarningText = dbManager.LogUserInCreateSession(user).Result.ToString(); 
+            
+            IdService.id = dbManager.LogUserInCreateSession(user).Result;
         } 
-        catch (Exception e)
-        {
+        catch (Exception e) {
+   
             WarningText = e.Message;
         }
+        NavManager.NavigateTo("/");
     }
 
     private static string HashString(string text, string salt = "DC4U")
