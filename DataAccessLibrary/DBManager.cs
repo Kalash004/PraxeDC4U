@@ -141,6 +141,7 @@ namespace DataAccessLibrary
             ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
             if (sessionManager.SessionExists(sessionId))
             {
+                updatedService.ID = serviceId;
                 serviceManager.UpdateService(serviceId, updatedService);
             } else
             {
