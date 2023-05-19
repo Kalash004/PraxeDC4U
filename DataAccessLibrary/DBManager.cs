@@ -7,12 +7,12 @@ using DataAccessLibrary.DAOS;
 using DataAccessLibrary.Models;
 using Org.BouncyCastle.Security;
 
-namespace DataTemplateLibrary
+namespace DataAccessLibrary
 {
     public class DBManager
     {
         private DBUserManager userManager = new DBUserManager();
-
+        private DBServiceManager serviceManager = new DBServiceManager();   
         /// <summary>
         /// Saves user to database and creates and retrievs his id
         /// </summary>
@@ -25,7 +25,6 @@ namespace DataTemplateLibrary
             if (data != null) return data.Result;
             else throw new Exception(data.Message);
         }
-
         /// <summary>
         /// Reads database and returns a user with specific name
         /// </summary>

@@ -8,7 +8,7 @@ using DataTemplateLibrary.Interfaces;
 using DataTemplateLibrary.Models;
 using MySql.Data.MySqlClient;
 
-namespace DataTemplateLibrary.DAOS
+namespace DataAccessLibrary.DAOS
 {
     internal class UsersDAO : AbstractDAO<DBUser>, IDAO<DBUser>
     {

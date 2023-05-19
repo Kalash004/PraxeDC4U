@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessLibrary.DAOS;
 using DataTemplateLibrary.Models;
+using DataAccessLibrary.DAOS;
 
-namespace DataTemplateLibrary
+namespace DataAccessLibrary.DBChildManagers
 {
     public class DBUserManager
     {
         UsersDAO usersDAO = new UsersDAO();
 
-        public ReturnData<DBUser?,string> SingUpUser(DBUser user)
+        public ReturnData<DBUser?, string> SingUpUser(DBUser user)
         {
             if (usersDAO.GetByName(user) != null)
             {
-                return new ReturnData<DBUser?, string>(null,"User already exists in the database");
+                return new ReturnData<DBUser?, string>(null, "User already exists in the database");
             }
             int id = usersDAO.Create(user);
             user.ID = id;
-            return new ReturnData<DBUser?, string>(user,"Signed up");
+            return new ReturnData<DBUser?, string>(user, "Signed up");
         }
 
         public DBUser? GetUserByName(string name)
@@ -38,14 +38,14 @@ namespace DataTemplateLibrary
             usersDAO.Delete(user.ID);
         }
 
-        internal ReturnData<bool,string> LogUserIn(DBUser hypothetical_user)
+        internal ReturnData<DBUser?, string> LogUserIn(DBUser hypothetical_user)
         {
             DBUser user_in_db = GetUserByName(hypothetical_user.Name);
             // CHECK : Might get error instead of null from db if user is null
-            if (user_in_db == null) return new ReturnData<bool,string>(false,"User doesnt exist in database");
+            if (user_in_db == null) return new ReturnData<DBUser?, string>(null, "User doesnt exist in database");
             // CHECK : If db send all lower case data or not
-            if (!user_in_db.HashedPassword.ToLower().Equals(hypothetical_user.HashedPassword.ToLower())) return new ReturnData<bool,string>(false,"Wrong password");
-            return new ReturnData<bool, string>(true,"Welcome");
+            if (!user_in_db.HashedPassword.ToLower().Equals(hypothetical_user.HashedPassword.ToLower())) return new ReturnData<DBUser?, string>(null, "Wrong password");
+            return new ReturnData<DBUser?, string>(user_in_db, "Welcome");
         }
     }
 }

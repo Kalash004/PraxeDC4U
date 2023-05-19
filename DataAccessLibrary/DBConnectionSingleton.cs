@@ -8,7 +8,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
 
-namespace DataTemplateLibrary
+namespace DataAccessLibrary
 {
     public class DBConnectionSingleton
     {

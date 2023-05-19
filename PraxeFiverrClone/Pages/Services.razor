@@ -1,9 +1,12 @@
 ﻿@page "/services";
-@using PraxeFiverrClone.Data;
+@using DataAccessLibrary;
+@using DataAccessLibrary.DAOS;
+@using DataTemplateLibrary.Models;
+@using SessionService;
 @inject DBManager dbManager;
 
 <div class="services-wrapper">
-    @foreach(Service service in dbManager.GetAllServices())
+    @foreach(DBService service in new ServiceDAO().GetAll())
     {
         <ServiceCard service=@service/>
     }
