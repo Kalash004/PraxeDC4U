@@ -18,8 +18,9 @@ namespace DataTemplateLibrary.Models
         private bool isShown;
         private string shortDescription;
         private string? longDescription;
-        private string? linkToImage; 
-        public DBService(int iD, int userId, string serviceName, int currentPrice, DateOnly created, DateOnly? updated, bool isShown, string shortDescription, string? longDescription, string? linkToImage)
+        private string? linkToImage;
+        private bool isDeleted;
+        public DBService(int iD, int userId, string serviceName, int currentPrice, DateOnly created, DateOnly? updated, bool isShown, string shortDescription, string? longDescription, string? linkToImage, bool isDeleted)
         {
             ID = iD;
             UserId = userId;
@@ -31,18 +32,20 @@ namespace DataTemplateLibrary.Models
             ShortDescription = shortDescription;
             LongDescription = longDescription;
             LinkToImage = linkToImage;
+            IsDeleted = isDeleted;
         }
-        public DBService(int userId, string serviceName, int currentPrice, DateOnly created, DateOnly? updated, bool isShown, string shortDescription, string? longDescription, string? linkToImage)
+        public DBService(int userId, string serviceName, int currentPrice, DateOnly created, DateOnly? updated, bool isShown, string shortDescription, string? longDescription, string? linkToImage, bool isDeleted)
         {
-            this.userId = userId;
-            this.serviceName = serviceName;
-            this.currentPrice = currentPrice;
-            this.created = created;
-            this.updated = updated;
-            this.isShown = isShown;
-            this.shortDescription = shortDescription;
-            this.longDescription = longDescription;
-            this.linkToImage = linkToImage;
+            UserId = userId;
+            ServiceName = serviceName;
+            CurrentPrice = currentPrice;
+            Created = created;
+            Updated = updated;
+            IsShown = isShown;
+            ShortDescription = shortDescription;
+            LongDescription = longDescription;
+            LinkToImage = linkToImage;
+            IsDeleted = isDeleted;
         }
         public int ID { get => id; set => id = value; }
         public int UserId { get => userId; set => userId = value; }
@@ -54,5 +57,6 @@ namespace DataTemplateLibrary.Models
         public string ShortDescription { get => shortDescription; set => shortDescription = value; }
         public string? LongDescription { get => longDescription; set => longDescription = value; }
         public string? LinkToImage { get => linkToImage; set => linkToImage = value; }
+        public bool IsDeleted { get => isDeleted; set => isDeleted = value; }
     }
 }

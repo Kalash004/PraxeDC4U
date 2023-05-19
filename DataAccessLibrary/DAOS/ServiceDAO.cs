@@ -15,8 +15,8 @@ namespace DataAccessLibrary.DAOS
     public class ServiceDAO : AbstractDAO<DBService>, IDAO<DBService>
     {
         private static string table_n = "services";
-        private String C_CREATE = $"INSERT INTO {table_n} (user_id, ser_name, current_price, creation,`update`, isShown, short_description, long_description, link) VALUES (@user_id, @ser_name, @current_price, @creation, @update, @isShown, @short_description, @long_description, @link)";
-        private String C_UPDATE = $"UPDATE {table_n} SET user_id = @user_id, ser_name = @ser_name, current_price = @current_price, creation = @creation, `update` = @update, isShown = @isShown, short_description = @short_description, long_description = @long_description, link = @link WHERE id = @id";
+        private String C_CREATE = $"INSERT INTO {table_n} (user_id, ser_name, current_price, creation,`update`, isShown, short_description, long_description, link, isDeleted) VALUES (@user_id, @ser_name, @current_price, @creation, @update, @isShown, @short_description, @long_description, @link, @isDeleted)";
+        private String C_UPDATE = $"UPDATE {table_n} SET user_id = @user_id, ser_name = @ser_name, current_price = @current_price, creation = @creation, `update` = @update, isShown = @isShown, short_description = @short_description, long_description = @long_description, link = @link, isDeleted = @isDeleted WHERE id = @id";
         private String C_READ_ALL = $"SELECT * FROM {table_n}";
         private String C_READ_BY_ID = $"SELECT * FROM {table_n} WHERE id = @id";
         private String C_DELETE = $"DELETE FROM {table_n} WHERE id = @id";
@@ -75,6 +75,7 @@ namespace DataAccessLibrary.DAOS
             string shortDescript = reader[7].ToString();
             string? longDescript = reader[8].ToString();
             string? linkToImage = reader[9].ToString();
+            bool isDeleted = Convert.ToBoolean(Convert.ToInt32(reader[10].ToString()));
 
             return new DBService(
                 Id,
@@ -86,7 +87,8 @@ namespace DataAccessLibrary.DAOS
                 isVisible,
                 shortDescript,
                 longDescript,
-                linkToImage
+                linkToImage,
+                isDeleted
                 );
         }
 
@@ -104,7 +106,8 @@ namespace DataAccessLibrary.DAOS
                 new MySqlParameter("@isShown",obj.IsShown),
                 new MySqlParameter("@short_description",obj.ShortDescription),
                 new MySqlParameter("@long_description",obj.LongDescription),
-                new MySqlParameter("@link",obj.LinkToImage)
+                new MySqlParameter("@link",obj.LinkToImage),
+                new MySqlParameter("@isDeleted",obj.IsDeleted)
                 };
             }
             else
@@ -119,7 +122,8 @@ namespace DataAccessLibrary.DAOS
                 new MySqlParameter("@isShown",obj.IsShown),
                 new MySqlParameter("@short_description",obj.ShortDescription),
                 new MySqlParameter("@long_description",obj.LongDescription),
-                new MySqlParameter("@link",obj.LinkToImage)
+                new MySqlParameter("@link",obj.LinkToImage),
+                new MySqlParameter("@isDeleted",obj.IsDeleted)
                 };
             }
         }

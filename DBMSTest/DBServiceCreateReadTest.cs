@@ -22,7 +22,7 @@ namespace Tests
             string pass = rand.Next().ToString();
             DBUser user = new DBUser(name,pass);
             user = u_manager.SingUpUser(user).Result;
-            DBService service = new DBService(user.ID,"test",0,DateOnly.Parse("2023-05-18"),null,true,"testingtesting",null,null);
+            DBService service = new DBService(user.ID,"test",0,DateOnly.Parse("2023-05-18"),null,true,"testingtesting",null,null,false);
             // Act
             DBService service_from_db = s_manager.CreateService(service).Result;
             DBService service_from_db_after_creation = s_manager.GetOneServiceByUserAndId(user, service_from_db.ID);
@@ -42,7 +42,7 @@ namespace Tests
             string pass = rand.Next().ToString();
             DBUser user = new DBUser(name, pass);
             user = u_manager.SingUpUser(user).Result;
-            DBService service = new DBService(user.ID, "test", 0, DateOnly.Parse("2023-05-18"), DateOnly.Parse("2023-05-20"), true, "testingtesting", null, null);
+            DBService service = new DBService(user.ID, "test", 0, DateOnly.Parse("2023-05-18"), DateOnly.Parse("2023-05-20"), true, "testingtesting", null, null, false);
             // Act
             DBService service_from_db = s_manager.CreateService(service).Result;
             DBService service_from_db_after_creation = s_manager.GetOneServiceByUserAndId(user, service_from_db.ID);
@@ -61,7 +61,7 @@ namespace Tests
             string pass = rand.Next().ToString();
             DBUser user = new DBUser(name, pass);
             user = u_manager.SingUpUser(user).Result;
-            DBService service = new DBService(user.ID, "test", 0, DateOnly.Parse("2023-05-18"), DateOnly.Parse("2023-05-20"), true, "testingShortDescription", "testingLongDescription", "testingLink");
+            DBService service = new DBService(user.ID, "test", 0, DateOnly.Parse("2023-05-18"), DateOnly.Parse("2023-05-20"), true, "testingShortDescription", "testingLongDescription", "testingLink",false);
             // Act
             DBService service_from_db = s_manager.CreateService(service).Result;
             DBService service_from_db_after_creation = s_manager.GetOneServiceByUserAndId(user, service_from_db.ID);
