@@ -63,10 +63,34 @@ namespace DataAccessLibrary
             }
             else throw new Exception("User wasnt found in the database");
         }
-
-        public DBService? CreateService(DBService service)
+        /// <summary>
+        /// Creates Service
+        /// </summary>
+        /// <param name="service">Service with userId inside</param>
+        /// <returns>Service with id from db</returns>
+        private DBService? CreateService(DBService service)
         {
             return serviceManager.CreateService(service).Result;
+        }
+
+        /// <summary>
+        /// Adds service to bd with id of the user
+        /// </summary>
+        /// <param name="id">Session id for ServerSideSessionSaverService</param>
+        /// <param name="service">Service you want to save without userId</param>
+        /// <returns>Returns service with id from db</returns>
+        /// <exception cref="Exception">If session doesnt exists</exception>
+        public DBService CreateService(SessionId id, DBService service)
+        {
+            ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
+            if (sessionManager.SessionExists(id))
+            {
+                service.UserId = sessionManager.GetUserFromSessionId(id).ID;
+                return CreateService(service);
+            } else
+            {
+                throw new Exception($"No Session with : {id} session id");
+            }
         }
     }
 }

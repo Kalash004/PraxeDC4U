@@ -29,7 +29,7 @@ namespace SessionService
 			currentSessions.Add(sessionId, user);
 		}
 
-		public DBUser GetSession(SessionId id)
+		public DBUser GetUserFromSessionId(SessionId id)
 		{
 			if (SessionExists(id))
 			{
