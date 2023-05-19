@@ -16,7 +16,7 @@ namespace DataAccessLibrary.DAOS
     {
         private static string table_n = "services";
         private String C_CREATE = $"INSERT INTO {table_n} (user_id, ser_name, current_price, creation,`update`, isShown, short_description, long_description, link) VALUES (@user_id, @ser_name, @current_price, @creation, @update, @isShown, @short_description, @long_description, @link)";
-        private String C_UPDATE = $"UPDATE {table_n} SET user_id = @user_id, ser_name = @ser_name, current_price = @current_price, creation = @creation, update = @update, isShown = @isShown, short_description = @short_description, long_description = @long_description, link = @link WHERE id = @id";
+        private String C_UPDATE = $"UPDATE {table_n} SET user_id = @user_id, ser_name = @ser_name, current_price = @current_price, creation = @creation, `update` = @update, isShown = @isShown, short_description = @short_description, long_description = @long_description, link = @link WHERE id = @id";
         private String C_READ_ALL = $"SELECT * FROM {table_n}";
         private String C_READ_BY_ID = $"SELECT * FROM {table_n} WHERE id = @id";
         private String C_DELETE = $"DELETE FROM {table_n} WHERE id = @id";
