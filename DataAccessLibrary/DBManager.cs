@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccessLibrary.DBChildManagers;
 using DataTemplateLibrary.Models;
 using Org.BouncyCastle.Security;
 using SessionService;
@@ -129,6 +130,17 @@ namespace DataAccessLibrary
             }
         }
 
+        public void UpdateService(SessionId sessionId, int serviceId, DBService updatedService)
+        {
+            ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
+            if (sessionManager.SessionExists(sessionId))
+            {
+                serviceManager.UpdateService(serviceId, updatedService);
+            } else
+            {
+                throw new Exception($"No Session with : {serviceId} session id");
+            }
+        }
     }
 
     
