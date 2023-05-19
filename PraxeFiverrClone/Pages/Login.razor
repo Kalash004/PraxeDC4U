@@ -3,6 +3,7 @@
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
 @inject DBManager dbManager;
+@inject MyIdService IdService;
 
 <h3>Login</h3>
 <br />
@@ -34,10 +35,11 @@
         {
             DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
             // TODO: Session System 
-            WarningText = dbManager.LogUserInCreateSession(user).Result.ToString(); 
+            
+            IdService.id = dbManager.LogUserInCreateSession(user).Result;
         } 
-        catch (Exception e)
-        {
+        catch (Exception e) {
+   
             WarningText = e.Message;
         }
     }
