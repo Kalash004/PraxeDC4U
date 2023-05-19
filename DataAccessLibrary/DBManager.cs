@@ -13,8 +13,8 @@ namespace DataAccessLibrary
 {
     public class DBManager
     {
-        private DBUserManager userManager = new DBUserManager();
-        private DBServiceManager serviceManager = new DBServiceManager();   
+        private readonly DBUserManager userManager = new();
+        private readonly DBServiceManager serviceManager = new();   
         /// <summary>
         /// Saves user to database and creates and retrievs his id
         /// </summary>
@@ -41,7 +41,7 @@ namespace DataAccessLibrary
         /// </summary>
         /// <param name="user">Hypothetical user to check he exists in the database and if password is same</param>
         /// <returns>True in result if user exists and credentials are right, User from database.</returns>
-        public ReturnData<bool, DBUser?> LogUserIn(DBUser user)
+        private ReturnData<bool, DBUser?> LogUserIn(DBUser user)
         {
             var data = userManager.LogUserIn(user);
             var user_from_db = data.Result;
@@ -100,7 +100,7 @@ namespace DataAccessLibrary
         /// <param name="sessionId">Session id of the user</param>
         /// <returns>List of services with their ids from db </returns>
         /// <exception cref="Exception">If session wasnt found</exception>
-        public List<DBService?> ReadAllUserServices(SessionId sessionId)
+        public List<DBService?> GetAllUserServices(SessionId sessionId)
         {
             ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
             if (sessionManager.SessionExists(sessionId))

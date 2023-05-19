@@ -1,0 +1,54 @@
+﻿@using DataTemplateLibrary.Models;
+
+<div class="service-wrapper">
+    <a href="/service/">
+
+        <div>
+            <h3>@ServiceName</h3>
+            <p>@ServiceOwner</p>
+            <p>@ServiceDescription</p>
+        </div>
+
+        <div class="service-price">
+            <h3>@GetServicePriceString()</h3>
+        </div>
+    </a>
+</div>
+
+@code {
+
+    [Parameter]
+    public DBService? service { get; set; }
+
+    private string ServiceName { 
+        get {
+            return service != null ? service.ServiceName: ""; ;
+        }
+    }
+    private string ServiceDescription
+    {
+        get
+        {
+            return service != null ? service.ShortDescription : "";
+        }
+    }
+    private int ServicePrice
+    {
+        get
+        {
+            return service != null ? service.CurrentPrice : 0;
+        }
+    }
+    private int ServiceOwner { 
+        get
+        {
+            return service != null ? service.UserId : 0;
+        }
+    }
+
+
+    private string GetServicePriceString()
+    {
+        return ServicePrice + "$";
+    }
+}

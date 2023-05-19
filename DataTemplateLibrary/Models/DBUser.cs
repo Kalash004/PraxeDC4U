@@ -11,7 +11,7 @@ namespace DataTemplateLibrary.Models
 {
     public class DBUser : IBaseClass
     {
-        private int id;
+        private int id = -1;
         private string name;
         private string hashedPassword;
         private int currentCredits;
