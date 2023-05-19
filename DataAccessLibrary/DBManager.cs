@@ -129,7 +129,13 @@ namespace DataAccessLibrary
                 throw new Exception($"No Session with : {sessionId} session id");
             }
         }
-
+        /// <summary>
+        /// Update service on db using service id and session id
+        /// </summary>
+        /// <param name="sessionId">Current user session id</param>
+        /// <param name="serviceId">Service id of the service to be updated </param>
+        /// <param name="updatedService">New service with updated values</param>
+        /// <exception cref="Exception"></exception>
         public void UpdateService(SessionId sessionId, int serviceId, DBService updatedService)
         {
             ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
