@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLibrary", "DataAc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "DBMSTest\Tests.csproj", "{CE349068-A818-4E25-B47F-98414C08C93E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SessionService", "SessionService\SessionService.csproj", "{A9D8206C-BB50-44D8-966A-91D5D33158C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SessionService", "SessionService\SessionService.csproj", "{A9D8206C-BB50-44D8-966A-91D5D33158C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTemplateLibrary", "DataTemplateLibrary\DataTemplateLibrary.csproj", "{27C62942-7FCC-4DB1-AAC9-8D8BEDC8B9BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTemplateLibrary", "DataTemplateLibrary\DataTemplateLibrary.csproj", "{27C62942-7FCC-4DB1-AAC9-8D8BEDC8B9BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
