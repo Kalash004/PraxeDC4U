@@ -10,8 +10,20 @@
 
     z-index: 9999;
 }
+.made-by{
+    margin-left: auto;
+}
 .footer p{
-    color: white;
+    margin-left: auto;
+    color: gray;
+    font-size: 0.8em;
     margin: 0;
-    overflow: clip;
+    overflow: clip;   
+}
+.footer p a{
+    color: white;
+    text-decoration: none;
+}
+.footer p a:hover{
+    color: lightblue;
 }
