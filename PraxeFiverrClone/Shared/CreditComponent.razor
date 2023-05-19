@@ -1,0 +1,19 @@
+﻿
+<style>
+    .box {
+        padding: 20px;
+        background-color: lightblue;
+    }
+</style>
+
+<div id="box">
+    <h3>your credits</h3>
+    <big style="color:green;">@Credits ₭</big>
+    <br />
+    <a href="/user/credit"><button>buy more</button></a>
+</div>
+
+@code {
+    [CascadingParameter]
+    public int Credits { get; set; }
+}

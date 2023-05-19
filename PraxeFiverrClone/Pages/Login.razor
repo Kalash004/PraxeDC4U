@@ -1,0 +1,67 @@
+﻿@page "/login"
+@using DataAccessLibrary
+@using DataTemplateLibrary
+@using DataTemplateLibrary.Models;
+@inject DBManager dbManager;
+
+<h3>Login</h3>
+<br />
+<p>Username:</p>
+<input type="text" @bind="@UsernameValue" @oninput="@((e) => { UsernameValue=(string)e.Value;})" />
+<p>Password:</p>
+<input type="password" @bind="@PasswordValue" @oninput="@((e) => { PasswordValue=(string)e.Value;})" />
+
+<br />
+<br />
+
+<p style="color:red;">@WarningText</p>
+<button @onclick="login">Log in</button>
+
+<br/>
+<br/>
+
+<p>don't have an account?'</p> <a href="/signup">Sign up</a>
+
+@code {
+    private string UsernameValue { get; set; }
+    private string PasswordValue { get; set; }
+
+    private string WarningText = "";
+
+    public void login()
+    {
+        try
+        {
+            DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
+            // TODO: Session System 
+            WarningText = dbManager.LogUserInCreateSession(user).Result.ToString(); 
+        } 
+        catch (Exception e)
+        {
+            WarningText = e.Message;
+        }
+    }
+
+    private static string HashString(string text, string salt = "DC4U")
+    {
+        if (String.IsNullOrEmpty(text))
+        {
+            return String.Empty;
+        }
+
+        // Uses SHA256 to create the hash
+        using (var sha = new System.Security.Cryptography.SHA256Managed())
+        {
+            // Convert the string to a byte array first, to be processed
+            byte[] textBytes = System.Text.Encoding.UTF8.GetBytes(text + salt);
+            byte[] hashBytes = sha.ComputeHash(textBytes);
+
+            // Convert back to a string, removing the '-' that BitConverter adds
+            string hash = BitConverter
+                .ToString(hashBytes)
+                .Replace("-", String.Empty);
+
+            return hash;
+        }
+    }
+}
