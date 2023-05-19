@@ -37,7 +37,7 @@ namespace DataAccessLibrary.DAOS
             }
             catch (Exception e)
             {
-
+                throw;
             }
             finally
             {
@@ -50,7 +50,7 @@ namespace DataAccessLibrary.DAOS
                 }
                 catch (Exception e1)
                 {
-
+                    throw e1;
                 }
             }
         }
@@ -93,7 +93,7 @@ namespace DataAccessLibrary.DAOS
                 }
                 catch (Exception e1)
                 {
-
+                    throw e1;
                 }
             }
         }
@@ -130,7 +130,7 @@ namespace DataAccessLibrary.DAOS
                 }
                 catch (Exception e1)
                 {
-
+                    throw e1;
                 }
             }
         }
@@ -177,7 +177,7 @@ namespace DataAccessLibrary.DAOS
                 }
                 catch (Exception e1)
                 {
-
+                    throw e1;
                 }
             }
             return list;
@@ -229,7 +229,7 @@ namespace DataAccessLibrary.DAOS
                 }
                 catch (Exception e1)
                 {
-
+                    throw e1;
                 }
             }
             return list;
@@ -277,7 +277,7 @@ namespace DataAccessLibrary.DAOS
                 }
                 catch (Exception e1)
                 {
-
+                    throw e1;
                 }
             }
             return default(T);
@@ -326,7 +326,7 @@ namespace DataAccessLibrary.DAOS
                 }
                 catch (Exception e1)
                 {
-
+                    throw e1;
                 }
             }
             return list;
@@ -373,7 +373,7 @@ namespace DataAccessLibrary.DAOS
                 }
                 catch (Exception e1)
                 {
-
+                    throw e1;
                 }
             }
             return default(T);

@@ -11,7 +11,7 @@ namespace SessionService
 	public class ServerSideSessionSaverService
 	{
 		private static ServerSideSessionSaverService instance = null;
-		private Dictionary<SessionId, DBUser> currentSessions = new Dictionary<SessionId, DBUser>();
+		private Dictionary<string, DBUser> currentSessions = new Dictionary<string, DBUser>();
 		private ServerSideSessionSaverService()
 		{
 		}
@@ -26,21 +26,21 @@ namespace SessionService
 		}
 		public void AddSession(SessionId sessionId,DBUser user)
 		{
-			currentSessions.Add(sessionId, user);
+			currentSessions.Add(sessionId.Id, user);
 		}
 
 		public DBUser GetUserFromSessionId(SessionId id)
 		{
 			if (SessionExists(id))
 			{
-				return currentSessions[id];
+				return currentSessions[id.Id];
 			}
 			else throw new Exception($"Session id: \"{id}\" doesnt exist");
 		}
 
 		public bool SessionExists(SessionId id)
 		{
-			return currentSessions.ContainsKey(id);
+			return currentSessions.ContainsKey(id.Id);
 		}
 
 		public SessionId AddSession(DBUser user)
