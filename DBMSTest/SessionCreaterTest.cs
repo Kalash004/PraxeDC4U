@@ -21,7 +21,7 @@ namespace Tests
             DBManager manager = new DBManager();
             // Act
             var data_from_db = manager.LogUserInCreateSession(user);
-            var user_from_runtime = ServerSideSessionSaverService.GetInstance().GetSession(data_from_db.Result);
+            var user_from_runtime = ServerSideSessionSaverService.GetInstance().GetUserFromSessionId(data_from_db.Result);
             // Assert
             Assert.AreEqual(user_from_runtime, data_from_db.Message);
         }

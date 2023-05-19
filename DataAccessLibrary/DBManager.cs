@@ -80,17 +80,56 @@ namespace DataAccessLibrary
         /// <param name="service">Service you want to save without userId</param>
         /// <returns>Returns service with id from db</returns>
         /// <exception cref="Exception">If session doesnt exists</exception>
-        public DBService CreateService(SessionId id, DBService service)
+        public DBService? CreateService(SessionId sessionId, DBService service)
         {
             ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
-            if (sessionManager.SessionExists(id))
+            if (sessionManager.SessionExists(sessionId))
             {
-                service.UserId = sessionManager.GetUserFromSessionId(id).ID;
+                service.UserId = sessionManager.GetUserFromSessionId(sessionId).ID;
                 return CreateService(service);
             } else
             {
-                throw new Exception($"No Session with : {id} session id");
+                throw new Exception($"No Session with : {sessionId} session id");
             }
         }
+
+        /// <summary>
+        /// Gets all user services from database
+        /// </summary>
+        /// <param name="sessionId">Session id of the user</param>
+        /// <returns>List of services with their ids from db </returns>
+        /// <exception cref="Exception">If session wasnt found</exception>
+        public List<DBService?> ReadAllUserServices(SessionId sessionId)
+        {
+            ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
+            if (sessionManager.SessionExists(sessionId))
+            {
+                return serviceManager.GetAllServiceByUser(sessionManager.GetUserFromSessionId(sessionId));
+            } else
+            {
+                throw new Exception($"No Session with : {sessionId} session id");
+            }
+        }
+        /// <summary>
+        /// Gets concrete service from db using session id and service id
+        /// </summary>
+        /// <param name="sessionId">Session id of the user</param>
+        /// <param name="serviceId">ID of service from db</param>
+        /// <returns>One service from db</returns>
+        /// <exception cref="Exception">If no session was found</exception>
+        public DBService? GetServiceFromDB(SessionId sessionId, int serviceId)
+        {
+            ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
+            if (sessionManager.SessionExists(sessionId))
+            {
+                return serviceManager.GetOneServiceByUserAndId(sessionManager.GetUserFromSessionId(sessionId), serviceId);
+            } else
+            {
+                throw new Exception($"No Session with : {sessionId} session id");
+            }
+        }
+
     }
+
+    
 }
