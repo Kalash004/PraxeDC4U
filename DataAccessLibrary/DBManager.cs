@@ -13,8 +13,8 @@ namespace DataAccessLibrary
 {
     public class DBManager
     {
-        private DBUserManager userManager = new DBUserManager();
-        private DBServiceManager serviceManager = new DBServiceManager();   
+        private readonly DBUserManager userManager = new();
+        private readonly DBServiceManager serviceManager = new();   
         /// <summary>
         /// Saves user to database and creates and retrievs his id
         /// </summary>
