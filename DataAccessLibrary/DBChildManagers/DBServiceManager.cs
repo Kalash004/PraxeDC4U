@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 using DataAccessLibrary.DAOS;
 using DataTemplateLibrary.Models;
 
-namespace DataAccessLibrary
+namespace DataAccessLibrary.DBChildManagers
 {
     public class DBServiceManager
     {
         ServiceDAO serviceDAO = new ServiceDAO();
 
-        public ReturnData<DBService?,string> CreateService(DBService service)
+        public ReturnData<DBService?, string> CreateService(DBService service)
         {
             int returnedID = serviceDAO.Create(service);
             service.ID = returnedID;
-            return new ReturnData<DBService?, string>(service,"Created");
+            return new ReturnData<DBService?, string>(service, "Created");
         }
         public List<DBService?> GetAllServiceByUser(DBUser user)
         {
@@ -31,7 +31,14 @@ namespace DataAccessLibrary
                 if (service.ID == id) return service;
             }
             return null;
-        } 
+        }
+
+        public void UpdateService(int serviceId, DBService newService)
+        {
+            newService.ID = serviceId;
+            newService.Updated = DateOnly.FromDateTime(DateTime.Now);
+            serviceDAO.Save(newService);
+        }
 
     }
 }
