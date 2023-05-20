@@ -8,6 +8,11 @@ using SessionService.SessionTemplate_Creater;
 
 namespace SessionService
 {
+    /// <summary>
+    /// Session connector for Blazor needs.
+    /// Obtains data from sessionManager.
+    /// </summary>
+    /// <creator>Anton Kalashnikov</creator>
     public class SessionConnector
     {
         ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();

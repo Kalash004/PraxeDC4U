@@ -4,6 +4,10 @@ using DataAccessLibrary.DBChildManagers;
 
 namespace Tests
 {
+    /// <summary>
+    /// Test for user objects adding to database.
+    /// </summary>
+    /// <creator>Anton Kalashnikov</creator>
     [TestClass]
     public class DBUserCreateTest
     {

@@ -9,6 +9,10 @@ using SessionService.SessionTemplate_Creater;
 
 namespace Tests
 {
+    /// <summary>
+    /// Test for reading service obejcts form database
+    /// </summary>
+    /// <creator>Anton Kalashnikov</creator>
     [TestClass]
     public class DBServiceReadTest
     {

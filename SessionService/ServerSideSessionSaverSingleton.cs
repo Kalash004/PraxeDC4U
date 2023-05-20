@@ -8,6 +8,11 @@ using SessionService.SessionTemplate_Creater;
 
 namespace SessionService
 {
+	/// <summary>
+	/// Singleton service that works with session ids.
+	/// Cant be connected to blazor directly
+	/// </summary>
+	/// <creator>Anton Kalashnikov</creator>
 	public class ServerSideSessionSaverService
 	{
 		private static ServerSideSessionSaverService instance = null;

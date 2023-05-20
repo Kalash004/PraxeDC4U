@@ -9,6 +9,10 @@ using DataTemplateLibrary.Interfaces;
 
 namespace DataTemplateLibrary.Models
 {
+    /// <summary>
+    /// Data model for objects from database.
+    /// </summary>
+    /// <creator>Anton Kalashniko</creator>
     public class DBUser : IBaseClass
     {
         private int id = -1;

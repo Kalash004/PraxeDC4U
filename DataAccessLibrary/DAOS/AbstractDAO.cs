@@ -11,6 +11,11 @@ using MySql.Data.MySqlClient;
 
 namespace DataAccessLibrary.DAOS
 {
+    /// <summary>
+    /// This abstract class contains logic for obtaining data from SQL Database
+    /// </summary>
+    /// <typeparam name="T">A class into which ones save the data from database</typeparam>
+    /// <creator>Anton Kalashnikov</creator>>
     public abstract class AbstractDAO<T> where T : IBaseClass
     {
         public void Update(String SQL, T obj, int id)
@@ -54,7 +59,6 @@ namespace DataAccessLibrary.DAOS
                 }
             }
         }
-
         public int Create(String SQL, T obj)
         {
             MySqlConnection? conn = null;
@@ -97,7 +101,6 @@ namespace DataAccessLibrary.DAOS
                 }
             }
         }
-
         public void Delete(String SQL, int id)
         {
             MySqlConnection? conn = null;
@@ -134,7 +137,6 @@ namespace DataAccessLibrary.DAOS
                 }
             }
         }
-
         public List<T> GetAll(String SQL)
         {
             MySqlConnection? conn = null;
@@ -182,7 +184,6 @@ namespace DataAccessLibrary.DAOS
             }
             return list;
         }
-
         public List<T> Get(String SQL, List<MySqlParameter> parameters)
         {
             MySqlConnection? conn = null;
@@ -234,7 +235,6 @@ namespace DataAccessLibrary.DAOS
             }
             return list;
         }
-
         public T? GetByID(String SQL, int id)
         {
             MySqlConnection? conn = null;
@@ -282,7 +282,6 @@ namespace DataAccessLibrary.DAOS
             }
             return default(T);
         }
-
         public List<T> GetByConnectingID(String SQL, int id, String tag)
         {
             MySqlConnection? conn = null;
@@ -369,7 +368,6 @@ namespace DataAccessLibrary.DAOS
                     {
                         conn.Close();
                     }
-
                 }
                 catch (Exception e1)
                 {
@@ -378,10 +376,7 @@ namespace DataAccessLibrary.DAOS
             }
             return default(T);
         }
-
-
         protected abstract T Map(MySqlDataReader reader);
-
         protected abstract List<MySqlParameter> Map(T obj);
     }
 

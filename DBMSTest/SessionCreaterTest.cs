@@ -10,6 +10,11 @@ using SessionService;
 
 namespace Tests
 {
+    /// <summary>
+    /// Test for session creation.
+    /// Also test if admin exists in the database
+    /// </summary>
+    /// <creator>Anton Kalashnikov</creator>
     [TestClass]
     public class SessionCreaterTest
     {

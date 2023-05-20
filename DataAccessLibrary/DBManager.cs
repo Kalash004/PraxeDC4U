@@ -11,6 +11,10 @@ using SessionService.SessionTemplate_Creater;
 
 namespace DataAccessLibrary
 {
+    /// <summary>
+    /// Cascade class for working with database and Session Service
+    /// </summary>
+    /// <creator>Anton Kalashnikov</creator>
     public class DBManager
     {
         private readonly DBUserManager userManager = new();
