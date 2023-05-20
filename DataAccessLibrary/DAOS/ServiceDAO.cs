@@ -12,6 +12,10 @@ using MySql.Data.MySqlClient;
 
 namespace DataAccessLibrary.DAOS
 {
+    /// <summary>
+    /// This class is a child of AbstractDAO, it implements the methods and contains the SQL used to obtain data
+    /// </summary>
+    /// <creator>Anton Kalashnikov</creator>
     public class ServiceDAO : AbstractDAO<DBService>, IDAO<DBService>
     {
         private static string table_n = "services";
@@ -25,22 +29,18 @@ namespace DataAccessLibrary.DAOS
         {
             return Create(C_CREATE, element);
         }
-
         public void Delete(int id)
         {
             Delete(C_DELETE, id);
         }
-
         public List<DBService> GetAll()
         {
             return GetAll(C_READ_ALL);
         }
-
         public DBService? GetByID(int id)
         {
             return GetByID(C_READ_BY_ID, id);
         }
-
         public void Save(DBService element)
         {
             Update(C_UPDATE, element, element.ID);
@@ -53,7 +53,6 @@ namespace DataAccessLibrary.DAOS
                 new MySqlParameter("@user_id",id)
             });
         }
-
         protected override DBService Map(MySqlDataReader reader)
         {
             int Id = Convert.ToInt32(reader[0].ToString());
@@ -91,7 +90,6 @@ namespace DataAccessLibrary.DAOS
                 isDeleted
                 );
         }
-
         protected override List<MySqlParameter> Map(DBService obj)
         {
             if (obj.Updated == null)

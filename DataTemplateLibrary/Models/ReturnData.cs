@@ -1,5 +1,11 @@
 ﻿namespace DataTemplateLibrary.Models
 {
+    /// <summary>
+    /// Object for saving and returning multiple data types
+    /// </summary>
+    /// <typeparam name="T">Any key value</typeparam>
+    /// <typeparam name="K">Any additional message</typeparam>
+    /// <creator>Anton Kalashnikov</creator>
     public class ReturnData<T,K>
     {
         private T result;

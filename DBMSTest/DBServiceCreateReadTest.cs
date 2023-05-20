@@ -8,6 +8,10 @@ using DataTemplateLibrary.Models;
 
 namespace Tests
 {
+    /// <summary>
+    /// Testing creation and reading service objects from database 
+    /// </summary>
+    /// <creator>Anton Kalashnikov</creator>
     [TestClass]
     public class DBServiceCreateReadTest
     {

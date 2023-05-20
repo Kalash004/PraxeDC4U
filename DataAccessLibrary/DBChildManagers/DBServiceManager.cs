@@ -8,6 +8,11 @@ using DataTemplateLibrary.Models;
 
 namespace DataAccessLibrary.DBChildManagers
 {
+    /// <summary>
+    /// This is a cascade that contains methods which are needed for DBManager.
+    /// Works with DBService datatype
+    /// </summary>
+    /// <Creator>Anton Kalashnikov</Creator>
     public class DBServiceManager
     {
         ServiceDAO serviceDAO = new ServiceDAO();

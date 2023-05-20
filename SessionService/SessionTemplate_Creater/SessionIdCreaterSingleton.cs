@@ -9,6 +9,10 @@ using DataTemplateLibrary.Models;
 
 namespace SessionService.SessionTemplate_Creater
 {
+	/// <summary>
+	/// Session Id factory
+	/// </summary>
+	/// <creator>Anton Kalashnikov</creator>
 	public class SessionIdCreaterSingleton
 	{
 		private static SessionIdCreaterSingleton? instance = null;

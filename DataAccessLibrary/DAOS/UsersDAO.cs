@@ -10,6 +10,10 @@ using MySql.Data.MySqlClient;
 
 namespace DataAccessLibrary.DAOS
 {
+    /// <summary>
+    /// This class is a child of AbstractDAO, it implements the methods and contains the SQL used to obtain data
+    /// </summary>
+    /// <creator>Anton Kalashnikov</creator>
     internal class UsersDAO : AbstractDAO<DBUser>, IDAO<DBUser>
     {
         private static string table_n = "Users";

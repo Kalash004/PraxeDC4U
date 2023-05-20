@@ -8,6 +8,11 @@ using DataAccessLibrary.DAOS;
 
 namespace DataAccessLibrary.DBChildManagers
 {
+    /// <summary>
+    /// This is a cascade that contains methods which are needed for DBManager.
+    /// Works with DBUser datatype
+    /// </summary>
+    /// <Creator>Anton Kalashnikov</Creator>
     public class DBUserManager
     {
         UsersDAO usersDAO = new UsersDAO();

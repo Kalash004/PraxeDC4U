@@ -9,6 +9,10 @@ using DataTemplateLibrary.Models;
 
 namespace Tests
 {
+    /// <summary>
+    /// Test for updating service on database
+    /// </summary>
+    /// <creator>Anton Kalashnikov</creator>
     [TestClass]
     public class UpdateServiceTest
     {
