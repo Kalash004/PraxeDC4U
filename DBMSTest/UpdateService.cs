@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataAccessLibrary;
 using DataAccessLibrary.DBChildManagers;
 using DataTemplateLibrary.Models;
+using ServerManagement;
 
 namespace Tests
 {
@@ -20,7 +21,7 @@ namespace Tests
         public void UpdateServiceTesting()
         {
             // Arrange
-            DBManager manager = new DBManager();
+            ServerManager manager = new ServerManager();
             Random rand = new Random();
             string name = rand.Next().ToString();
             string pass = rand.Next().ToString();

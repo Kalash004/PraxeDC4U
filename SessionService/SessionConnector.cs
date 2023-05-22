@@ -17,9 +17,9 @@ namespace SessionService
     {
         ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
 
-        public SessionId AddSession(DBUser user)
-        {
-            return sessionManager.AddSession(user);
-        }
+        //public SessionId AddSession(DBUser user)
+        //{
+        //    return sessionManager.AddSession(user);
+        //}
     }
 }

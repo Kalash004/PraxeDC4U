@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataTemplateLibrary\DataTemplateLibrary.csproj" />
-    <ProjectReference Include="..\SessionService\SessionService.csproj" />
   </ItemGroup>
 
 </Project>
