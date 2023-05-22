@@ -14,22 +14,21 @@ namespace PraxeFiverrClone.Pages.Dev
                 return;
             }
 
-            CookieManager.SetSessionCookie("Cookie", "Wololo");
+            CookieManager.SetSessionCookie("COOKIE_SESSION_STRING", "I CAN SEE YOU");
             string sessionCookieString = await CookieManager.GetSessionCookieString("Cookie");
-            Console.WriteLine(sessionCookieString);
+            Console.WriteLine("[DEV_COOKIES] COOKIE_SESSION_STRING: " + sessionCookieString);
 
-            CookieManager.SetCookie("COOKIE_STRING", "Marx");
-            CookieManager.SetCookie("COOKIE_INT", 120);
-            CookieManager.SetCookie("COOKIE_FLOAT", 15.5f);
+            CookieManager.SetCookie("COOKIE_STRING", "THE ANSWER TO THE ULTIMATE QUAESTION OF LIFE, THE UNIVERSE AND EVERYTHING IS");
+            CookieManager.SetCookie("COOKIE_INT", 42);
+            CookieManager.SetCookie("COOKIE_FLOAT", 0.0f);
 
             string cookieString = await CookieManager.GetCookieString("COOKIE_STRING");
-            Console.WriteLine(cookieString);
-
             int cookieInt = await CookieManager.GetCookieInt("COOKIE_INT");
-            Console.WriteLine(cookieInt);
-
             float cookieFloat = await CookieManager.GetCookieFloat("COOKIE_FLOAT");
-            Console.WriteLine(cookieFloat);
+
+            Console.WriteLine("[DEV_COOKIES] COOKIE_STRING: " + cookieString);
+            Console.WriteLine("[DEV_COOKIES] COOKIE_INT: " + cookieInt);
+            Console.WriteLine("[DEV_COOKIES] COOKIE_FLOAT: " + cookieFloat);
         }
     }
 }
