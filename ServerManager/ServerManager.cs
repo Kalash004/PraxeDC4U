@@ -8,7 +8,7 @@ namespace ServerManager
 {
     public class ServerManager
     {
-        private DBManager dBManager;
+        private DBManager dBManager = DBManager.GetInstance();
         private ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
 
         /// <summary>
