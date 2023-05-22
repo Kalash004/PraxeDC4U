@@ -16,11 +16,10 @@ namespace SessionService
 	public class ServerSideSessionSaverService
 	{
 		private static ServerSideSessionSaverService instance = null;
-		private Dictionary<string, DBUser> currentSessions = new Dictionary<string, DBUser>();
+		private Dictionary<string, int> currentSessions = new Dictionary<string, int>();
 		private ServerSideSessionSaverService()
 		{
 		}
-
 		public static ServerSideSessionSaverService GetInstance()
 		{
 			if (instance == null)
@@ -29,12 +28,12 @@ namespace SessionService
 			} 
 			return instance;
 		}
-		public void AddSession(SessionId sessionId,DBUser user)
+		public void AddSession(SessionId sessionId,int userId)
 		{
-			currentSessions.Add(sessionId.Id, user);
+			currentSessions.Add(sessionId.Id, userId);
 		}
 
-		public DBUser GetUserFromSessionId(SessionId id)
+		public int GetUserFromSessionId(SessionId id)
 		{
 			if (SessionExists(id))
 			{
@@ -48,10 +47,10 @@ namespace SessionService
 			return currentSessions.ContainsKey(id.Id);
 		}
 
-		public SessionId AddSession(DBUser user)
+		public SessionId AddSession(DBUser user,int userId)
 		{
 			var sessionId = SessionIdCreaterSingleton.Instanciate().CreateSessionId(user);
-			AddSession(sessionId, user);
+			AddSession(sessionId, userId);
 			return sessionId;
 		}
 	}

@@ -13,7 +13,7 @@ namespace DataTemplateLibrary.Models
     /// <creator>Anton Kalashniko</creator>
     public class DBService : IBaseClass
     {
-        private int id;
+        private int id = -1;
         private int userId;
         private string serviceName;
         private int currentPrice;

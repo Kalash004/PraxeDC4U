@@ -23,15 +23,25 @@ namespace DataAccessLibrary.DBChildManagers
             service.ID = returnedID;
             return new ReturnData<DBService?, string>(service, "Created");
         }
-        public List<DBService?> GetAllServiceByUser(DBUser user)
+        public List<DBService?> GetAllServiceByUser(int userId)
         {
             // TODO : Check for null and throw exception if null
-            return serviceDAO.GetAllByUserID(user.ID);
+            return serviceDAO.GetAllByUserID(userId);
         }
 
-        public DBService? GetOneServiceByUserAndId(DBUser user, int id)
+        // TODO: Watchout for overflow, reads all services on db, make a category or a read only 100 last!!!
+        /// <summary>
+        /// Gets all services from database 
+        /// </summary>
+        /// <returns>List of services</returns>
+        public List<DBService?> GetAllServices()
         {
-            foreach (var service in GetAllServiceByUser(user))
+            throw new NotImplementedException();
+        }
+
+        public DBService? GetOneServiceByUserIdAndServiceId(int userId, int id)
+        {
+            foreach (var service in GetAllServiceByUser(userId))
             {
                 if (service.ID == id) return service;
             }
@@ -44,6 +54,5 @@ namespace DataAccessLibrary.DBChildManagers
             newService.Updated = DateOnly.FromDateTime(DateTime.Now);
             serviceDAO.Save(newService);
         }
-
     }
 }
