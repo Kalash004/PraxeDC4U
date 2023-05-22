@@ -38,9 +38,9 @@ namespace DataAccessLibrary.DBChildManagers
             else return null;
         }
 
-        public void RemoveUser(DBUser user)
+        public void RemoveUser(int userId)
         {
-            usersDAO.Delete(user.ID);
+            usersDAO.Delete(userId);
         }
 
         internal ReturnData<DBUser?, string> LogUserIn(DBUser hypothetical_user)
