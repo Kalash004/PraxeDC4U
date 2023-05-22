@@ -1,6 +1,5 @@
-using DataAccessLibrary;
 using CookieService;
-using DataTemplateLibrary;
+using ServerManagement;
 
 namespace PraxeFiverrClone
 {
@@ -13,7 +12,7 @@ namespace PraxeFiverrClone
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
-            builder.Services.AddSingleton<DBManager>();
+            builder.Services.AddSingleton<ServerManager>();
             builder.Services.AddScoped<CookieManager>();
             var app = builder.Build();
             

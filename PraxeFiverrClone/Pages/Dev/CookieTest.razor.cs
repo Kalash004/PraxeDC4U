@@ -15,7 +15,8 @@ namespace PraxeFiverrClone.Pages.Dev
             }
 
             CookieManager.SetSessionCookie("Cookie", "Wololo");
-            string sessionCookie = await CookieManager.GetSessionCookieString("Cookie");
+            string sessionCookieString = await CookieManager.GetSessionCookieString("Cookie");
+            Console.WriteLine(sessionCookieString);
 
             CookieManager.SetCookie("COOKIE_STRING", "Marx");
             CookieManager.SetCookie("COOKIE_INT", 120);

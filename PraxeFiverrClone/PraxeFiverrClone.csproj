@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
+    <ProjectReference Include="..\ServerManager\ServerManagment.csproj" />
   </ItemGroup>
 
 </Project>
