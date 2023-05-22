@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CookieService\CookieService.csproj" />
     <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
   </ItemGroup>
 
