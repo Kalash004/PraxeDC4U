@@ -8,7 +8,7 @@ namespace ServerManagement
 {
     public class ServerManager
     {
-        private DBManager dBManager = DBManager.GetInstance();
+        private DBManager dbManager = DBManager.GetInstance();
         private ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace ServerManagement
         /// <exception cref="Exception"></exception>
         public ReturnData<SessionId, DBUser> LogUserInCreateSession(DBUser user)
         {
-            var returned_user_data = dBManager.LogUserIn(user);
+            var returned_user_data = dbManager.LogUserIn(user);
             if (returned_user_data.Result)
             {
                 var sessionId = sessionManager.AddSession(returned_user_data.Message,returned_user_data.Message.ID);
@@ -40,7 +40,7 @@ namespace ServerManagement
             {
                 int userId = sessionManager.GetUserFromSessionId(sessionId);
                 service.UserId = userId;
-                return dBManager.CreateService(service,userId);
+                return dbManager.CreateService(service,userId);
             }
             else
             {
@@ -56,10 +56,9 @@ namespace ServerManagement
         /// <exception cref="Exception">If session wasnt found</exception>
         public List<DBService?> GetAllUserServices(SessionId sessionId)
         {
-            ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
             if (sessionManager.SessionExists(sessionId))
             {
-                return dBManager.GetAllUserServices(sessionManager.GetUserFromSessionId(sessionId));
+                return dbManager.GetAllUserServices(sessionManager.GetUserFromSessionId(sessionId));
             }
             else
             {
@@ -76,10 +75,9 @@ namespace ServerManagement
         /// <exception cref="Exception">If no session was found</exception>
         public DBService? GetServiceFromDB(SessionId sessionId, int serviceId)
         {
-            ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
             if (sessionManager.SessionExists(sessionId))
             {
-                return dBManager.GetServiceFromDB(sessionManager.GetUserFromSessionId(sessionId), serviceId);
+                return dbManager.GetServiceFromDB(sessionManager.GetUserFromSessionId(sessionId), serviceId);
             }
             else
             {
@@ -96,11 +94,10 @@ namespace ServerManagement
         /// <exception cref="Exception"></exception>
         public void UpdateService(SessionId sessionId, int serviceId, DBService updatedService)
         {
-            ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
             if (sessionManager.SessionExists(sessionId))
             {
                 updatedService.ID = serviceId;
-                dBManager.UpdateService(serviceId, updatedService);
+                dbManager.UpdateService(serviceId, updatedService);
             }
             else
             {
@@ -110,14 +107,37 @@ namespace ServerManagement
 
         public DBUser? SingUpUser(DBUser user)
         {
-            return dBManager.SingUpUser(user);
+            return dbManager.SingUpUser(user);
         }
 
         public DBUser? ReadUserByName(string name)
         {
-            return dBManager.ReadUserByName(name);
+            return dbManager.ReadUserByName(name);
         }
+        /// <summary>
+        /// Creates a transaction for database, and sets values to users cretids
+        /// </summary>
+        /// <param name="sessionId">Session id of the user who sends the money</param>
+        /// <param name="transaction">Transaction data</param>
+        /// <returns></returns>
+        public bool CreateTransaction(SessionId sessionId, DBTransaction transaction, int recieverId)
+        {
+            if (!sessionManager.SessionExists(sessionId)) throw new Exception($"Session with {sessionId} session id doesnt exist");
+            int userId = sessionManager.GetUserFromSessionId(sessionId);
 
+            if (!dbManager.UserExists(userId)) throw new Exception($"Sending user doesnt exist in the database, cant create a transaction from non existing user");
+            if (!dbManager.UserExists(recieverId)) throw new Exception("User doesnt exist in database, cant create a transaction to a none existing user");
+            DBUser user = dbManager.GetUser(userId);
+            DBUser recievingUser = dbManager.GetUser(recieverId);
+
+            if (user.CurrentCredits < transaction.Amount) throw new Exception($"User doesnt have enoug credits to send the transaction {user.CurrentCredits} / {transaction.Amount}");
+            // TODO: Create Transaction (if disconnected - rollback)!!!
+            user.CurrentCredits -= transaction.Amount;
+            recievingUser.CurrentCredits += transaction.Amount;
+            dbManager.UpdateUser(userId, user);
+            dbManager.UpdateUser(recieverId, recievingUser);
+
+        }
 
     }
 }

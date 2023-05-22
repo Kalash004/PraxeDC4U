@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -22,13 +23,14 @@ namespace DataAccessLibrary.DAOS
         private static String C_READ_BY_ID = $"SELECT * FROM {table_n} WHERE id = @id";
         private static String C_DELETE = $"DELETE FROM {table_n} WHERE id = @id";
         private static String C_GET_BY_USER_ID = $"SELECT * FROM {table_n} WHERE user_id = @user_id";
+        private static String C_GET_BY_SERVICE_ID = $"SELECT * FROM {table_n} WHERE service_id = @service_id";
 
         private static List<string> atributeList = new List<string>() { "id", "reciever_id", "sender_id", "send_date", "send_time", "cost", "service_id" };
 
         public TransactionDAO()
         {
             SetSQL(atributeList);
-        } 
+        }
         private static void SetSQL(List<string> atributes)
         {
             SetSQLCreate(atributes);
@@ -83,37 +85,66 @@ namespace DataAccessLibrary.DAOS
 
         public int Create(DBTransaction element)
         {
-            throw new NotImplementedException();
+            return Create(C_CREATE, element);
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            Delete(C_DELETE, id);
         }
 
         public List<DBTransaction> GetAll()
         {
-            throw new NotImplementedException();
+            return GetAll(C_READ_ALL);
         }
 
         public DBTransaction? GetByID(int id)
         {
-            throw new NotImplementedException();
+            return GetByID(C_READ_BY_ID, id);
         }
 
         public void Save(DBTransaction element)
         {
-            throw new NotImplementedException();
+            Update(C_UPDATE, element, element.ID);
+        }
+
+        public List<DBTransaction> GetAllByUserId(int userId)
+        {
+            return Get(C_GET_BY_USER_ID, new List<MySqlParameter> { new MySqlParameter("@user_id", userId) });
         }
 
         protected override DBTransaction Map(MySqlDataReader reader)
         {
-            throw new NotImplementedException();
+            int id = Convert.ToInt32(reader[0]);
+            int recieverId = Convert.ToInt32(reader[1]);
+            int senderId = Convert.ToInt32(reader[2]);
+            DateOnly transactionDate = DateOnly.FromDateTime(DateTime.Parse(reader[3].ToString()));
+            TimeOnly transactionTime = TimeOnly.FromDateTime(DateTime.Parse(reader[4].ToString()));
+            DateTime dateTime = transactionDate.ToDateTime(transactionTime);
+            int amount = Convert.ToInt32(reader[5]);
+            int serviceId = Convert.ToInt32(reader[6]);
+
+            return new DBTransaction(id, recieverId, senderId, dateTime, amount, serviceId);
         }
 
         protected override List<MySqlParameter> Map(DBTransaction obj)
         {
-            throw new NotImplementedException();
+            List<MySqlParameter> parameters = new List<MySqlParameter>()
+            {
+                new MySqlParameter("@id",obj.ID),
+                new MySqlParameter("@reciever_id",obj.RecievingUserId),
+                new MySqlParameter("@sender_id",obj.SendingUserId),
+                new MySqlParameter("@send_date",DateOnly.FromDateTime(obj.DateOfTransaction).ToString("o",CultureInfo.InvariantCulture)),
+                new MySqlParameter("@send_time",TimeOnly.FromDateTime(obj.DateOfTransaction).ToString("o",CultureInfo.InvariantCulture)),
+                new MySqlParameter("@cost",obj.Amount),
+                new MySqlParameter("@service_id",obj.ServiceId)
+            };
+            return parameters;
+        }
+
+        public List<DBTransaction> GetAllByServiceId(int serviceId)
+        {
+            return Get(C_GET_BY_SERVICE_ID, new List<MySqlParameter> { new MySqlParameter("@service_id", serviceId) });
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataTemplateLibrary.Models;
 using DataAccessLibrary.DAOS;
+using MySql.Data.MySqlClient;
 
 namespace DataAccessLibrary.DBChildManagers
 {
@@ -43,7 +44,7 @@ namespace DataAccessLibrary.DBChildManagers
             usersDAO.Delete(userId);
         }
 
-        internal ReturnData<DBUser?, string> LogUserIn(DBUser hypothetical_user)
+        public ReturnData<DBUser?, string> LogUserIn(DBUser hypothetical_user)
         {
             DBUser user_in_db = GetUserByName(hypothetical_user.Name);
             // CHECK : Might get error instead of null from db if user is null
@@ -51,6 +52,29 @@ namespace DataAccessLibrary.DBChildManagers
             // CHECK : If db send all lower case data or not
             if (!user_in_db.HashedPassword.ToLower().Equals(hypothetical_user.HashedPassword.ToLower())) return new ReturnData<DBUser?, string>(null, "Wrong password");
             return new ReturnData<DBUser?, string>(user_in_db, "Welcome");
+        }
+
+        public DBUser? GetUserById(int userId)
+        {
+            try
+            {
+                return usersDAO.GetByID(userId);
+            } catch (MySqlException e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public bool UserExists(int userId)
+        {
+            return GetUserById(userId) != null;
+        }
+
+        public void UpdateUser(int userId, DBUser newUserData)
+        {
+            newUserData.ID = userId;
+            usersDAO.Save(newUserData);
         }
     }
 }
