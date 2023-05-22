@@ -35,13 +35,15 @@
         try
         {
             DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
-            // TODO: Session System 
-            
-            IdService.id = dbManager.LogUserInCreateSession(user).Result;
+
+            ReturnData<SessionService.SessionTemplate_Creater.SessionId,DBUser> Data = dbManager.LogUserInCreateSession(user);
+            IdService.id = Data.Result;
+            IdService.User = Data.Message;
+
         } 
         catch (Exception e) {
-   
-            WarningText = e.Message;
+
+            WarningText = "user does not exist";
         }
         NavManager.NavigateTo("/");
     }

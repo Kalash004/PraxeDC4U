@@ -1,10 +1,12 @@
 ﻿@page "/user/credit"
+@inject NavigationManager NavManager;
+
 
 <h3>buyCredit</h3>
 <br />
 <br />
 <h4>ammount:</h4>
-<input type="text" @bind="@Ammount" @oninput="@((e) => { Ammount=(int)e.Value;})" />
+<input type="text" @bind="@Ammount" @oninput="@((e) => { try{Ammount=(int)e.Value;}catch(Exception){}})" />
 <br />
 <br />
 <button>buy</button>
@@ -12,4 +14,11 @@
 
 @code {
     public int Ammount = 0;
+
+    private void BuyCredits()
+    {
+        //TODO: add buy logic
+
+        NavManager.NavigateTo("/");
+    }
 }

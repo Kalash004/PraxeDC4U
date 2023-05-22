@@ -1,0 +1,23 @@
+﻿@page "/service/{PageID:int}"
+@using DataAccessLibrary;
+@using DataAccessLibrary.DAOS;
+@using DataTemplateLibrary.Models;
+@using SessionService;
+@inject DBManager dbManager;
+@inject MyIdService IdService;
+@inject NavigationManager NavManager;
+
+<h3>@service.ServiceName</h3>
+<h2></h2>
+
+@code {
+        [Parameter]
+        public int PageID { get; set; }
+
+    private DBService service;
+
+    protected override async Task OnInitializedAsync()
+    {
+        service = dbManager.GetServiceFromDB(IdService.id, PageID);
+    }
+}

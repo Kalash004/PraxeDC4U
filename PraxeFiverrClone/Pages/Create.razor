@@ -4,16 +4,15 @@
 @using DataTemplateLibrary.Models;
 @inject DBManager dbManager;
 @inject MyIdService IdService;
+@inject NavigationManager NavManager;
 
-
-<!--pleaseeee god-->
 <h3>Create</h3>
 
 <h3>name:</h3>
 <input type="text" @bind="@Name" @oninput="@((e) => { Name=(string)e.Value;})" />
 
 <h3>price:</h3>
-<input type="text" @bind="@Price" @oninput="@((e) => { Price=Int32.Parse((string)e.Value + "");})" />
+<input type="text" @bind="@Price" @oninput="@((e) => { try {Price=Int32.Parse((string)e.Value + "");}catch(Exception){}})" />
 
 <h3>short:</h3>
 <input type="text" @bind="@Description" @oninput="@((e) => { Description=(string)e.Value;})" />
@@ -21,18 +20,40 @@
 <h3>long:</h3>
 <input type="text" @bind="@DescriptionLong" @oninput="@((e) => { DescriptionLong=(string)e.Value;})" />
 
+<h3>unlisted </h3>
+<input type="checkbox" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }" />
+
 <button @onclick = "CreateServis">create</button>
 
 @code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        //kickes user if not signed in
+        if (IdService.id.Id.Equals(""))
+        {
+            NavManager.NavigateTo("/");
+        }
+    }
+
     private string Name;
     private string Description;
     private string DescriptionLong;
     private int Price;
+    private bool Listed;
+
+    public void CheckboxClicked(object CheckedValue)
+    {
+        Listed = (bool)CheckedValue;
+    }
 
     public void CreateServis()
     {
-        
-        dbManager.CreateService(IdService.id, new DBService(0, 0, Name, Price, new DateOnly(2024, 1, 1), null,true,Description,DescriptionLong,null));
+        //creates the servis
+        DBService Servis = new DBService(IdService.User.ID, Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null);
+        dbManager.CreateService(IdService.id, Servis);
+
+        NavManager.NavigateTo("/");
     }
 }
 
