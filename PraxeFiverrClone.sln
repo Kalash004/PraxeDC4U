@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SessionService", "SessionSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTemplateLibrary", "DataTemplateLibrary\DataTemplateLibrary.csproj", "{27C62942-7FCC-4DB1-AAC9-8D8BEDC8B9BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookieService", "CookieService\CookieService.csproj", "{C23C7E87-C2E5-4BE1-A1BA-EB5C1A2855B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieService", "CookieService\CookieService.csproj", "{C23C7E87-C2E5-4BE1-A1BA-EB5C1A2855B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
