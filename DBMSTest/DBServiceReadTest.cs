@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataAccessLibrary;
 using DataTemplateLibrary.Models;
 using SessionService.SessionTemplate_Creater;
+using ServerManagement;
 
 namespace Tests
 {
@@ -20,7 +21,7 @@ namespace Tests
         public void ReadingServicesWithSessionID()
         {
             // Arrange
-            DBManager manager = new DBManager();
+            ServerManager manager = new();
             DBUser user = new DBUser("1455980865", "565440666");
             ReturnData<SessionId, DBUser> data;
             try

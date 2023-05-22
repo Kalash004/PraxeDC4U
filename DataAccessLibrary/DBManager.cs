@@ -15,8 +15,20 @@ namespace DataAccessLibrary
     /// <creator>Anton Kalashnikov</creator>
     public class DBManager
     {
+        private static DBManager? instance = null;
+        private DBManager() { }
+
         private readonly DBUserManager userManager = new();
         private readonly DBServiceManager serviceManager = new();
+
+        public static DBManager GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new DBManager();
+            }
+            return instance;
+        }
 
         /// <summary>
         /// Saves user to database and creates and retrievs his id

@@ -4,11 +4,11 @@ using DataTemplateLibrary.Models;
 using SessionService;
 using SessionService.SessionTemplate_Creater;
 
-namespace ServerManager
+namespace ServerManagement
 {
     public class ServerManager
     {
-        private DBManager dBManager;
+        private DBManager dBManager = DBManager.GetInstance();
         private ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace ServerManager
             ServerSideSessionSaverService sessionManager = ServerSideSessionSaverService.GetInstance();
             if (sessionManager.SessionExists(sessionId))
             {
-                return dBManager.GetServiceFromDB(sessionManager.GetUserFromSessionId(sessionId).ID, serviceId);
+                return dBManager.GetServiceFromDB(sessionManager.GetUserFromSessionId(sessionId), serviceId);
             }
             else
             {

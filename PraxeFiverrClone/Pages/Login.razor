@@ -3,7 +3,6 @@
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
 @inject DBManager dbManager;
-@inject MyIdService IdService;
 @inject NavigationManager NavManager;
 
 <h3>Login</h3>
@@ -37,7 +36,7 @@
             DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
             // TODO: Session System 
             
-            IdService.id = dbManager.LogUserInCreateSession(user).Result;
+         //   IdService.id = dbManager.LogUserInCreateSession(user).Result;
         } 
         catch (Exception e) {
    
