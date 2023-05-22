@@ -1,6 +1,6 @@
 using DataAccessLibrary;
+using CookieService;
 using DataTemplateLibrary;
-
 
 namespace PraxeFiverrClone
 {
@@ -14,6 +14,7 @@ namespace PraxeFiverrClone
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<DBManager>();
+            builder.Services.AddScoped<CookieManager>();
             var app = builder.Build();
             
             // Configure the HTTP request pipeline.
