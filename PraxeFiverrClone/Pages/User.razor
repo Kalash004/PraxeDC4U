@@ -29,12 +29,12 @@
 
 @code {
 
-    protected override async Task OnInitializedAsync()
+    protected override async  Task OnInitializedAsync()
     {
         //kickes user if not signed in
         if (IdService.id.Id.Equals(""))
         {
-            NavManager.NavigateTo("/");
+            NavManager.NavigateTo("/login");
         }
     }
 }
