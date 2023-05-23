@@ -133,5 +133,10 @@ namespace ServerManagement
             return dbManager.CreateTransaction(transaction,user.ID,recieverId,transaction.Amount);
         }
 
+        public int GetUserIdFromSessionId(SessionId sessionId)
+        {
+            return sessionManager.GetUserFromSessionId(sessionId);
+        }
+
     }
 }
