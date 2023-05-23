@@ -2,8 +2,8 @@
 @using DataAccessLibrary
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
-@inject DBManager dbManager;
-@inject MyIdService IdService;
+@using ServerManagement;
+@inject ServerManager serverManager;
 @inject NavigationManager NavManager;
 
 <h3>Login</h3>
@@ -35,15 +35,12 @@
         try
         {
             DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
-
-            ReturnData<SessionService.SessionTemplate_Creater.SessionId,DBUser> Data = dbManager.LogUserInCreateSession(user);
-            IdService.id = Data.Result;
-            IdService.User = Data.Message;
+            ReturnData<SessionService.SessionTemplate_Creater.SessionId,DBUser> Data = serverManager.LogUserInCreateSession(user);
 
         } 
         catch (Exception e) {
 
-            WarningText = "user does not exist";
+            WarningText = e.Message;
         }
         NavManager.NavigateTo("/");
     }

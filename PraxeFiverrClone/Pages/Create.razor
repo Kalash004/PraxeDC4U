@@ -2,9 +2,14 @@
 @using DataAccessLibrary
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
-@inject DBManager dbManager;
+@using CookieService;
+@using SessionService;
+@using SessionService.SessionTemplate_Creater;
+@using ServerManagement;
+@inject ServerManagement.ServerManager serverManager;
 @inject MyIdService IdService;
 @inject NavigationManager NavManager;
+@inject CookieManager coockieManager;
 
 <h3>Create</h3>
 
@@ -47,12 +52,11 @@
         Listed = (bool)CheckedValue;
     }
 
-    public void CreateServis()
+    public async void CreateServis()
     {
-        //creates the servis
-        DBService Servis = new DBService(IdService.User.ID, Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null);
-        dbManager.CreateService(IdService.id, Servis);
-
+        //TODO: Implement cookie system
+        DBService service = new DBService(0,Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null,false);
+        serverManager.CreateService(new SessionId(await coockieManager.GetSessionCookieString("SESSION_ID")),service);
         NavManager.NavigateTo("/");
     }
 }

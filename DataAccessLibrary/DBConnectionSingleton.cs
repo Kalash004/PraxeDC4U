@@ -10,6 +10,10 @@ using MySql.Data.MySqlClient;
 
 namespace DataAccessLibrary
 {
+    /// <summary>
+    /// Service used to get connection to database
+    /// </summary>
+    /// <creator>Anton Kalashnikov</creator>
     public class DBConnectionSingleton
     {
         private static DBConnectionSingleton instance = new DBConnectionSingleton();
@@ -17,8 +21,6 @@ namespace DataAccessLibrary
         private DBConnectionSingleton()
         {
         }
-
-        
         public static MySqlConnection GetInstance()
         {
             try

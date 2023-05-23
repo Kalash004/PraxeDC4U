@@ -4,6 +4,10 @@ using DataAccessLibrary.DBChildManagers;
 
 namespace Tests
 {
+    /// <summary>
+    /// Test for user objects adding to database.
+    /// </summary>
+    /// <creator>Anton Kalashnikov</creator>
     [TestClass]
     public class DBUserCreateTest
     {
@@ -19,7 +23,7 @@ namespace Tests
             // Act
             manager.SingUpUser(user);
             DBUser taken_user = manager.GetUserByName(user.Name);
-            manager.RemoveUser(user);
+            manager.RemoveUser(taken_user.ID);
             // Assert
             Assert.AreEqual(user.Name,taken_user.Name);
             Assert.AreEqual(user.ID, taken_user.ID);
