@@ -10,7 +10,7 @@ Cookie manager supports three data types of cookies: string, int and float.
 To add normal cookies you have to invoke SetCookie("key", value) inside CookieManager.
 You can also specify the cookies expiration time in days.
 
--SESSION
+- SESSION
 To add session cookies you have to invoke SetSessionCookie("key", value)
 Session cookies doesn't have expiration time as they expire the moment user leaves the page.
 
@@ -28,7 +28,7 @@ GetCookieInt("key")
 GetCookieFloat("key")
 
 - SESSION
-In order to get normal cookies you have to invoke GetSessionCookie[Data_type]("key") method.
+In order to get session cookies you have to invoke GetSessionCookie[Data_type]("key") method.
 
 -- Variations --
 GetSessionCookieString("key")

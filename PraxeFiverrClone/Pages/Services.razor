@@ -1,16 +1,17 @@
 ﻿@page "/services";
-@using DataAccessLibrary;
-@using DataAccessLibrary.DAOS;
+@using ServerManagement;
 @using DataTemplateLibrary.Models;
-@inject DBManager dbManager;
+@inject ServerManager serverManger;
 
 <div class="services-wrapper">
-    @foreach(DBService service in new ServiceDAO().GetAll())
-    {
-        <ServiceCard service=@service/>
-    }
+   
 </div>
 
 @code {
-
+    /*
+     *  @foreach(DBService service in serverManger.service)
+        {
+        <ServiceCard service=@service/>
+    }
+    */
 }
