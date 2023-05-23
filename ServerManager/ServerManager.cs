@@ -114,7 +114,7 @@ namespace ServerManagement
         /// <param name="sessionId">User session id</param>
         /// <param name="amount">Amount of buying</param>
         /// <returns></returns>
-        public DBUser? BuyCredits(SessionId sessionId,int amount) 
+        public DBUser? BuyCredits(SessionId sessionId, int amount)
         {
             CheckSessionExistance(sessionId);
             int userId = sessionManager.GetUserIdFromSessionId(sessionId);
@@ -131,15 +131,11 @@ namespace ServerManagement
         /// <param name="user">Hypothetical user to check if the credentials are right</param>
         /// <returns>Session id in Result and User from database in Message</returns>
         /// <exception cref="Exception"></exception>
-        public ReturnData<SessionId, DBUser> LogUserInCreateSession(DBUser user)
+        public SessionId LogUserInCreateSession(DBUser user)
         {
-            var returned_user_data = dbManager.LogUserIn(user);
-            if (returned_user_data.Result)
-            {
-                var sessionId = sessionManager.AddSession(returned_user_data.Message, returned_user_data.Message.ID);
-                return new ReturnData<SessionId, DBUser>(sessionId, returned_user_data.Message);
-            }
-            else throw new Exception("User wasnt found in the database");
+            DBUser returned_user_data = dbManager.LogUserIn(user);
+            var sessionId = sessionManager.AddSession(returned_user_data, returned_user_data.ID);
+            return sessionId;
         }
 
         /// <summary>
