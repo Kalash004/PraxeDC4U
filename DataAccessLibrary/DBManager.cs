@@ -33,6 +33,11 @@ namespace DataAccessLibrary
             return instance;
         }
 
+        public DBUser GetUserByName(string name)
+        {
+            return userManager.GetUserByName(name);
+        }
+
         /// <summary>
         /// Saves user to database and creates and retrievs his id
         /// </summary>
@@ -139,5 +144,6 @@ namespace DataAccessLibrary
             if (!transManager.AddCreditToUser(userId, admin.ID, amount)) throw new Exception("Wasnt able to add credits to user, problem with database");
             return userManager.GetUserById(userId);
         }
+
     }
 }

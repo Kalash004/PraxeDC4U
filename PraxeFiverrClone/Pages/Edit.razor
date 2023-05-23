@@ -64,7 +64,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        service = new ServiceDAO().GetByID(PageID);
 
         if (service.UserId != Cookies.GetSessionCookieInt("userID").Result)
         {

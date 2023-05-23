@@ -22,7 +22,7 @@ namespace Tests
             DBUser reciever = new DBUser($"{randGenerator.Next().ToString()} testingReciever", "testingRecieverPass", 0);
             sender = serverManager.SingUpUser(sender);
             reciever = serverManager.SingUpUser(reciever);
-            var sessionIdSender = serverManager.LogUserInCreateSession(sender).Result;
+            var sessionIdSender = serverManager.LogUserInCreateSession(sender);
             DBService service = new DBService(reciever.ID,"testingTransactions",10,DateOnly.FromDateTime(DateTime.Now),null,false,"testingTransactions",null,null,false);
             service = serverManager.CreateService(sessionIdSender,service);
             DBTransaction transaction = new DBTransaction(reciever.ID,sender.ID,DateTime.Now,10,service.ID);
