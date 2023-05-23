@@ -3,8 +3,8 @@
 @using DataAccessLibrary.DAOS;
 @using DataTemplateLibrary.Models;
 @using SessionService;
+@inject CookieService.CookieManager Cookies;
 @inject DBManager dbManager;
-@inject MyIdService IdService;
 @inject NavigationManager NavManager;
 
 <h3>Edit Service</h3>
@@ -43,8 +43,8 @@
 
     private void EditService()
     {
-        DBService NewService = new DBService(IdService.User.ID, Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null);
-        dbManager.UpdateService(IdService.id, PageID, NewService);
+        DBService NewService = new DBService(Cookies.GetSessionCookieInt("userID").Result, Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null, false);
+        dbManager.UpdateService(PageID, NewService);
     }
 
     private void SetValues()
@@ -65,11 +65,11 @@
     {
         service = new ServiceDAO().GetByID(PageID);
 
-        if (service.UserId != IdService.User.ID)
+        if (service.UserId != Cookies.GetSessionCookieInt("userID").Result)
         {
             NavManager.NavigateTo("/");
         } 
-        else if (IdService.User.ID.Equals(""))
+        else if (Cookies.GetSessionCookieInt("userID").Result.Equals(""))
         {
             NavManager.NavigateTo("/login");
         }
