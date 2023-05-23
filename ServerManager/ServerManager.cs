@@ -17,6 +17,12 @@ namespace ServerManagement
 
         // Methods that work with session id as an atribute:
 
+        public DBUser GetUserBySessionId(SessionId sessionId)
+        {
+            CheckSessionExistance(sessionId);
+            return dbManager.GetUser(sessionManager.GetUserIdFromSessionId(sessionId));
+        }
+
         /// <summary>
         /// Adds service to bd with id of the user
         /// </summary>
@@ -86,7 +92,7 @@ namespace ServerManagement
             if (!dbManager.UserExists(recieverId)) throw new Exception("User doesnt exist in database, cant create a transaction to a none existing user");
             DBUser user = dbManager.GetUser(userId);
             DBUser recievingUser = dbManager.GetUser(recieverId);
-            if (user.CurrentCredits < transaction.Amount) throw new Exception($"User doesnt have enoug credits to send the transaction {user.CurrentCredits} / {transaction.Amount}");
+            if (user.CurrentCredits < transaction.Amount) throw new Exception($"User doesnt have enough credits to send the transaction {user.CurrentCredits} / {transaction.Amount}");
             return dbManager.CreateTransaction(transaction, user.ID, recieverId, transaction.Amount);
         }
 
@@ -101,14 +107,19 @@ namespace ServerManagement
             return sessionManager.GetUserIdFromSessionId(sessionId);
         }
 
+        /// <summary>
+        /// Creates a transaction and updates money on buyer side.
+        /// Transaction sender is admin.
+        /// </summary>
+        /// <param name="sessionId">User session id</param>
+        /// <param name="amount">Amount of buying</param>
+        /// <returns></returns>
         public DBUser? BuyCredits(SessionId sessionId,int amount) 
         {
             CheckSessionExistance(sessionId);
             int userId = sessionManager.GetUserIdFromSessionId(sessionId);
             // Money API logic (not adding)
-            // Create a transaction on the database and insert money
             DBUser? updatedUser = dbManager.AddCreditsToUser(userId, amount);
-            // Return updated user 
             return updatedUser;
         }
 
