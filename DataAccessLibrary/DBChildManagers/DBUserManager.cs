@@ -33,11 +33,8 @@ namespace DataAccessLibrary.DBChildManagers
         public DBUser? GetUserByName(string name)
         {
             DBUser returned = usersDAO.GetByName(name);
-            if (returned.ID > 0)
-            {
-                return returned;
-            }
-            else return null;
+            if (returned.ID < 0) throw new Exception("User wasnt found in the database");
+            return returned;
         }
 
         public void RemoveUser(int userId)

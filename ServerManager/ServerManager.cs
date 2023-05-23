@@ -125,6 +125,11 @@ namespace ServerManagement
 
         // Methods that work with user :
 
+        public DBUser GetUserByName(string name)
+        {
+           return dbManager.GetUserByName(name);
+        }
+
         /// <summary>
         /// Checks if user exists and credentials are right, asks for a new session id and puts it into the session manager
         /// </summary>
