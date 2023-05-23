@@ -3,12 +3,16 @@
 @using DataAccessLibrary.DAOS;
 @using DataTemplateLibrary.Models;
 @using SessionService;
-@inject DBManager dbManager;
+@inject CookieService.CookieManager Cookies;
+@inject ServerManagement.ServerManager ServerManager;
 @inject NavigationManager NavManager;
 
 
 <div class="block" >
 
+    <h2>@</h2>
+    <br />
+    <h3>@dbManager.GetUser(Ccookies.GetCookieInt("userID").Result).CurrentCredits K</h3>
     <a href="user/credit"><button>buy more credits</button></a>
 </div>
 <br />
@@ -16,13 +20,27 @@
 <a href="user/create"><button>create new service</button></a>
 
 <div class="services-wrapper">
+    @foreach (DBService service in new ServiceDAO().GetAll())
+    {
+        if (service.UserId == dbManager.GetUser(Cookies.GetSessionCookieInt("userID").Result).ID)
+        {
+            <ServiceCard service=@service />
+        }
+    }
 </div>
 
 @code {
+    public DBUser ClientUser { get; set; }
 
     protected async Task OnInitializedAsync()
     {
         //kickes user if not signed in
+        if (Cookies.GetSessionCookieInt("userID").Result.Equals(""))
+        {
+            NavManager.NavigateTo("/login");
+        }
+
+        ClientUser = ServerManager.
     }
 }
 

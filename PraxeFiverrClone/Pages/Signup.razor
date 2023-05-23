@@ -2,7 +2,7 @@
 @using DataAccessLibrary
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
-@inject DBManager dbManager;
+@inject ServerManagement.ServerManager ServerManager;
 @inject NavigationManager NavManager;
 
 
@@ -51,7 +51,7 @@
 		DBUser? returned_user = null;
 
 		try {
-			returned_user = dbManager.SingUpUser(user);
+			returned_user = ServerManager.SingUpUser(user);
 		} catch (Exception e) {
 			WarningText = e.Message;
 			return;

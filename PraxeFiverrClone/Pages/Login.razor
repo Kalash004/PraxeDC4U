@@ -3,6 +3,7 @@
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
 @using ServerManagement;
+@inject CookieService.CookieManager Cookies;
 @inject ServerManager serverManager;
 @inject NavigationManager NavManager;
 
@@ -37,6 +38,8 @@
             DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
             ReturnData<SessionService.SessionTemplate_Creater.SessionId,DBUser> Data = serverManager.LogUserInCreateSession(user);
 
+            Cookies.SetSessionCookie("id",Data.Result.ToString());
+            Cookies.SetSessionCookie("userID", Data.Message.ToString());
         } 
         catch (Exception e) {
 
