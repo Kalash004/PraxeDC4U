@@ -12,10 +12,12 @@
 
     <h2>@IdService.User.Name</h2>
     <br />
+    <h3>@IdService.User.CurrentCredits K</h3>
+    <a href="user/credit"><button>buy more credits</button></a>
 </div>
 <br />
 
-<CreditComponent /> //temporary
+<a href="user/create"><button>create new service</button></a>
 
 <div class="services-wrapper">
     @foreach (DBService service in new ServiceDAO().GetAll())
@@ -29,7 +31,7 @@
 
 @code {
 
-    protected override async  Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         //kickes user if not signed in
         if (IdService.id.Id.Equals(""))
