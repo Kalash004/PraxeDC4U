@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataTemplateLibrary.Models;
 using DataAccessLibrary.DAOS;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Security;
 
 namespace DataAccessLibrary.DBChildManagers
 {
@@ -44,14 +45,13 @@ namespace DataAccessLibrary.DBChildManagers
             usersDAO.Delete(userId);
         }
 
-        public ReturnData<DBUser?, string> LogUserIn(DBUser hypothetical_user)
+        public DBUser? LogUserIn(DBUser hypothetical_user)
         {
             DBUser user_in_db = GetUserByName(hypothetical_user.Name);
             // CHECK : Might get error instead of null from db if user is null
-            if (user_in_db == null) return new ReturnData<DBUser?, string>(null, "User doesnt exist in database");
-            // CHECK : If db send all lower case data or not
-            if (!user_in_db.HashedPassword.ToLower().Equals(hypothetical_user.HashedPassword.ToLower())) return new ReturnData<DBUser?, string>(null, "Wrong password");
-            return new ReturnData<DBUser?, string>(user_in_db, "Welcome");
+            if (user_in_db == null) throw new NullReferenceException("User doesnt exist in the database");
+            if (!user_in_db.HashedPassword.ToLower().Equals(hypothetical_user.HashedPassword.ToLower())) throw new PasswordException("Users password is not right");
+            return user_in_db;
         }
 
         public DBUser? GetUserById(int userId)
