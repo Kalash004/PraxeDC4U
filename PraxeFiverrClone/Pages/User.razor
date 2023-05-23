@@ -1,19 +1,28 @@
 ﻿@page "/user"
+@using DataAccessLibrary;
+@using DataAccessLibrary.DAOS;
+@using DataTemplateLibrary.Models;
+@using SessionService;
+@inject DBManager dbManager;
+@inject NavigationManager NavManager;
+
 
 <div class="block" >
 
-    <h2 id="name" >Name</h2>
-    <br />
+    <a href="user/credit"><button>buy more credits</button></a>
 </div>
 <br />
 
-<CreditComponent />
+<a href="user/create"><button>create new service</button></a>
 
-<small>your servises:</small>
-
-<ServisPreviewLayout Owner = "true"/>
+<div class="services-wrapper">
+</div>
 
 @code {
-    private int Credits = 100;
+
+    protected async Task OnInitializedAsync()
+    {
+        //kickes user if not signed in
+    }
 }
 

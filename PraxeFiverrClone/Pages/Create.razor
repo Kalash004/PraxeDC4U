@@ -2,18 +2,21 @@
 @using DataAccessLibrary
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
-@inject DBManager dbManager;
-@inject MyIdService IdService;
+@using CookieService;
+@using SessionService;
+@using SessionService.SessionTemplate_Creater;
+@using ServerManagement;
+@inject ServerManagement.ServerManager serverManager;
+@inject NavigationManager NavManager;
+@inject CookieManager coockieManager;
 
-
-<!--pleaseeee god-->
 <h3>Create</h3>
 
 <h3>name:</h3>
 <input type="text" @bind="@Name" @oninput="@((e) => { Name=(string)e.Value;})" />
 
 <h3>price:</h3>
-<input type="text" @bind="@Price" @oninput="@((e) => { Price=Int32.Parse((string)e.Value + "");})" />
+<input type="text" @bind="@Price" @oninput="@((e) => { try {Price=Int32.Parse((string)e.Value + "");}catch(Exception){}})" />
 
 <h3>short:</h3>
 <input type="text" @bind="@Description" @oninput="@((e) => { Description=(string)e.Value;})" />
@@ -21,18 +24,36 @@
 <h3>long:</h3>
 <input type="text" @bind="@DescriptionLong" @oninput="@((e) => { DescriptionLong=(string)e.Value;})" />
 
+<h3>unlisted </h3>
+<input type="checkbox" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }" />
+
 <button @onclick = "CreateServis">create</button>
 
 @code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        //kickes user if not signed in TODO: Maxs work
+      
+    }
+
     private string Name;
     private string Description;
     private string DescriptionLong;
     private int Price;
+    private bool Listed;
 
-    public void CreateServis()
+    public void CheckboxClicked(object CheckedValue)
     {
-        
-        dbManager.CreateService(IdService.id, new DBService(0, 0, Name, Price, new DateOnly(2024, 1, 1), null,true,Description,DescriptionLong,null));
+        Listed = (bool)CheckedValue;
+    }
+
+    public async void CreateServis()
+    {
+        //TODO: Implement cookie system
+        DBService service = new DBService(0,Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null,false);
+        serverManager.CreateService(new SessionId(await coockieManager.GetSessionCookieString("SESSION_ID")),service);
+        NavManager.NavigateTo("/");
     }
 }
 

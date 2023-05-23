@@ -2,8 +2,8 @@
 @using DataAccessLibrary
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
-@inject DBManager dbManager;
-@inject MyIdService IdService;
+@using ServerManagement;
+@inject ServerManager serverManager;
 @inject NavigationManager NavManager;
 
 <h3>Login</h3>
@@ -35,12 +35,11 @@
         try
         {
             DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
-            // TODO: Session System 
-            
-            IdService.id = dbManager.LogUserInCreateSession(user).Result;
+            ReturnData<SessionService.SessionTemplate_Creater.SessionId,DBUser> Data = serverManager.LogUserInCreateSession(user);
+
         } 
         catch (Exception e) {
-   
+
             WarningText = e.Message;
         }
         NavManager.NavigateTo("/");

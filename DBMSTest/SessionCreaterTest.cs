@@ -7,9 +7,15 @@ using DataAccessLibrary;
 using DataTemplateLibrary;
 using DataTemplateLibrary.Models;
 using SessionService;
+using ServerManagement;
 
 namespace Tests
 {
+    /// <summary>
+    /// Test for session creation.
+    /// Also test if admin exists in the database
+    /// </summary>
+    /// <creator>Anton Kalashnikov</creator>
     [TestClass]
     public class SessionCreaterTest
     {
@@ -18,12 +24,12 @@ namespace Tests
         {
             // Arrange
             DBUser user = new DBUser("Admin", "Admin");
-            DBManager manager = new DBManager();
+            ServerManager manager = new ServerManager();
             // Act
             var data_from_db = manager.LogUserInCreateSession(user);
-            var user_from_runtime = ServerSideSessionSaverService.GetInstance().GetUserFromSessionId(data_from_db.Result);
+            var user_from_runtime_id = ServerSideSessionSaverService.GetInstance().GetUserIdFromSessionId(data_from_db.Result);
             // Assert
-            Assert.AreEqual(user_from_runtime, data_from_db.Message);
+            Assert.AreEqual(user_from_runtime_id, data_from_db.Message.ID);
         }
     }
 }
