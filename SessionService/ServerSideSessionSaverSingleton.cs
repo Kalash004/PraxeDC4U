@@ -33,7 +33,7 @@ namespace SessionService
 			currentSessions.Add(sessionId.Id, userId);
 		}
 
-		public int GetUserFromSessionId(SessionId id)
+		public int GetUserIdFromSessionId(SessionId id)
 		{
 			if (SessionExists(id))
 			{
@@ -53,5 +53,6 @@ namespace SessionService
 			AddSession(sessionId, userId);
 			return sessionId;
 		}
-	}
+
+    }
 }

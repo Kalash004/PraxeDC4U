@@ -29,5 +29,10 @@ namespace DataAccessLibrary.DBChildManagers
             return transactionDAO.GetAllByServiceId(id);
         }
 
+        internal bool AddCreditToUser(int userId,int adminId,int amount)
+        {
+            DBTransaction newTransaction = new DBTransaction(userId,adminId,DateTime.Now,amount,null);
+            return transactionDAO.Create(newTransaction,adminId,userId,0,amount);
+        }
     }
 }

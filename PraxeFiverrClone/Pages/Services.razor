@@ -5,10 +5,6 @@
 @inject DBManager dbManager;
 
 <div class="services-wrapper">
-    @foreach(DBService service in new ServiceDAO().GetAll())
-    {
-        <ServiceCard service=@service/>
-    }
 </div>
 
 @code {
