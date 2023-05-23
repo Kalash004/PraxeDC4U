@@ -16,7 +16,7 @@ namespace DataAccessLibrary.DAOS
     /// This class is a child of AbstractDAO, it implements the methods and contains the SQL used to obtain data
     /// </summary>
     /// <creator>Anton Kalashnikov</creator>
-    public class ServiceDAO : AbstractDAO<DBService>, IDAO<DBService>
+    internal class ServiceDAO : AbstractDAO<DBService>, IDAO<DBService>
     {
         private static string table_n = "services";
         private String C_CREATE = $"INSERT INTO {table_n} (user_id, ser_name, current_price, creation,`update`, isShown, short_description, long_description, link, isDeleted) VALUES (@user_id, @ser_name, @current_price, @creation, @update, @isShown, @short_description, @long_description, @link, @isDeleted)";

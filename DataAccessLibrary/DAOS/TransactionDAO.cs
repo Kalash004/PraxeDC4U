@@ -66,23 +66,26 @@ namespace DataAccessLibrary.DAOS
             return Get(C_GET_BY_USER_ID, new List<MySqlParameter> { new MySqlParameter("@user_id", userId) });
         }
 
-        // FIXME: Not the greatest fix i found, if have enough time find better way
-        public bool Create(DBTransaction element, int senderId, int recieverId, int amount)
+        public bool Create(DBTransaction element, int senderId, int recieverId, int amountRemoving, int amountAdding)
         {
             Dictionary<string, List<MySqlParameter>> SQLAndParams = new Dictionary<string, List<MySqlParameter>>();
-            // CHECK: id might be -1 on element
             SQLAndParams.Add(C_CREATE, Map(element));
             SQLAndParams.Add(C_UPDATE_SENDER, new List<MySqlParameter>()
             {
-                new MySqlParameter("@creditsSender",amount),
+                new MySqlParameter("@creditsSender",amountRemoving),
                 new MySqlParameter("@idSender",senderId)
             });
             SQLAndParams.Add(C_UPDATE_RECIEVER, new List<MySqlParameter>()
             {
-                 new MySqlParameter("@creditsReciever",amount),
+                 new MySqlParameter("@creditsReciever",amountAdding),
                 new MySqlParameter("@idReciever",recieverId)
             });
             return TransactionProccess(SQLAndParams);
+        }
+
+        public bool Create(DBTransaction element, int senderId, int recieverId, int amount)
+        {
+            return Create(element,senderId,recieverId,amount,amount);
         }
 
         protected override DBTransaction Map(MySqlDataReader reader)

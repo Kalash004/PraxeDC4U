@@ -96,9 +96,9 @@ namespace DataAccessLibrary
             return serviceManager.GetAllServiceByUser(userId);
         }
 
-        public bool CreateTransaction(DBTransaction transaction,int senderId, int recieverId, int amount)
+        public bool CreateTransaction(DBTransaction transaction, int senderId, int recieverId, int amount)
         {
-            return transManager.CreateTransaction(transaction,senderId,recieverId,amount);
+            return transManager.CreateTransaction(transaction, senderId, recieverId, amount);
         }
 
         public List<DBTransaction> ReadTransactionsByUserId(int userId)
@@ -123,7 +123,21 @@ namespace DataAccessLibrary
 
         public void UpdateUser(int userId, DBUser newUserData)
         {
-            userManager.UpdateUser(userId, newUserData); 
+            userManager.UpdateUser(userId, newUserData);
+        }
+
+        public List<DBService?> GetAllServices()
+        {
+            return serviceManager.GetAllServices();
+        }
+
+        public DBUser? AddCreditsToUser(int userId, int amount)
+        {
+            DBUser? admin = userManager.GetUserByName("Admin");
+            // FIXME: If enough time find a better way to send transactions without admin and etc. Might need to revamp the DB.
+            if (admin == null) throw new Exception("Admin doesnt exist in the database, cant complete the transaction");
+            if (!transManager.AddCreditToUser(userId, admin.ID, amount)) throw new Exception("Wasnt able to add credits to user, problem with database");
+            return userManager.GetUserById(userId);
         }
     }
 }

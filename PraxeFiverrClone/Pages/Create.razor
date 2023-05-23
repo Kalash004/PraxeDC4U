@@ -7,7 +7,6 @@
 @using SessionService.SessionTemplate_Creater;
 @using ServerManagement;
 @inject ServerManagement.ServerManager serverManager;
-@inject MyIdService IdService;
 @inject NavigationManager NavManager;
 @inject CookieManager coockieManager;
 
@@ -34,11 +33,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //kickes user if not signed in
-        if (IdService.id.Id.Equals(""))
-        {
-            NavManager.NavigateTo("/login");
-        }
+        //kickes user if not signed in TODO: Maxs work
+      
     }
 
     private string Name;
