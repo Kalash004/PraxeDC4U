@@ -4,7 +4,7 @@
 @using DataTemplateLibrary.Models;
 @using SessionService;
 @inject CookieService.CookieManager Cookies;
-@inject DBManager dbManager;
+@inject ServerManagement.ServerManager ServerManager;
 @inject NavigationManager NavManager;
 
 <h3>Edit Service</h3>
@@ -43,8 +43,8 @@
 
     private void EditService()
     {
-        DBService NewService = new DBService(Cookies.GetSessionCookieInt("userID").Result, Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null, false);
-        dbManager.UpdateService(PageID, NewService);
+        DBService NewService = new DBService(Cookies.GetSessionCookieInt("userID").Result, Name, Price, ServerManager.GetServiceFromDB(new SessionService.SessionTemplate_Creater.SessionId(Cookies.GetSessionCookieString("ID").Result), PageID).Created, DateOnly.FromDateTime(DateTime.Now), Listed, Description, DescriptionLong, null, false);
+        ServerManager.UpdateService(new SessionService.SessionTemplate_Creater.SessionId(Cookies.GetSessionCookieString("ID").Result), PageID, NewService);
     }
 
     private void SetValues()

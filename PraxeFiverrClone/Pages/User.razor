@@ -3,16 +3,16 @@
 @using DataAccessLibrary.DAOS;
 @using DataTemplateLibrary.Models;
 @using SessionService;
-@inject CookieService.CookieManager cookies;
-@inject DBManager dbManager;
+@inject CookieService.CookieManager Cookies;
+@inject ServerManagement.ServerManager ServerManager;
 @inject NavigationManager NavManager;
 
 
 <div class="block" >
 
-    <h2>@dbManager.GetUser(cookies.GetCookieInt("userID").Result)</h2>
+    <h2>@</h2>
     <br />
-    <h3>@dbManager.GetUser(cookies.GetCookieInt("userID").Result).CurrentCredits K</h3>
+    <h3>@dbManager.GetUser(Ccookies.GetCookieInt("userID").Result).CurrentCredits K</h3>
     <a href="user/credit"><button>buy more credits</button></a>
 </div>
 <br />
@@ -22,7 +22,7 @@
 <div class="services-wrapper">
     @foreach (DBService service in new ServiceDAO().GetAll())
     {
-        if (service.UserId == dbManager.GetUser(cookies.GetSessionCookieInt("userID").Result).ID)
+        if (service.UserId == dbManager.GetUser(Cookies.GetSessionCookieInt("userID").Result).ID)
         {
             <ServiceCard service=@service />
         }
@@ -30,14 +30,17 @@
 </div>
 
 @code {
+    public DBUser ClientUser { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         //kickes user if not signed in
-        if (cookies.GetSessionCookieInt("userID").Result.Equals(""))
+        if (Cookies.GetSessionCookieInt("userID").Result.Equals(""))
         {
             NavManager.NavigateTo("/login");
         }
+
+        ClientUser = ServerManager.
     }
 }
 
