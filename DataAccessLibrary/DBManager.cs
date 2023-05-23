@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccessLibrary.DAOS;
 using DataAccessLibrary.DBChildManagers;
 using DataTemplateLibrary.Models;
+using Org.BouncyCastle.Asn1.Crmf;
 using Org.BouncyCastle.Security;
 
 namespace DataAccessLibrary
@@ -20,6 +22,7 @@ namespace DataAccessLibrary
 
         private readonly DBUserManager userManager = new();
         private readonly DBServiceManager serviceManager = new();
+        private readonly DBTransactionManager transManager = new();
 
         public static DBManager GetInstance()
         {
@@ -77,7 +80,6 @@ namespace DataAccessLibrary
             return serviceManager.CreateService(service).Result;
         }
 
-
         public DBService? GetServiceFromDB(int userId, int serviceId)
         {
             return serviceManager.GetOneServiceByUserIdAndServiceId(userId, serviceId);
@@ -94,5 +96,34 @@ namespace DataAccessLibrary
             return serviceManager.GetAllServiceByUser(userId);
         }
 
+        public bool CreateTransaction(DBTransaction transaction,int senderId, int recieverId, int amount)
+        {
+            return transManager.CreateTransaction(transaction,senderId,recieverId,amount);
+        }
+
+        public List<DBTransaction> ReadTransactionsByUserId(int userId)
+        {
+            return transManager.ReadTransactionsByUserId(userId);
+        }
+
+        public List<DBTransaction> ReadTransactionsByServiceId(int serviceId)
+        {
+            return transManager.ReadTransactionsByServiceId(serviceId);
+        }
+
+        public bool UserExists(int userId)
+        {
+            return userManager.UserExists(userId);
+        }
+
+        public DBUser GetUser(int userId)
+        {
+            return userManager.GetUserById(userId);
+        }
+
+        public void UpdateUser(int userId, DBUser newUserData)
+        {
+            userManager.UpdateUser(userId, newUserData); 
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -14,106 +15,116 @@ namespace DataAccessLibrary.DAOS
     internal class TransactionDAO : AbstractDAO<DBTransaction>, IDAO<DBTransaction>
     {
         private static string table_n = "transactions";
+        private static string users_table_n = "users";
         // (data) values (@data)
-        private static String C_CREATE = $"INSERT INTO {table_n}";
+        private static String C_CREATE;
         // data = @data,
-        private static String C_UPDATE = $"UPDATE {table_n} SET WHERE id = @id";
+        private static String C_UPDATE;
         private static String C_READ_ALL = $"SELECT * FROM {table_n}";
         private static String C_READ_BY_ID = $"SELECT * FROM {table_n} WHERE id = @id";
         private static String C_DELETE = $"DELETE FROM {table_n} WHERE id = @id";
         private static String C_GET_BY_USER_ID = $"SELECT * FROM {table_n} WHERE user_id = @user_id";
+        private static String C_GET_BY_SERVICE_ID = $"SELECT * FROM {table_n} WHERE service_id = @service_id";
+        private static String C_UPDATE_SENDER = $"UPDATE {users_table_n} SET current_credits = current_credits - @creditsSender WHERE users.id = @idSender;";
+        private static String C_UPDATE_RECIEVER = $"UPDATE {users_table_n} SET current_credits = current_credits + @creditsReciever WHERE users.id = @idReciever;";
 
-        private static List<string> atributeList = new List<string>() { "id", "reciever_id", "sender_id", "send_date", "send_time", "cost", "service_id" };
+        private static List<string> atributeList = new List<string>() { "reciever_id", "sender_id", "send_date", "send_time", "cost", "service_id" };
 
         public TransactionDAO()
         {
             SetSQL(atributeList);
-        } 
-        private static void SetSQL(List<string> atributes)
-        {
-            SetSQLCreate(atributes);
-            SetSQLUpdate(atributes);
         }
-
-        private static void SetSQLUpdate(List<string> atributes)
+        private void SetSQL(List<string> atributes)
         {
-            string last = atributes.Last();
-            foreach (var atribute in atributes)
-            {
-                if (atribute == last)
-                {
-                    C_UPDATE += $"{atribute} = @{atribute},";
-                }
-                else
-                {
-                    C_UPDATE += $"{atribute} = @{atribute},";
-                }
-            }
+            C_CREATE = SetSQLCreate(atributes,table_n);
+            C_UPDATE = SetSQLUpdate(atributes,table_n);
         }
-
-        private static void SetSQLCreate(List<string> atributes)
-        {
-            C_CREATE += "(";
-            string last = atributes.Last();
-            foreach (var atribute in atributes)
-            {
-                if (atribute == last)
-                {
-                    C_CREATE += $"{atribute}";
-                }
-                else
-                {
-                    C_CREATE += $"{atribute},";
-                }
-            }
-            C_CREATE += ") values (";
-            foreach (var atribute in atributes)
-            {
-                if (atribute == last)
-                {
-                    C_CREATE += $"@{atribute}";
-                }
-                else
-                {
-                    C_CREATE += $"@{atribute},";
-                }
-            }
-            C_CREATE += ")";
-        }
-
-        public int Create(DBTransaction element)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            // Delete(C_DELETE, id);
+            throw new NotImplementedException("This method is not supported. You cant Delete a transaction");
         }
 
         public List<DBTransaction> GetAll()
         {
-            throw new NotImplementedException();
+            return GetAll(C_READ_ALL);
         }
 
         public DBTransaction? GetByID(int id)
         {
-            throw new NotImplementedException();
+            return GetByID(C_READ_BY_ID, id);
         }
 
         public void Save(DBTransaction element)
         {
-            throw new NotImplementedException();
+            // Update(C_UPDATE, element, element.ID);
+            throw new NotImplementedException("This method is not supported. You cant Update a transaction");
+        }
+
+        public List<DBTransaction> GetAllByUserId(int userId)
+        {
+            return Get(C_GET_BY_USER_ID, new List<MySqlParameter> { new MySqlParameter("@user_id", userId) });
+        }
+
+        // FIXME: Not the greatest fix i found, if have enough time find better way
+        public bool Create(DBTransaction element, int senderId, int recieverId, int amount)
+        {
+            Dictionary<string, List<MySqlParameter>> SQLAndParams = new Dictionary<string, List<MySqlParameter>>();
+            // CHECK: id might be -1 on element
+            SQLAndParams.Add(C_CREATE, Map(element));
+            SQLAndParams.Add(C_UPDATE_SENDER, new List<MySqlParameter>()
+            {
+                new MySqlParameter("@creditsSender",amount),
+                new MySqlParameter("@idSender",senderId)
+            });
+            SQLAndParams.Add(C_UPDATE_RECIEVER, new List<MySqlParameter>()
+            {
+                 new MySqlParameter("@creditsReciever",amount),
+                new MySqlParameter("@idReciever",recieverId)
+            });
+            return TransactionProccess(SQLAndParams);
         }
 
         protected override DBTransaction Map(MySqlDataReader reader)
         {
-            throw new NotImplementedException();
+            int id = Convert.ToInt32(reader[0]);
+            int recieverId = Convert.ToInt32(reader[1]);
+            int senderId = Convert.ToInt32(reader[2]);
+            DateOnly transactionDate = DateOnly.FromDateTime(DateTime.Parse(reader[3].ToString()));
+            TimeOnly transactionTime = TimeOnly.FromDateTime(DateTime.Parse(reader[4].ToString()));
+            DateTime dateTime = transactionDate.ToDateTime(transactionTime);
+            int amount = Convert.ToInt32(reader[5]);
+            int serviceId = Convert.ToInt32(reader[6]);
+
+            return new DBTransaction(id, recieverId, senderId, dateTime, amount, serviceId);
         }
 
         protected override List<MySqlParameter> Map(DBTransaction obj)
         {
-            throw new NotImplementedException();
+            DateTime dateTime = obj.DateOfTransaction;
+            dateTime = dateTime.AddTicks(-(dateTime.Ticks % TimeSpan.TicksPerSecond));
+            TimeOnly time = TimeOnly.FromTimeSpan(dateTime.TimeOfDay);
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>()
+            {
+                new MySqlParameter("@reciever_id",obj.RecievingUserId),
+                new MySqlParameter("@sender_id",obj.SendingUserId),
+                new MySqlParameter("@send_date",DateOnly.FromDateTime(obj.DateOfTransaction).ToString("o",CultureInfo.InvariantCulture)),
+                new MySqlParameter("@send_time",time.ToString("o",CultureInfo.InvariantCulture)),
+                new MySqlParameter("@cost",obj.Amount),
+                new MySqlParameter("@service_id",obj.ServiceId)
+            };
+            return parameters;
+        }
+
+        public List<DBTransaction> GetAllByServiceId(int serviceId)
+        {
+            return Get(C_GET_BY_SERVICE_ID, new List<MySqlParameter> { new MySqlParameter("@service_id", serviceId) });
+        }
+
+        public int Create(DBTransaction element)
+        {
+            throw new NotImplementedException("This creation method is not supported. Use other Create method");
         }
     }
 }
