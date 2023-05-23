@@ -36,7 +36,7 @@ namespace DataAccessLibrary.DBChildManagers
         /// <returns>List of services</returns>
         public List<DBService?> GetAllServices()
         {
-            throw new NotImplementedException();
+            return serviceDAO.GetAll();
         }
 
         public DBService? GetOneServiceByUserIdAndServiceId(int userId, int id)
@@ -54,5 +54,6 @@ namespace DataAccessLibrary.DBChildManagers
             newService.Updated = DateOnly.FromDateTime(DateTime.Now);
             serviceDAO.Save(newService);
         }
+
     }
 }

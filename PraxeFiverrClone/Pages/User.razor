@@ -32,7 +32,7 @@
 @code {
     public DBUser ClientUser { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected async Task OnInitializedAsync()
     {
         //kickes user if not signed in
         if (Cookies.GetSessionCookieInt("userID").Result.Equals(""))

@@ -17,8 +17,4 @@
 
     private DBService service;
 
-    protected override async Task OnInitializedAsync()
-    {
-        service = new ServiceDAO().GetByID(PageID);
-    }
 }

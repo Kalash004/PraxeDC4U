@@ -27,7 +27,7 @@ namespace Tests
             ServerManager manager = new ServerManager();
             // Act
             var data_from_db = manager.LogUserInCreateSession(user);
-            var user_from_runtime_id = ServerSideSessionSaverService.GetInstance().GetUserFromSessionId(data_from_db.Result);
+            var user_from_runtime_id = ServerSideSessionSaverService.GetInstance().GetUserIdFromSessionId(data_from_db.Result);
             // Assert
             Assert.AreEqual(user_from_runtime_id, data_from_db.Message.ID);
         }
