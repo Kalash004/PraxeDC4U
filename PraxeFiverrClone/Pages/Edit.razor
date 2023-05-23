@@ -1,0 +1,79 @@
+﻿@page "/user/edit/{PageID:int}"
+@using DataAccessLibrary;
+@using DataAccessLibrary.DAOS;
+@using DataTemplateLibrary.Models;
+@using SessionService;
+@inject DBManager dbManager;
+@inject MyIdService IdService;
+@inject NavigationManager NavManager;
+
+<h3>Edit Service</h3>
+
+<h3>name:</h3>
+<input type="text" @bind="@Name" @oninput="@((e) => { Name=(string)e.Value;})" />
+
+<h3>price:</h3>
+<input type="text" @bind="@Price" @oninput="@((e) => { try {Price=Int32.Parse((string)e.Value + "");}catch(Exception){}})" />
+
+<h3>short:</h3>
+<input type="text" @bind="@Description" @oninput="@((e) => { Description=(string)e.Value;})" />
+
+<h3>long:</h3>
+<input type="text" @bind="@DescriptionLong" @oninput="@((e) => { DescriptionLong=(string)e.Value;})" />
+
+<h3>unlisted </h3>
+<input type="checkbox" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }" />
+
+<button @onclick = "SetValues">revert all changes</button>
+<br />
+
+<button @onclick = "EditService">confirm changes</button>
+
+@code {
+    [Parameter]
+    public int PageID { get; set; }
+
+    private String Name { get; set; }
+    private int Price { get; set; }
+    private String Description { get; set; }
+    private string DescriptionLong { get; set; }
+    private bool Listed { get; set; }
+
+    private DBService service;
+
+    private void EditService()
+    {
+        DBService NewService = new DBService(IdService.User.ID, Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null);
+        dbManager.UpdateService(IdService.id, PageID, NewService);
+    }
+
+    private void SetValues()
+    {
+        Name = service.ServiceName;
+        Price = service.CurrentPrice;
+        Description = service.ShortDescription;
+        DescriptionLong = service.LongDescription;
+        Listed = service.IsShown;
+    }
+
+    public void CheckboxClicked(object CheckedValue)
+    {
+        Listed = (bool)CheckedValue;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        service = new ServiceDAO().GetByID(PageID);
+
+        if (service.UserId != IdService.User.ID)
+        {
+            NavManager.NavigateTo("/");
+        } 
+        else if (IdService.User.ID.Equals(""))
+        {
+            NavManager.NavigateTo("/login");
+        }
+
+        SetValues();
+    }
+}
