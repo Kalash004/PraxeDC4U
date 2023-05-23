@@ -96,9 +96,9 @@ namespace DataAccessLibrary
             return serviceManager.GetAllServiceByUser(userId);
         }
 
-        public DBTransaction? CreateTransaction(DBTransaction transaction)
+        public bool CreateTransaction(DBTransaction transaction,int senderId, int recieverId, int amount)
         {
-            return transManager.CreateTransaction(transaction);
+            return transManager.CreateTransaction(transaction,senderId,recieverId,amount);
         }
 
         public List<DBTransaction> ReadTransactionsByUserId(int userId)

@@ -124,19 +124,13 @@ namespace ServerManagement
         {
             if (!sessionManager.SessionExists(sessionId)) throw new Exception($"Session with {sessionId} session id doesnt exist");
             int userId = sessionManager.GetUserFromSessionId(sessionId);
-
             if (!dbManager.UserExists(userId)) throw new Exception($"Sending user doesnt exist in the database, cant create a transaction from non existing user");
             if (!dbManager.UserExists(recieverId)) throw new Exception("User doesnt exist in database, cant create a transaction to a none existing user");
             DBUser user = dbManager.GetUser(userId);
             DBUser recievingUser = dbManager.GetUser(recieverId);
-
             if (user.CurrentCredits < transaction.Amount) throw new Exception($"User doesnt have enoug credits to send the transaction {user.CurrentCredits} / {transaction.Amount}");
             // TODO: Create Transaction (if disconnected - rollback)!!!
-            user.CurrentCredits -= transaction.Amount;
-            recievingUser.CurrentCredits += transaction.Amount;
-            dbManager.UpdateUser(userId, user);
-            dbManager.UpdateUser(recieverId, recievingUser);
-
+            return dbManager.CreateTransaction(transaction,user.ID,recieverId,transaction.Amount);
         }
 
     }

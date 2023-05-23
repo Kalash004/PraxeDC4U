@@ -12,11 +12,9 @@ namespace DataAccessLibrary.DBChildManagers
     {
         private TransactionDAO transactionDAO = new TransactionDAO();
         // create transaction
-        public DBTransaction? CreateTransaction(DBTransaction transaction)
+        public bool CreateTransaction(DBTransaction transaction, int senderId, int recieverId, int amount)
         {
-            int id = transactionDAO.Create(transaction);
-            transaction.ID = id;
-            return transaction;
+           return transactionDAO.Create(transaction,senderId,recieverId,amount);
         }
         // read transactions by user
         public List<DBTransaction> ReadTransactionsByUserId(int id)

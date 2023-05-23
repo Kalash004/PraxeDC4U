@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Data;
 using DataTemplateLibrary.Interfaces;
 using MySql.Data.MySqlClient;
+using System.Runtime.InteropServices;
 
 namespace DataAccessLibrary.DAOS
 {
@@ -330,7 +331,7 @@ namespace DataAccessLibrary.DAOS
             }
             return list;
         }
-        public T GetByName(String SQL,string parameter_name ,string name)
+        public T GetByName(String SQL, string parameter_name, string name)
         {
             MySqlConnection? conn = null;
             MySqlDataReader? reader = null;
@@ -343,7 +344,7 @@ namespace DataAccessLibrary.DAOS
                 }
                 using (var command = conn.CreateCommand())
                 {
-                      command.CommandText = SQL;
+                    command.CommandText = SQL;
                     command.Parameters.Add(new MySqlParameter(parameter_name, name));
                     reader = command.ExecuteReader();
                     while (reader.Read())
@@ -376,6 +377,100 @@ namespace DataAccessLibrary.DAOS
             }
             return default(T);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="SQLAndParameter">For each sql to be executed add its parameters as a value into a list</param>
+        /// <returns>True if transaction was succesfull</returns>
+        public bool TransactionProccess(Dictionary<string, List<MySqlParameter>> SQLAndParameter)
+        {
+            MySqlConnection? conn = null;
+            MySqlCommand? command = new MySqlCommand();
+            MySqlTransaction transaction;
+            conn = DBConnectionSingleton.GetInstance();
+            if (conn.State == ConnectionState.Closed) conn.Open();
+            transaction = conn.BeginTransaction();
+            command.Connection = conn;
+            command.Transaction = transaction;
+            try
+            {
+                foreach (var keyValuePair in SQLAndParameter)
+                {
+                    command.CommandText = keyValuePair.Key;
+                    foreach (var value in keyValuePair.Value)
+                    {
+                        command.Parameters.Add(value);
+                    }
+                    command.ExecuteNonQuery();
+                }
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+
+        }
+
+        protected string SetSQLUpdate(List<string> atributes, string table_n)
+        {
+            string updateSql = $"UPDATE {table_n} SET ";
+            string last = atributes.Last();
+            foreach (var atribute in atributes)
+            {
+                if (atribute == last)
+                {
+                    updateSql += $"{atribute} = @{atribute},";
+                }
+                else
+                {
+                    updateSql += $"{atribute} = @{atribute},";
+                }
+            }
+            updateSql += "WHERE id = @id";
+            return updateSql;
+        }
+
+        protected string SetSQLCreate(List<string> atributes, string table_n)
+        {
+            string createSql = $"INSERT INTO {table_n} ";
+            createSql += "(";
+            string last = atributes.Last();
+            foreach (var atribute in atributes)
+            {
+                if (atribute == last)
+                {
+                    createSql += $"{atribute}";
+                }
+                else
+                {
+                    createSql += $"{atribute},";
+                }
+            }
+            createSql += ") values (";
+            foreach (var atribute in atributes)
+            {
+                if (atribute == last)
+                {
+                    createSql += $"@{atribute}";
+                }
+                else
+                {
+                    createSql += $"@{atribute},";
+                }
+            }
+            createSql += ");";
+            return createSql;
+        }
+
         protected abstract T Map(MySqlDataReader reader);
         protected abstract List<MySqlParameter> Map(T obj);
     }
