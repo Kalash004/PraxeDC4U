@@ -61,9 +61,9 @@ namespace LoginService
         /// </summary>
         /// <param name="user"></param>
         /// <exception cref="LoginSignupException"></exception>
-        public async Task Login(DBUser user)
+        public void Login(DBUser user)
         {
-            if (await IsLoggedIn())
+            if (IsLoggedIn())
             {
                 throw new LoginSignupException("The user is already logged in");
             }
@@ -96,15 +96,13 @@ namespace LoginService
         /// Checks whether the user is currently logged in by checking sessionID.
         /// </summary>
         /// <returns>If the user is logged in, returns true, false otherwise.</returns>
-        public async Task<bool> IsLoggedIn()
+        public bool IsLoggedIn()
         {
             bool loginStatus = false;
             if (CookieManager != null)
             {
-                string sessionID = await CookieManager.GetSessionCookieString("sessionID");
-                if (CheckIfSessionExists(sessionID))
+                if (CheckIfSessionExists(SessionID))
                 {
-                    SessionID = sessionID;
                     loginStatus = true;
                 }
                 else
