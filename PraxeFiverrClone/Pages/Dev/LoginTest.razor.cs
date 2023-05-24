@@ -1,43 +1,54 @@
 ﻿using DataTemplateLibrary.Models;
 using Microsoft.AspNetCore.Components;
+using LoginService;
 
 namespace PraxeFiverrClone.Pages.Dev
 {
     public partial class LoginTestPage : ComponentBase
     {
         [Inject]
-        public UserContext? UserContext { get; set; } = null;
+        public LoginManager? LoginManager { get; set; } = null;
         public bool IsLoggedIn { get; set; }
+        public string SessionID { get; set; } = "";
+        public int UserID { get; set; } = -1;
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override void OnAfterRender(bool firstRender)
         {
             if(firstRender)
             {
-                if (UserContext == null)
+                if (LoginManager == null)
                 {
                     return;
                 }
 
-                IsLoggedIn = await UserContext.IsLoggedIn();
+                SessionID = LoginManager.SessionID;
+                UserID = LoginManager.GetUserID();
                 StateHasChanged();
             }
         }
 
         public async void Login()
         {
-            if(UserContext == null)
+            if(LoginManager == null)
             {
                 return;
             }
 
             DBUser user = new("Admin", "Admin");
-            await UserContext.Login(user);
+            try{
+                await LoginManager.Login(user);
+            }
+            catch(LoginSignupException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
             IsLoggedIn = true;
             StateHasChanged();
         }
         public void Logout()
         {
-            UserContext?.Logout();
+            LoginManager?.Logout();
             IsLoggedIn = false;
         }
     }

@@ -3,22 +3,20 @@
     width: 100%;
     aspect-ratio: 1 / 1;
 }
-.service-wrapper a{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    padding: 0.5em;
-
-    border-radius: 4px;
-    text-decoration: none;
-    background-color: #32405e;
-    color: white;
-
-    transition: background-color, box-shadow 0.2s ease-out
-}
+    .service-wrapper a {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        padding: 0.5em;
+        border-radius: 4px;
+        text-decoration: none;
+        background-color: var(--card-color-normal);
+        color: white;
+        transition: background-color, box-shadow 0.2s ease-out
+    }
 a:hover {
-    background-color: #29344d;
+    background-color: var(--card-color-hover);
     box-shadow: rgba(0, 0, 0, 0.5) 5px 5px 10px;
 }
 .service-price{

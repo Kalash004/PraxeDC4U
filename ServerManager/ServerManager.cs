@@ -50,17 +50,14 @@ namespace ServerManagement
             return dbManager.GetAllUserServices(sessionManager.GetUserIdFromSessionId(sessionId));
         }
 
-        /// <summary>
-        /// Gets concrete service from db using session id and service id
-        /// </summary>
-        /// <param name="sessionId">Session id of the user</param>
-        /// <param name="serviceId">ID of service from db</param>
-        /// <returns>One service from db</returns>
-        /// <exception cref="Exception">If no session was found</exception>
-        public DBService? GetServiceFromDB(SessionId sessionId, int serviceId)
+        public DBService? GetService(SessionId sessionId, int serviceId)
         {
             CheckSessionExistance(sessionId);
             return dbManager.GetServiceFromDB(sessionManager.GetUserIdFromSessionId(sessionId), serviceId);
+        }
+        public DBService? GetService(int serviceId)
+        {
+            return dbManager.GetServiceFromDB(serviceId);
         }
 
         /// <summary>
