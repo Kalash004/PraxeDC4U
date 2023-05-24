@@ -28,7 +28,7 @@ namespace Tests
             ServerManager manager = new ServerManager();
             // Act
             SessionId sessionId = manager.LogUserInCreateSession(user);
-            var user_from_runtime_id = ServerSideSessionSaverService.GetInstance().GetUserIdFromSessionId(sessionId);
+            var user_from_runtime_id = ServerSessionManager.GetInstance().GetUserIdFromSessionId(sessionId);
             var user_from_db_id = manager.GetUserByName("Admin").ID;
             // Assert
             Assert.AreEqual(user_from_runtime_id, user_from_db_id);

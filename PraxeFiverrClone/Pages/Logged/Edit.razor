@@ -45,8 +45,8 @@
 
     private void EditService()
     {
-        DBService NewService = new DBService(Cookies.GetSessionCookieInt("userID").Result, Name, Price, ServerManager.GetService(new SessionService.SessionTemplate_Creater.SessionId(Cookies.GetSessionCookieString("ID").Result), PageID).Created, DateOnly.FromDateTime(DateTime.Now), Listed, Description, DescriptionLong, null, false);
-        ServerManager.UpdateService(new SessionService.SessionTemplate_Creater.SessionId(Cookies.GetSessionCookieString("ID").Result), PageID, NewService);
+       // DBService NewService = new DBService(Cookies.GetSessionCookieInt("userID").Result, Name, Price, ServerManager.GetService(Cookies.GetSessionCookieString("ID").Result, PageID).Created, DateOnly.FromDateTime(DateTime.Now), Listed, Description, DescriptionLong, null, false);
+       // ServerManager.UpdateService(Cookies.GetSessionCookieString("ID").Result, PageID, NewService);
     }
 
     private void SetValues()

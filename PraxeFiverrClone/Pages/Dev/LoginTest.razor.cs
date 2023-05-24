@@ -20,14 +20,12 @@ namespace PraxeFiverrClone.Pages.Dev
                 {
                     return;
                 }
-
-                SessionID = LoginManager.SessionID;
-                UserID = LoginManager.GetUserID();
+                
                 StateHasChanged();
             }
         }
 
-        public async void Login()
+        public void Login()
         {
             if(LoginManager == null)
             {
@@ -36,7 +34,7 @@ namespace PraxeFiverrClone.Pages.Dev
 
             DBUser user = new("Admin", "Admin");
             try{
-                await LoginManager.Login(user);
+                LoginManager.Login(user);
             }
             catch(LoginSignupException e)
             {

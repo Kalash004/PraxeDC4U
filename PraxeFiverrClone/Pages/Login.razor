@@ -43,6 +43,8 @@
             LoginService.LoginManager LoginManager = new LoginService.LoginManager(Cookies, ServerManager);
             await LoginManager.Login(user);
 
+            Cookies.SetSessionCookie("id",sessionId.ToString());
+            Cookies.SetSessionCookie("userID", sessionId.ToString());
         } 
         catch (Exception e) {
 
