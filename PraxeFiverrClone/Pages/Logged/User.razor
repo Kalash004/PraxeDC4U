@@ -25,7 +25,6 @@
     public DBUser ClientUser { get; set; } = new DBUser("","");
     public LoginService.LoginManager LoginManager { get; set; }
 
-    protected override async Task OnInitializedAsync(){}
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -33,14 +32,14 @@
         CheckLoggedIn();
     }
 
-    private async void CheckLoggedIn()
+    private void CheckLoggedIn()
     {
         //kickes user if not signed in
-        if (!await LoginManager.IsLoggedIn())
+        if (!LoginManager.LoggedIn)
         {
             NavManager.NavigateTo("/login");
         } else {
-            ClientUser = ServerManager.GetUserBySessionId(new SessionService.SessionTemplate_Creater.SessionId(LoginManager.SessionID));
+            ClientUser = ServerManager.GetUserBySessionId(LoginManager.SessionID);
             StateHasChanged();
         }
     }

@@ -3,10 +3,10 @@
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
 @using ServerManagement;
-@using SessionService.SessionTemplate_Creater;
+@using LoginService;
 @inject NavigationManager NavManager;
-@inject CookieService.CookieManager Cookies;
 @inject ServerManager ServerManager;
+@inject LoginManager loginManager;
 
 <PageTitle>Home</PageTitle>
 
@@ -20,10 +20,9 @@
 
 @code {
     bool logged = false;
-    public async void Login()
+    public void Login()
     {
-        LoginService.LoginManager LoginManager = new LoginService.LoginManager(Cookies, ServerManager);
-        logged = await LoginManager.IsLoggedIn();
+        logged = loginManager.LoggedIn;
         StateHasChanged();
     }
 }

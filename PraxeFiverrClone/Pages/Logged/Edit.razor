@@ -69,14 +69,12 @@
         CheckIfOwner();
     }
 
-    private async void CheckIfOwner()
+    private void CheckIfOwner()
     {
         //kickes user if not signed in
-        if (LoginManager.GetUserID() != PageID)
+        if (LoginManager.UserID != PageID)
         {
             NavManager.NavigateTo("/login");
-        }
-
-        
+        }       
     }
 }
