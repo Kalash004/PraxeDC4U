@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SessionService", "SessionSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTemplateLibrary", "DataTemplateLibrary\DataTemplateLibrary.csproj", "{27C62942-7FCC-4DB1-AAC9-8D8BEDC8B9BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieService", "CookieService\CookieService.csproj", "{C23C7E87-C2E5-4BE1-A1BA-EB5C1A2855B3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerManagment", "ServerManager\ServerManagment.csproj", "{B9D19738-1708-4228-BC9B-841DF9E120EF}"
 EndProject
 Global
@@ -43,10 +41,6 @@ Global
 		{27C62942-7FCC-4DB1-AAC9-8D8BEDC8B9BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27C62942-7FCC-4DB1-AAC9-8D8BEDC8B9BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27C62942-7FCC-4DB1-AAC9-8D8BEDC8B9BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C23C7E87-C2E5-4BE1-A1BA-EB5C1A2855B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C23C7E87-C2E5-4BE1-A1BA-EB5C1A2855B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C23C7E87-C2E5-4BE1-A1BA-EB5C1A2855B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C23C7E87-C2E5-4BE1-A1BA-EB5C1A2855B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B9D19738-1708-4228-BC9B-841DF9E120EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B9D19738-1708-4228-BC9B-841DF9E120EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9D19738-1708-4228-BC9B-841DF9E120EF}.Release|Any CPU.ActiveCfg = Release|Any CPU

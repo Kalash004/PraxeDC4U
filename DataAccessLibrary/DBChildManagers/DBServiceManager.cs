@@ -48,6 +48,11 @@ namespace DataAccessLibrary.DBChildManagers
             return null;
         }
 
+        public DBService? GetService(int serviceId)
+        {
+            return serviceDAO.GetByID(serviceId);
+        }
+
         public void UpdateService(int serviceId, DBService newService)
         {
             newService.ID = serviceId;
