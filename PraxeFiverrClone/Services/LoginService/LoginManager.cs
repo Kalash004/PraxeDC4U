@@ -18,11 +18,12 @@ namespace LoginService
         {
             CookieManager = cookieManager;
             ServerManager = serverManager;
-
-            Initialize();
         }
 
-        private async void Initialize()
+        /// <summary>
+        /// Fetches all the data required.
+        /// </summary>
+        public async Task Fetch()
         {
             if (CookieManager != null)
             {
@@ -36,6 +37,7 @@ namespace LoginService
                     SetCurrentSession("");
                 }
             }
+            return;
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace LoginService
         {
             if (IsLoggedIn())
             {
-                throw new LoginSignupException("The user is already logged in");
+                Logout();
             }
             if (ServerManager == null)
             {
