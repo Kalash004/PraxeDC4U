@@ -4,9 +4,6 @@ using SessionService;
 
 namespace ServerManagement
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class ServerManager
     {
         private readonly DBManager dbManager = DBManager.GetInstance();
