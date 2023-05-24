@@ -16,7 +16,7 @@ namespace PraxeFiverrClone
             {
                 try
                 {
-                    return ServerSideSessionSaverService.GetInstance().GetUserFromSessionId(new SessionService.SessionTemplate_Creater.SessionId(SessionID));
+                    return ServerSideSessionSaverService.GetInstance().GetUserIdFromSessionId(new SessionId(SessionID));
                 }
                 catch(Exception ex)
                 {
@@ -45,7 +45,7 @@ namespace PraxeFiverrClone
 
             try
             {
-                string sessionID = ServerManager.LogUserInCreateSession(user).Result.Id;
+                string sessionID = ServerManager.LogUserInCreateSession(user).Id;
                 SetCurrentSession(sessionID);
             }
             catch (Exception e)
