@@ -1,0 +1,9 @@
+﻿@page "/dev/login"
+@inherits LoginTestPage;
+
+<p>Logged in: @IsLoggedIn</p>
+<button @onclick=Login>Log in</button>
+<button @onclick=Logout>Log out</button>
+
+<h3>SESSIONID: @UserContext.SessionID</h3>
+<h3>USERID: @UserContext.UserID</h3>
