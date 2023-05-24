@@ -1,9 +1,9 @@
 ﻿@page "/user/edit/{PageID:int}"
 @using DataAccessLibrary;
+@using DataAccessLibrary;
 @using DataAccessLibrary.DAOS;
 @using DataTemplateLibrary.Models;
 @using SessionService;
-
 @inject CookieService.CookieManager Cookies;
 @inject ServerManagement.ServerManager ServerManager;
 @inject NavigationManager NavManager;
@@ -41,6 +41,7 @@
     private bool Listed { get; set; }
 
     private DBService service;
+    public LoginService.LoginManager LoginManager { get; set; }
 
     private void EditService()
     {
@@ -62,18 +63,20 @@
         Listed = (bool)CheckedValue;
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnAfterRender(bool firstRender)
     {
+        LoginManager = new LoginService.LoginManager(Cookies, ServerManager);
+        CheckIfOwner();
+    }
 
-        if (service.UserId != Cookies.GetSessionCookieInt("userID").Result)
-        {
-            NavManager.NavigateTo("/");
-        } 
-        else if (Cookies.GetSessionCookieInt("userID").Result.Equals(""))
+    private async void CheckIfOwner()
+    {
+        //kickes user if not signed in
+        if (LoginManager.GetUserID() != PageID)
         {
             NavManager.NavigateTo("/login");
         }
 
-        SetValues();
+        
     }
 }

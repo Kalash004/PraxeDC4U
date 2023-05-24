@@ -9,8 +9,9 @@
 
 
 <div class="block" >
-
+    <h3>@ClientUser.Name</h3>
     <br/>
+    <h3>@ClientUser.CurrentCredits K</h3>
     <a href="user/credit"><button>buy more credits</button></a>
 </div>
 <br />
@@ -21,16 +22,28 @@
 </div>
 
 @code {
-    public DBUser ClientUser { get; set; }
+    public DBUser ClientUser { get; set; } = new DBUser("","");
+    public LoginService.LoginManager LoginManager { get; set; }
 
-    protected async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync(){}
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        LoginManager = new LoginService.LoginManager(Cookies, ServerManager);
+        CheckLoggedIn();
+    }
+
+    private async void CheckLoggedIn()
     {
         //kickes user if not signed in
-        if (Cookies.GetSessionCookieInt("userID").Result.Equals(""))
+        if (!await LoginManager.IsLoggedIn())
         {
             NavManager.NavigateTo("/login");
+        } else {
+            ClientUser = ServerManager.GetUserBySessionId(new SessionService.SessionTemplate_Creater.SessionId(LoginManager.SessionID));
+            StateHasChanged();
         }
-
     }
+
 }
 
