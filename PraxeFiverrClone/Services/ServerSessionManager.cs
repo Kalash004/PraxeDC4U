@@ -25,6 +25,11 @@ namespace SessionService
 		{
 		}
 
+		/// <summary>
+		/// Generates new session and adds it to server.
+		/// </summary>
+		/// <param name="userId">The id of the user.</param>
+		/// <returns>The newly generated session id.</returns>
 		public string GenerateNewSession(int userId)
 		{
 			string sessionId = GenerateSessionId(userId);
@@ -32,28 +37,41 @@ namespace SessionService
 			return sessionId;
 		}
 		
+		//Adds a session to the server.
         private void AddSession(string sessionId, int userId)
         {
             currentSessions.Add(sessionId, userId);
         }
-   
+		//Removes session from the server.
         public void RemoveSession(string sessionId)
 		{
 			currentSessions.Remove(sessionId);
 
         }
-		
+		/// <summary>
+		/// Returns user id from sessionId
+		/// </summary>
+		/// <param name="sessionId">The id of the session.</param>
+		/// <exception cref="Exception"></exception>
 		public int GetUserIdFromSessionId(string sessionId)
 		{
 			if (SessionExists(sessionId))
 			{
 				return currentSessions[sessionId];
 			}
-			else throw new Exception($"Session id: \"{sessionId}\" doesnt exist");
+			return -1;
 		}
 
+		/// <summary>
+		/// Checks whether session with specific id exist on the server.
+		/// </summary>
 		public bool SessionExists(string sessionId)
 		{
+			if (string.IsNullOrEmpty(sessionId))
+			{
+				return false;
+			}
+
 			return currentSessions.ContainsKey(sessionId);
 		}
 
