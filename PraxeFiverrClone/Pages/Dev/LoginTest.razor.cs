@@ -20,12 +20,12 @@ namespace PraxeFiverrClone.Pages.Dev
                 {
                     return;
                 }
-
+                
                 StateHasChanged();
             }
         }
 
-        public async void Login()
+        public void Login()
         {
             if(LoginManager == null)
             {
