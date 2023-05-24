@@ -21,8 +21,6 @@ namespace PraxeFiverrClone.Pages.Dev
                     return;
                 }
 
-                SessionID = LoginManager.SessionID;
-                UserID = LoginManager.GetUserID();
                 StateHasChanged();
             }
         }
@@ -36,7 +34,7 @@ namespace PraxeFiverrClone.Pages.Dev
 
             DBUser user = new("Admin", "Admin");
             try{
-                await LoginManager.Login(user);
+                LoginManager.Login(user);
             }
             catch(LoginSignupException e)
             {
