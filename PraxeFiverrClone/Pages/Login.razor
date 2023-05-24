@@ -3,8 +3,8 @@
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
 @using ServerManagement;
-@inject CookieService.CookieManager Cookies;
-@inject ServerManager ServerManager;
+@using LoginService;
+@inject LoginManager loginManager;
 @inject NavigationManager NavManager;
 
 <h3>Login</h3>
@@ -38,8 +38,7 @@
         try
         {
             DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
-            LoginService.LoginManager LoginManager = new LoginService.LoginManager(Cookies, ServerManager);
-            LoginManager.Login(user);
+            loginManager.Login(user);
         } 
         catch (Exception e) {
 
