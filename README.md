@@ -8,7 +8,7 @@ the development was looked after and lead by peoject manager.
 
 Project development team : 
 
-    - Client side : Ondřej Kacírek, Maxwell Olsbro
+    - Client side : Ondřej Kačírek, Maxwell Olsbro
 
     - Database development : Anton Kalashnikov
     - Backend : Anton Kalashnikov
