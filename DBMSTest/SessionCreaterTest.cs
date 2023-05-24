@@ -8,6 +8,7 @@ using DataTemplateLibrary;
 using DataTemplateLibrary.Models;
 using SessionService;
 using ServerManagement;
+using SessionService.SessionTemplate_Creater;
 
 namespace Tests
 {
@@ -26,10 +27,11 @@ namespace Tests
             DBUser user = new DBUser("Admin", "Admin");
             ServerManager manager = new ServerManager();
             // Act
-            var data_from_db = manager.LogUserInCreateSession(user);
-            var user_from_runtime_id = ServerSideSessionSaverService.GetInstance().GetUserFromSessionId(data_from_db.Result);
+            SessionId sessionId = manager.LogUserInCreateSession(user);
+            var user_from_runtime_id = ServerSideSessionSaverService.GetInstance().GetUserIdFromSessionId(sessionId);
+            var user_from_db_id = manager.GetUserByName("Admin").ID;
             // Assert
-            Assert.AreEqual(user_from_runtime_id, data_from_db.Message.ID);
+            Assert.AreEqual(user_from_runtime_id, user_from_db_id);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace DataTemplateLibrary.Models
         private int sendingUserId;
         private DateTime dateOfTransaction;
         private int amount;
-        private int serviceId;
+        private int? serviceId;
 
         public DBTransaction(int recievingUserId, int sendingUserId, DateTime dateOfTransaction, int amount, int serviceId)
         {
@@ -33,12 +33,20 @@ namespace DataTemplateLibrary.Models
             Amount = amount;
             ServiceId = serviceId;
         }
+        public DBTransaction(int recievingUserId, int sendingUserId, DateTime dateOfTransaction, int amount, int? serviceId)
+        {
+            RecievingUserId = recievingUserId;
+            SendingUserId = sendingUserId;
+            DateOfTransaction = dateOfTransaction;
+            Amount = amount;
+            ServiceId = serviceId;
+        }
 
         public int ID { get => id; set => id = value; }
         public int RecievingUserId { get => recievingUserId; set => recievingUserId = value; }
         public int SendingUserId { get => sendingUserId; set => sendingUserId = value; }
         public DateTime DateOfTransaction { get => dateOfTransaction; set => dateOfTransaction = value; }
         public int Amount { get => amount; set => amount = value; }
-        public int ServiceId { get => serviceId; set => serviceId = value; }
+        public int? ServiceId { get => serviceId; set => serviceId = value; }
     }
 }

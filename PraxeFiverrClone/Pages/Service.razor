@@ -1,0 +1,20 @@
+﻿@page "/service/{PageID:int}"
+@using DataAccessLibrary;
+@using DataAccessLibrary.DAOS;
+@using DataTemplateLibrary.Models;
+@using SessionService;
+@inject NavigationManager NavManager;
+
+<h3>@service.ServiceName</h3>
+<h2>@service.CurrentPrice ₭</h2>
+<p>@service.LongDescription</p>
+<br />
+<p>created on @service.Created.ToString() by /TODO: add name</p>
+
+@code {
+    [Parameter]
+    public int PageID { get; set; }
+
+    private DBService service;
+
+}

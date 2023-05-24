@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccessLibrary.DAOS;
 using DataAccessLibrary.DBChildManagers;
 using DataTemplateLibrary.Models;
+using Org.BouncyCastle.Asn1.Crmf;
 using Org.BouncyCastle.Security;
 
 namespace DataAccessLibrary
@@ -20,6 +22,7 @@ namespace DataAccessLibrary
 
         private readonly DBUserManager userManager = new();
         private readonly DBServiceManager serviceManager = new();
+        private readonly DBTransactionManager transManager = new();
 
         public static DBManager GetInstance()
         {
@@ -28,6 +31,11 @@ namespace DataAccessLibrary
                 instance = new DBManager();
             }
             return instance;
+        }
+
+        public DBUser GetUserByName(string name)
+        {
+            return userManager.GetUserByName(name);
         }
 
         /// <summary>
@@ -57,12 +65,12 @@ namespace DataAccessLibrary
         /// </summary>
         /// <param name="user">Hypothetical user to check he exists in the database and if password is same</param>
         /// <returns>True in result if user exists and credentials are right, User from database.</returns>
-        public ReturnData<bool, DBUser?> LogUserIn(DBUser user)
+        public DBUser? LogUserIn(DBUser user)
         {
             var data = userManager.LogUserIn(user);
-            var user_from_db = data.Result;
-            if (user_from_db != null) return new ReturnData<bool, DBUser?>(true, user_from_db);
-            else return new ReturnData<bool, DBUser?>(false, null);
+            var user_from_db = data;
+            if (user_from_db == null) throw new NullReferenceException("User doesnt exist in the database");
+            return user_from_db;
         }
 
         /// <summary>
@@ -76,7 +84,6 @@ namespace DataAccessLibrary
             service.UserId = userId;
             return serviceManager.CreateService(service).Result;
         }
-
 
         public DBService? GetServiceFromDB(int userId, int serviceId)
         {
@@ -92,6 +99,50 @@ namespace DataAccessLibrary
         public List<DBService?> GetAllUserServices(int userId)
         {
             return serviceManager.GetAllServiceByUser(userId);
+        }
+
+        public bool CreateTransaction(DBTransaction transaction, int senderId, int recieverId, int amount)
+        {
+            return transManager.CreateTransaction(transaction, senderId, recieverId, amount);
+        }
+
+        public List<DBTransaction> ReadTransactionsByUserId(int userId)
+        {
+            return transManager.ReadTransactionsByUserId(userId);
+        }
+
+        public List<DBTransaction> ReadTransactionsByServiceId(int serviceId)
+        {
+            return transManager.ReadTransactionsByServiceId(serviceId);
+        }
+
+        public bool UserExists(int userId)
+        {
+            return userManager.UserExists(userId);
+        }
+
+        public DBUser GetUser(int userId)
+        {
+            return userManager.GetUserById(userId);
+        }
+
+        public void UpdateUser(int userId, DBUser newUserData)
+        {
+            userManager.UpdateUser(userId, newUserData);
+        }
+
+        public List<DBService?> GetAllServices()
+        {
+            return serviceManager.GetAllServices();
+        }
+
+        public DBUser? AddCreditsToUser(int userId, int amount)
+        {
+            DBUser? admin = userManager.GetUserByName("Admin");
+            // FIXME: If enough time find a better way to send transactions without admin and etc. Might need to revamp the DB.
+            if (admin == null) throw new Exception("Admin doesnt exist in the database, cant complete the transaction");
+            if (!transManager.AddCreditToUser(userId, admin.ID, amount)) throw new Exception("Wasnt able to add credits to user, problem with database");
+            return userManager.GetUserById(userId);
         }
 
     }

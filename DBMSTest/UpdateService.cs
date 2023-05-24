@@ -30,7 +30,7 @@ namespace Tests
             DBService service = new DBService(user.ID, "test", 0, DateOnly.Parse("2023-05-18"), null, true, "testingtesting", null, null,false);
             DBService updating_to = new DBService(user.ID, "updatedtest", 10, DateOnly.Parse("2000-01-01"), null, true, "updatedtest", null, null,false);
             // Act
-            var id = manager.LogUserInCreateSession(user).Result;
+            var id = manager.LogUserInCreateSession(user);
             DBService service_from_db = manager.CreateService(id,service);
             manager.UpdateService(id, service_from_db.ID, updating_to);
             updating_to.ID = service_from_db.ID;
