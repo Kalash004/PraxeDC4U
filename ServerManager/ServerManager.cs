@@ -50,17 +50,14 @@ namespace ServerManagement
             return dbManager.GetAllUserServices(sessionManager.GetUserIdFromSessionId(sessionId));
         }
 
-        /// <summary>
-        /// Gets concrete service from db using session id and service id
-        /// </summary>
-        /// <param name="sessionId">Session id of the user</param>
-        /// <param name="serviceId">ID of service from db</param>
-        /// <returns>One service from db</returns>
-        /// <exception cref="Exception">If no session was found</exception>
-        public DBService? GetServiceFromDB(SessionId sessionId, int serviceId)
+        public DBService? GetService(SessionId sessionId, int serviceId)
         {
             CheckSessionExistance(sessionId);
             return dbManager.GetServiceFromDB(sessionManager.GetUserIdFromSessionId(sessionId), serviceId);
+        }
+        public DBService? GetService(int serviceId)
+        {
+            return dbManager.GetServiceFromDB(serviceId);
         }
 
         /// <summary>
@@ -114,7 +111,7 @@ namespace ServerManagement
         /// <param name="sessionId">User session id</param>
         /// <param name="amount">Amount of buying</param>
         /// <returns></returns>
-        public DBUser? BuyCredits(SessionId sessionId,int amount) 
+        public DBUser? BuyCredits(SessionId sessionId, int amount)
         {
             CheckSessionExistance(sessionId);
             int userId = sessionManager.GetUserIdFromSessionId(sessionId);
@@ -125,21 +122,22 @@ namespace ServerManagement
 
         // Methods that work with user :
 
+        public DBUser GetUserByName(string name)
+        {
+           return dbManager.GetUserByName(name);
+        }
+
         /// <summary>
         /// Checks if user exists and credentials are right, asks for a new session id and puts it into the session manager
         /// </summary>
         /// <param name="user">Hypothetical user to check if the credentials are right</param>
         /// <returns>Session id in Result and User from database in Message</returns>
         /// <exception cref="Exception"></exception>
-        public ReturnData<SessionId, DBUser> LogUserInCreateSession(DBUser user)
+        public SessionId LogUserInCreateSession(DBUser user)
         {
-            var returned_user_data = dbManager.LogUserIn(user);
-            if (returned_user_data.Result)
-            {
-                var sessionId = sessionManager.AddSession(returned_user_data.Message, returned_user_data.Message.ID);
-                return new ReturnData<SessionId, DBUser>(sessionId, returned_user_data.Message);
-            }
-            else throw new Exception("User wasnt found in the database");
+            DBUser returned_user_data = dbManager.LogUserIn(user);
+            var sessionId = sessionManager.AddSession(returned_user_data, returned_user_data.ID);
+            return sessionId;
         }
 
         /// <summary>

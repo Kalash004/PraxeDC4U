@@ -23,17 +23,16 @@ namespace Tests
             // Arrange
             ServerManager manager = new();
             DBUser user = new DBUser("1455980865", "565440666");
-            ReturnData<SessionId, DBUser> data;
+            SessionId sessionId;
             try
             {
-                data = manager.LogUserInCreateSession(user);
+                sessionId = manager.LogUserInCreateSession(user);
             }
             catch (NullReferenceException e)
             {
                 user = manager.SingUpUser(user);
-                data = manager.LogUserInCreateSession(user);
+                sessionId = manager.LogUserInCreateSession(user);
             }
-            SessionId sessionId = data.Result;
             // Act
             List<DBService?> services;
             DBService concrete_service;

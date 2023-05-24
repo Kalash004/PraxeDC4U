@@ -33,6 +33,11 @@ namespace DataAccessLibrary
             return instance;
         }
 
+        public DBUser GetUserByName(string name)
+        {
+            return userManager.GetUserByName(name);
+        }
+
         /// <summary>
         /// Saves user to database and creates and retrievs his id
         /// </summary>
@@ -60,12 +65,12 @@ namespace DataAccessLibrary
         /// </summary>
         /// <param name="user">Hypothetical user to check he exists in the database and if password is same</param>
         /// <returns>True in result if user exists and credentials are right, User from database.</returns>
-        public ReturnData<bool, DBUser?> LogUserIn(DBUser user)
+        public DBUser? LogUserIn(DBUser user)
         {
             var data = userManager.LogUserIn(user);
-            var user_from_db = data.Result;
-            if (user_from_db != null) return new ReturnData<bool, DBUser?>(true, user_from_db);
-            else return new ReturnData<bool, DBUser?>(false, null);
+            var user_from_db = data;
+            if (user_from_db == null) throw new NullReferenceException("User doesnt exist in the database");
+            return user_from_db;
         }
 
         /// <summary>
@@ -83,6 +88,11 @@ namespace DataAccessLibrary
         public DBService? GetServiceFromDB(int userId, int serviceId)
         {
             return serviceManager.GetOneServiceByUserIdAndServiceId(userId, serviceId);
+        }
+
+        public DBService? GetServiceFromDB(int serviceId)
+        {
+            return serviceManager.GetService(serviceId);
         }
 
         public void UpdateService(int serviceId, DBService updatedService)
@@ -139,5 +149,6 @@ namespace DataAccessLibrary
             if (!transManager.AddCreditToUser(userId, admin.ID, amount)) throw new Exception("Wasnt able to add credits to user, problem with database");
             return userManager.GetUserById(userId);
         }
+
     }
 }

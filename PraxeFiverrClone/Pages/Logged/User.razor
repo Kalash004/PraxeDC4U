@@ -3,12 +3,14 @@
 @using DataAccessLibrary.DAOS;
 @using DataTemplateLibrary.Models;
 @using SessionService;
-@inject DBManager dbManager;
+@inject CookieService.CookieManager Cookies;
+@inject ServerManagement.ServerManager ServerManager;
 @inject NavigationManager NavManager;
 
 
 <div class="block" >
 
+    <br/>
     <a href="user/credit"><button>buy more credits</button></a>
 </div>
 <br />
@@ -19,10 +21,16 @@
 </div>
 
 @code {
+    public DBUser ClientUser { get; set; }
 
     protected async Task OnInitializedAsync()
     {
         //kickes user if not signed in
+        if (Cookies.GetSessionCookieInt("userID").Result.Equals(""))
+        {
+            NavManager.NavigateTo("/login");
+        }
+
     }
 }
 

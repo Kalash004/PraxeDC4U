@@ -28,6 +28,12 @@ namespace SessionService
 			} 
 			return instance;
 		}
+
+		public void RemoveSession(string sessionId)
+		{
+			currentSessions.Remove(sessionId);
+
+        }
 		public void AddSession(SessionId sessionId,int userId)
 		{
 			currentSessions.Add(sessionId.Id, userId);

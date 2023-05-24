@@ -15,13 +15,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CookieService\CookieService.csproj" />
     <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
+    <ProjectReference Include="..\DataTemplateLibrary\DataTemplateLibrary.csproj" />
     <ProjectReference Include="..\ServerManager\ServerManagment.csproj" />
+    <ProjectReference Include="..\SessionService\SessionService.csproj" />
   </ItemGroup>
 
 </Project>
