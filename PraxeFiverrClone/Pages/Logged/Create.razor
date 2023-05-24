@@ -4,7 +4,6 @@
 @using DataTemplateLibrary.Models;
 @using CookieService;
 @using SessionService;
-@using SessionService.SessionTemplate_Creater;
 @using ServerManagement;
 @inject CookieService.CookieManager Cookies;
 @inject ServerManagement.ServerManager serverManager;
@@ -56,7 +55,7 @@
     {
         //TODO: Implement cookie system
         DBService service = new DBService(0,Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null,false);
-        serverManager.CreateService(new SessionId(await coockieManager.GetSessionCookieString("SESSION_ID")),service);
+        serverManager.CreateService(await coockieManager.GetSessionCookieString("SESSION_ID"),service);
         NavManager.NavigateTo("/");
     }
 }

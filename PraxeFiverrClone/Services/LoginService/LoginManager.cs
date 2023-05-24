@@ -2,7 +2,6 @@
 using DataTemplateLibrary.Models;
 using ServerManagement;
 using SessionService;
-using SessionService.SessionTemplate_Creater;
 
 namespace LoginService
 {
@@ -12,6 +11,8 @@ namespace LoginService
         protected ServerManager? ServerManager { get; set; }
 
         public string SessionID { get; private set; } = "";
+        public int UserID { get => GetUserID(); }
+        public bool LoggedIn { get => IsLoggedIn(); }
 
         public LoginManager(CookieManager cookieManager, ServerManager serverManager)
         {
@@ -29,31 +30,12 @@ namespace LoginService
                 if (CheckIfSessionExists(sessionID))
                 {
                     SessionID = sessionID;
-                                    }
+                }
                 else
                 {
                     SetCurrentSession("");
                 }
             }
-        }
-
-        /// <summary>
-        /// Returns current signed in user ID.
-        /// If no user is signed in the method returns -1.
-        /// </summary>
-        /// <returns>ID of a signed user.</returns>
-        public int GetUserID()
-        {
-            try
-            {
-                return ServerSideSessionSaverService.GetInstance().GetUserIdFromSessionId(new SessionId(SessionID));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            return -1;
         }
 
         /// <summary>
@@ -74,7 +56,7 @@ namespace LoginService
 
             try
             {
-                string sessionID = ServerManager.LogUserInCreateSession(user).Id;
+                string sessionID = ServerManager.LogUserInCreateSession(user);
                 SetCurrentSession(sessionID);
             }
             catch
@@ -88,15 +70,24 @@ namespace LoginService
         /// </summary>
         public void Logout()
         {
-            ServerSideSessionSaverService.GetInstance().RemoveSession(SessionID);
+            ServerSessionManager.Instance.RemoveSession(SessionID);
             SetCurrentSession("");
         }
 
-        /// <summary>
-        /// Checks whether the user is currently logged in by checking sessionID.
-        /// </summary>
-        /// <returns>If the user is logged in, returns true, false otherwise.</returns>
-        public bool IsLoggedIn()
+        private int GetUserID()
+        {
+            try
+            {
+                return ServerSessionManager.Instance.GetUserIdFromSessionId(SessionID);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return -1;
+        }
+        private bool IsLoggedIn()
         {
             bool loginStatus = false;
             if (CookieManager != null)
@@ -105,20 +96,15 @@ namespace LoginService
                 {
                     loginStatus = true;
                 }
-                else
-                {
-                    SetCurrentSession("");
-                }
             }
             return loginStatus;
         }
 
-        private static bool CheckIfSessionExists(string sessionID)
+        private static bool CheckIfSessionExists(string sessionId)
         {
-            SessionId sessionId = new(sessionID);
             try
             {
-                if (ServerSideSessionSaverService.GetInstance().SessionExists(sessionId))
+                if (ServerSessionManager.Instance.SessionExists(sessionId))
                 {
                     return true;
                 }

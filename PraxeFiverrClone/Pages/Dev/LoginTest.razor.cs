@@ -20,10 +20,7 @@ namespace PraxeFiverrClone.Pages.Dev
                 {
                     return;
                 }
-
-                SessionID = LoginManager.SessionID;
-                UserID = LoginManager.GetUserID();
-                IsLoggedIn = LoginManager.IsLoggedIn();
+                
                 StateHasChanged();
             }
         }
