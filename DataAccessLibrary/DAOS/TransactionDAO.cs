@@ -27,8 +27,13 @@ namespace DataAccessLibrary.DAOS
         private static String C_GET_BY_SERVICE_ID = $"SELECT * FROM {table_n} WHERE service_id = @service_id";
         private static String C_UPDATE_SENDER = $"UPDATE {users_table_n} SET current_credits = current_credits - @creditsSender WHERE users.id = @idSender;";
         private static String C_UPDATE_RECIEVER = $"UPDATE {users_table_n} SET current_credits = current_credits + @creditsReciever WHERE users.id = @idReciever;";
+        private static String C_GET_AMOUNT_OF_BUYS = $"SELECT COUNT(*) FROM {table_n} WHERE service_id = @service_id AND send_date > (SELECT SUBDATE(NOW(),INTERVAL @days DAY))";
+        private static String C_GET_TOTAL_MONEY = $"SELECT SUM(cost) FROM {table_n} WHERE service_id = @service_id";
+        //select sum(cost) from transactions where service_id = 114;
+
 
         private static List<string> atributeList = new List<string>() { "reciever_id", "sender_id", "send_date", "send_time", "cost", "service_id" };
+
 
         public TransactionDAO()
         {
@@ -45,6 +50,21 @@ namespace DataAccessLibrary.DAOS
             throw new NotImplementedException("This method is not supported. You cant Delete a transaction");
         }
 
+        public int GetAmountOfBuys(int service_id, int amountOfDays)
+        {
+            List<MySqlParameter> paramers = new List<MySqlParameter>()
+            {
+                new MySqlParameter("@service_id",service_id),
+                new MySqlParameter("@days",amountOfDays)
+            };
+            return GetCount(C_GET_AMOUNT_OF_BUYS,paramers);
+        }
+
+        public int GetTotalMoneyObtained(int serviceId)
+        {
+            List<MySqlParameter> parameters = new List<MySqlParameter>() { new MySqlParameter("@service_id", serviceId) };
+            return GetCount(C_GET_TOTAL_MONEY,parameters);
+        }
         public List<DBTransaction> GetAll()
         {
             return GetAll(C_READ_ALL);
@@ -125,6 +145,9 @@ namespace DataAccessLibrary.DAOS
             return Get(C_GET_BY_SERVICE_ID, new List<MySqlParameter> { new MySqlParameter("@service_id", serviceId) });
         }
 
+
+
+        [Obsolete]
         public int Create(DBTransaction element)
         {
             throw new NotImplementedException("This creation method is not supported. Use other Create method");

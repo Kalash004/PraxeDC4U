@@ -166,11 +166,41 @@ namespace ServerManagement
             return dbManager.GetAllServices();
         }
 
+        // Transaction statistics Methods : 
+
+        public int GetAmountOfBuys(EnumAnaliticsTimeSpan time, string sessionId, int serviceId)
+        {
+            CheckSessionExistance(sessionId);
+            int userId = sessionManager.GetUserIdFromSessionId(sessionId);
+            CheckServiceExists(serviceId);
+            CheckUserOwnsService(userId, serviceId);
+            return dbManager.GetAmountOfBuys(serviceId,(int)time);
+        }
+
+        public int GetTotalMoneyRecieved(string sessionId, int serviceId)
+        {
+            CheckSessionExistance(sessionId);
+            int userId = sessionManager.GetUserIdFromSessionId(sessionId);
+            CheckServiceExists(serviceId);
+            CheckUserOwnsService(userId, serviceId);
+            return dbManager.GetMoneyObtained(serviceId);
+        }
+
         // Private Methods
 
         private void CheckSessionExistance(string sessionId)
         {
             if (!sessionManager.SessionExists(sessionId)) throw new Exception($"Session with {sessionId} session id doensnt exist");
+        }
+
+        private void CheckServiceExists(int serviceId)
+        {
+            if (!dbManager.ServiceExists(serviceId)) throw new Exception("Service doesnt exist");
+        }
+
+        private void CheckUserOwnsService(int userId,int serviceId)
+        {
+            if (!dbManager.UserOwnsService(userId, serviceId)) throw new Exception("User doesnt own the service");
         }
     }
 }

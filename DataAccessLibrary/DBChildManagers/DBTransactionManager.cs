@@ -14,7 +14,7 @@ namespace DataAccessLibrary.DBChildManagers
         // create transaction
         public bool CreateTransaction(DBTransaction transaction, int senderId, int recieverId, int amount)
         {
-           return transactionDAO.Create(transaction,senderId,recieverId,amount);
+            return transactionDAO.Create(transaction, senderId, recieverId, amount);
         }
         // read transactions by user
         public List<DBTransaction> ReadTransactionsByUserId(int id)
@@ -29,10 +29,20 @@ namespace DataAccessLibrary.DBChildManagers
             return transactionDAO.GetAllByServiceId(id);
         }
 
-        internal bool AddCreditToUser(int userId,int adminId,int amount)
+        internal bool AddCreditToUser(int userId, int adminId, int amount)
         {
-            DBTransaction newTransaction = new DBTransaction(userId,adminId,DateTime.Now,amount,null);
-            return transactionDAO.Create(newTransaction,adminId,userId,0,amount);
+            DBTransaction newTransaction = new DBTransaction(userId, adminId, DateTime.Now, amount, null);
+            return transactionDAO.Create(newTransaction, adminId, userId, 0, amount);
+        }
+
+        internal int GetAmountOfBuys(int service_id, int amountOfDays)
+        {
+            return transactionDAO.GetAmountOfBuys(service_id, amountOfDays);
+        }
+
+        internal int GetTotalMoney(int service_id)
+        {
+            return transactionDAO.GetTotalMoneyObtained(service_id);
         }
     }
 }

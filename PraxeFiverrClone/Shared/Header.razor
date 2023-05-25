@@ -1,23 +1,5 @@
 ﻿@using LoginService;
 @inject LoginManager loginManger;
-
-<div class="mobile-navigation @GetMenuClass()">
-    <a href="/">
-        Home
-    </a>
-
-    @if (!loginManger.LoggedIn)
-    {
-        <a href="/login">
-            Log In
-        </a>
-        <a href="/signup" class="header-register">
-            Sign Up
-        </a>
-    }
-
-</div>
-
 <div class="header">
 
     <a class="logo" href="/"></a>
@@ -26,14 +8,42 @@
         <a href="/">
             Home
         </a>
+        <a href="/market">
+            Market
+        </a>
 
         @if (!loginManger.LoggedIn)
         {
-            <a href="/login">
-                Log in
-            </a>
             <a href="/signup" class="header-register">
                 Sign Up
+            </a>
+        }
+        else
+        {
+            <a href="/user" class="header-register">
+                Dashboard
+            </a>
+        }
+    </div>
+
+    <div class="mobile-navigation @GetMenuClass()">
+        <a href="/" @onclick=ToggleMenu>
+            Home
+        </a>
+        <a href="/market" @onclick=ToggleMenu>
+            Market
+        </a>
+
+        @if (!loginManger.LoggedIn)
+        {
+            <a href="/signup" class="header-register" @onclick=ToggleMenu>
+                Sign Up
+            </a>
+        }
+        else
+        {
+            <a href="/user" class="header-register" @onclick=ToggleMenu>
+                Dashboard
             </a>
         }
     </div>
@@ -49,10 +59,11 @@
 
 @code {
     private bool isMenuShown { get; set; }
+    private bool initialzed;
 
     protected override void OnInitialized()
     {
-        if(loginManger != null)
+        if (loginManger != null)
         {
             loginManger.OnUpdate += () =>
             {
