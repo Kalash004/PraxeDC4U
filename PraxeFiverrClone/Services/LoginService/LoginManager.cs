@@ -77,9 +77,9 @@ namespace LoginService
                 string sessionID = ServerManager.LogUserInCreateSession(user);
                 SetCurrentSession(sessionID);
             }
-            catch
+            catch (Exception e)
             {
-                throw new LoginSignupException("Failed to create session");
+                throw new LoginSignupException(e.Message);
             }
             OnLogin?.Invoke();
             OnUpdate?.Invoke();
