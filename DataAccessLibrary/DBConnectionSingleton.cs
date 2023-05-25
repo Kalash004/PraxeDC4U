@@ -38,9 +38,9 @@ namespace DataAccessLibrary
                     conn.Open();
                 }
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
-                Console.WriteLine("Wasn`t able to connect to database, try again later or call an administrator ERR: {0}", e.Message);
+               throw new Exception($"Wasn`t able to connect to database, try again later or call an administrator ERR: {e.Message}");
             }
             return conn;
         }

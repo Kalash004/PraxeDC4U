@@ -85,7 +85,7 @@ namespace ServerManagement
             DBUser user = dbManager.GetUser(userId);
             DBUser recievingUser = dbManager.GetUser(recieverId);
             if (user.CurrentCredits < transaction.Amount) throw new Exception($"User doesnt have enough credits to send the transaction {user.CurrentCredits} / {transaction.Amount}");
-            return dbManager.CreateTransaction(transaction, user.ID, recieverId, transaction.Amount);
+            return dbManager.CreateTransaction(transaction, user.ID, recieverId, Math.Abs(transaction.Amount));
         }
 
         /// <summary>
@@ -166,15 +166,24 @@ namespace ServerManagement
             return dbManager.GetAllServices();
         }
 
-        // Transaction Methods : 
+        // Transaction statistics Methods : 
 
         public int GetAmountOfBuys(EnumAnaliticsTimeSpan time, string sessionId, int serviceId)
         {
             CheckSessionExistance(sessionId);
             int userId = sessionManager.GetUserIdFromSessionId(sessionId);
-            if(!dbManager.ServiceExists(serviceId)) throw new Exception("Service doesnt exist");
-            if (!dbManager.UserOwnsService(userId, serviceId)) throw new Exception("User doesnt own the service");
+            CheckServiceExists(serviceId);
+            CheckUserOwnsService(userId, serviceId);
             return dbManager.GetAmountOfBuys(serviceId,(int)time);
+        }
+
+        public int GetTotalMoneyRecieved(string sessionId, int serviceId)
+        {
+            CheckSessionExistance(sessionId);
+            int userId = sessionManager.GetUserIdFromSessionId(sessionId);
+            CheckServiceExists(serviceId);
+            CheckUserOwnsService(userId, serviceId);
+            return dbManager.GetMoneyObtained(serviceId);
         }
 
         // Private Methods
@@ -182,6 +191,16 @@ namespace ServerManagement
         private void CheckSessionExistance(string sessionId)
         {
             if (!sessionManager.SessionExists(sessionId)) throw new Exception($"Session with {sessionId} session id doensnt exist");
+        }
+
+        private void CheckServiceExists(int serviceId)
+        {
+            if (!dbManager.ServiceExists(serviceId)) throw new Exception("Service doesnt exist");
+        }
+
+        private void CheckUserOwnsService(int userId,int serviceId)
+        {
+            if (!dbManager.UserOwnsService(userId, serviceId)) throw new Exception("User doesnt own the service");
         }
     }
 }

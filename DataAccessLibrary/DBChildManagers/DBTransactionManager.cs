@@ -39,5 +39,10 @@ namespace DataAccessLibrary.DBChildManagers
         {
             return transactionDAO.GetAmountOfBuys(service_id, amountOfDays);
         }
+
+        internal int GetTotalMoney(int service_id)
+        {
+            return transactionDAO.GetTotalMoneyObtained(service_id);
+        }
     }
 }

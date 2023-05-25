@@ -179,7 +179,7 @@ namespace DataAccessLibrary.DAOS
                 }
                 catch (Exception e1)
                 {
-                    throw e1;
+                    
                 }
             }
             return list;
