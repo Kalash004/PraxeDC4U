@@ -10,7 +10,7 @@
         </div>
 
         <div class="service-price">
-            <h3>@GetServicePriceString()</h3>
+            <h3>@ServicePrice K</h3>
         </div>
     </a>
 </div>
@@ -51,11 +51,5 @@
         {
             return Service != null ? Service.UserId : 0;
         }
-    }
-
-
-    private string GetServicePriceString()
-    {
-        return ServicePrice + "$";
     }
 }

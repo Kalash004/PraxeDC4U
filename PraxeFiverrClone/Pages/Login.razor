@@ -27,8 +27,8 @@
 <p>don't have an account?'</p> <a href="/signup">Sign up</a>
 
 @code {
-    private string UsernameValue { get; set; }
-    private string PasswordValue { get; set; }
+    private string UsernameValue { get; set; } = "";
+    private string PasswordValue { get; set; } = "";
 
     private string WarningText = "";
 
@@ -36,8 +36,7 @@
     {
         try
         {
-            DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
-            LoginManager.Login(user);
+            LoginManager.Login(UsernameValue, PasswordValue);
             NavManager.NavigateTo("/");
         } 
         catch (Exception e) {
