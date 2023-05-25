@@ -10,6 +10,20 @@ namespace LoginService
         protected CookieManager? CookieManager { get; set; }
         protected ServerManager? ServerManager { get; set; }
 
+        /// <summary>
+        /// This event is invoked when user is logged in.
+        /// This includes the first moment the user enters the website.
+        /// </summary>
+        public event Action? OnLogin;
+        /// <summary>
+        /// This event is being invoked whenever user logs out.
+        /// </summary>
+        public event Action? OnLogout;
+        /// <summary>
+        /// This event is being invoked whenever user logs in.
+        /// </summary>
+        public event Action? OnUpdate;
+
         public string SessionID { get; private set; } = "";
         public int UserID { get => GetUserID(); }
         public bool LoggedIn { get => IsLoggedIn(); }
@@ -31,12 +45,14 @@ namespace LoginService
                 if (CheckIfSessionExists(sessionID))
                 {
                     SessionID = sessionID;
+                    OnLogin?.Invoke();
                 }
                 else
                 {
                     SetCurrentSession("");
                 }
             }
+            OnUpdate?.Invoke();
             return;
         }
 
@@ -65,6 +81,8 @@ namespace LoginService
             {
                 throw new LoginSignupException("Failed to create session");
             }
+            OnLogin?.Invoke();
+            OnUpdate?.Invoke();
         }
 
         /// <summary>
@@ -74,6 +92,8 @@ namespace LoginService
         {
             ServerSessionManager.Instance.RemoveSession(SessionID);
             SetCurrentSession("");
+            OnLogout?.Invoke();
+            OnUpdate?.Invoke();
         }
 
         private int GetUserID()
