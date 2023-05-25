@@ -45,20 +45,6 @@ namespace DataAccessLibrary.DAOS
             {
                 throw;
             }
-            finally
-            {
-                try
-                {
-                    if (conn.State != ConnectionState.Closed)
-                    {
-                        conn.Close();
-                    }
-                }
-                catch (Exception e1)
-                {
-                    throw e1;
-                }
-            }
         }
         public int Create(String SQL, T obj)
         {
@@ -87,20 +73,6 @@ namespace DataAccessLibrary.DAOS
             {
                 throw;
             }
-            finally
-            {
-                try
-                {
-                    if (conn.State != ConnectionState.Closed)
-                    {
-                        conn.Close();
-                    }
-                }
-                catch (Exception e1)
-                {
-                    throw e1;
-                }
-            }
         }
         public void Delete(String SQL, int id)
         {
@@ -123,20 +95,6 @@ namespace DataAccessLibrary.DAOS
             {
                 throw;
             }
-            finally
-            {
-                try
-                {
-                    if (conn.State != ConnectionState.Closed)
-                    {
-                        conn.Close();
-                    }
-                }
-                catch (Exception e1)
-                {
-                    throw e1;
-                }
-            }
         }
         public List<T> GetAll(String SQL)
         {
@@ -153,37 +111,18 @@ namespace DataAccessLibrary.DAOS
                 using (var command = conn.CreateCommand())
                 {
                     command.CommandText = SQL;
-                    reader = command.ExecuteReader();
-                    while (reader.Read())
+                    using (reader = command.ExecuteReader())
                     {
-                        list.Add(Map(reader));
+                        while (reader.Read())
+                        {
+                            list.Add(Map(reader));
+                        }
                     }
                 }
             }
             catch (Exception e)
             {
                 throw;
-            }
-            finally
-            {
-                try
-                {
-                    if (reader != null)
-                    {
-                        if (!reader.IsClosed)
-                        {
-                            reader.Close();
-                        }
-                    }
-                    if (conn.State != ConnectionState.Closed)
-                    {
-                        conn.Close();
-                    }
-                }
-                catch (Exception e1)
-                {
-
-                }
             }
             return list;
         }
@@ -206,38 +145,19 @@ namespace DataAccessLibrary.DAOS
                     {
                         command.Parameters.Add(param);
                     }
-                    reader = command.ExecuteReader();
-                    while (reader.Read())
+                    using (reader = command.ExecuteReader())
                     {
-                        list.Add(Map(reader));
+                        while (reader.Read())
+                        {
+                            list.Add(Map(reader));
+                        }
+
                     }
                 }
             }
             catch (Exception e)
             {
                 throw;
-            }
-            finally
-            {
-                try
-                {
-                    if (reader != null)
-                    {
-                        if (!reader.IsClosed)
-                        {
-                            reader.Close();
-                        }
-                    }
-                    if (conn.State != ConnectionState.Closed)
-                    {
-                        conn.Close();
-                    }
-
-                }
-                catch (Exception e1)
-                {
-                    throw e1;
-                }
             }
             return list;
         }
@@ -256,38 +176,19 @@ namespace DataAccessLibrary.DAOS
                 {
                     command.CommandText = SQL;
                     command.Parameters.Add(new MySqlParameter("@id", id));
-                    reader = command.ExecuteReader();
-                    while (reader.Read())
+                    using (reader = command.ExecuteReader())
                     {
-                        return Map(reader);
+
+                        while (reader.Read())
+                        {
+                            return Map(reader);
+                        }
                     }
                 }
             }
             catch (Exception e)
             {
                 throw;
-            }
-            finally
-            {
-                try
-                {
-                    if (reader != null)
-                    {
-                        if (!reader.IsClosed)
-                        {
-                            reader.Close();
-                        }
-                    }
-                    if (conn.State != ConnectionState.Closed)
-                    {
-                        conn.Close();
-                    }
-
-                }
-                catch (Exception e1)
-                {
-                    throw e1;
-                }
             }
             return default(T);
         }
@@ -299,6 +200,7 @@ namespace DataAccessLibrary.DAOS
             try
             {
                 conn = DBConnectionSingleton.GetInstance();
+
                 if (conn.State == System.Data.ConnectionState.Closed)
                 {
                     conn.Open();
@@ -307,38 +209,18 @@ namespace DataAccessLibrary.DAOS
                 {
                     command.CommandText = SQL;
                     command.Parameters.Add(new MySqlParameter(tag, id));
-                    reader = command.ExecuteReader();
-                    while (reader.Read())
+                    using (reader = command.ExecuteReader())
                     {
-                        list.Add(Map(reader));
+                        while (reader.Read())
+                        {
+                            list.Add(Map(reader));
+                        }
                     }
                 }
             }
             catch (Exception e)
             {
                 throw;
-            }
-            finally
-            {
-                try
-                {
-                    if (reader != null)
-                    {
-                        if (!reader.IsClosed)
-                        {
-                            reader.Close();
-                        }
-                    }
-                    if (conn.State != ConnectionState.Closed)
-                    {
-                        conn.Close();
-                    }
-
-                }
-                catch (Exception e1)
-                {
-                    throw e1;
-                }
             }
             return list;
         }
@@ -357,37 +239,19 @@ namespace DataAccessLibrary.DAOS
                 {
                     command.CommandText = SQL;
                     command.Parameters.Add(new MySqlParameter(parameter_name, name));
-                    reader = command.ExecuteReader();
-                    while (reader.Read())
+                    using (reader = command.ExecuteReader())
                     {
-                        return Map(reader);
+
+                        while (reader.Read())
+                        {
+                            return Map(reader);
+                        }
                     }
                 }
             }
             catch (Exception e)
             {
                 throw;
-            }
-            finally
-            {
-                try
-                {
-                    if (reader != null)
-                    {
-                        if (!reader.IsClosed)
-                        {
-                            reader.Close();
-                        }
-                    }
-                    if (conn.State != ConnectionState.Closed)
-                    {
-                        conn.Close();
-                    }
-                }
-                catch (Exception e1)
-                {
-                    throw e1;
-                }
             }
             return default(T);
         }
@@ -426,10 +290,6 @@ namespace DataAccessLibrary.DAOS
                 transaction.Rollback();
                 return false;
             }
-            finally
-            {
-                conn.Close();
-            }
         }
 
         internal int GetCount(string SQL, List<MySqlParameter> parameters)
@@ -446,10 +306,12 @@ namespace DataAccessLibrary.DAOS
                 {
                     command.Parameters.Add(param);
                 }
-                reader = command.ExecuteReader();
-                if (reader == null) throw new Exception("No data was returned");
-                reader.Read();
-                return Convert.ToInt32(reader[0]);
+                using (reader = command.ExecuteReader())
+                {
+                    reader.Read();
+                    if (reader == null) throw new Exception("No data was returned");
+                    return Convert.ToInt32(reader[0]);
+                }
             }
         }
 

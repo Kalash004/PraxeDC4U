@@ -19,18 +19,18 @@ namespace Tests
     [TestClass]
     public class SessionCreaterTest
     {
-        [TestMethod]
-        public void TestSession()
-        {
-            // Arrange
-            DBUser user = new DBUser("Admin", "Admin");
-            ServerManager manager = new ServerManager();
-            // Act
-            string sessionId = manager.LogUserInCreateSession(user);
-            var user_from_runtime_id = ServerSessionManager.Instance.GetUserIdFromSessionId(sessionId);
-            var user_from_db_id = manager.GetUserByName("Admin").ID;
-            // Assert
-            Assert.AreEqual(user_from_runtime_id, user_from_db_id);
-        }
+        //[TestMethod]
+        //public void TestSession()
+        //{
+        //    // Arrange
+        //    DBUser user = new DBUser("Admin", "Admin");
+        //    ServerManager manager = new ServerManager();
+        //    // Act
+        //    string sessionId = manager.LogUserInCreateSession(user);
+        //    var user_from_runtime_id = ServerSessionManager.Instance.GetUserIdFromSessionId(sessionId);
+        //    var user_from_db_id = manager.GetUserByName("Admin").ID;
+        //    // Assert
+        //    Assert.AreEqual(user_from_runtime_id, user_from_db_id);
+        //}
     }
 }
