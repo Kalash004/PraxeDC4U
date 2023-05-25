@@ -1,8 +1,51 @@
 ﻿@page "/service/{ServiceID:int}"
+@using DataAccessLibrary
+@using DataTemplateLibrary
+@using DataTemplateLibrary.Models;
+@using ServerManagement;
+@inject CookieService.CookieManager Cookies;
+@inject ServerManager ServerManager;
+@inject NavigationManager NavManager;
+@inject LoginService.LoginManager LoginManager;
 @inherits ServicePage;
 
 <h3>@ServiceName</h3>
 <h2>@ServicePrice ₭</h2>
 <p>@ServiceDescription</p>
 <br />
-<p>created on @ServiceCreation.ToString() by /TODO: add name</p>
+<button @onclick = "buyService">buy service</button>
+<p>@WarningText</p>
+
+<p></p>
+
+@code {
+    public String WarningText{ get; set; }
+    private void buyService()
+    {
+        DBTransaction Transaction = new DBTransaction(ServiceOwner, LoginManager.UserID, DateTime.Now, ServicePrice, ServiceID);
+        if (ServerManager.CreateTransaction(LoginManager.SessionID, Transaction, ServiceOwner))
+        {
+            WarningText = "thank you for buying!";
+        }
+        else
+        {
+            WarningText = "ur poor";
+        }
+
+
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        CheckLoggedIn();
+    }
+
+    private void CheckLoggedIn()
+    {
+        //kickes user if not signed in
+        if (!LoginManager.LoggedIn)
+        {
+            NavManager.NavigateTo("/login");
+        }
+    }
+}

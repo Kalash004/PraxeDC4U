@@ -1,10 +1,9 @@
 ﻿@page "/user/edit/{PageID:int}"
 @using DataAccessLibrary;
-@using DataAccessLibrary;
 @using DataAccessLibrary.DAOS;
 @using DataTemplateLibrary.Models;
 @using SessionService;
-@inject CookieService.CookieManager Cookies;
+@inject LoginService.LoginManager LoginMnager;
 @inject ServerManagement.ServerManager ServerManager;
 @inject NavigationManager NavManager;
 
@@ -45,8 +44,8 @@
 
     private void EditService()
     {
-       // DBService NewService = new DBService(Cookies.GetSessionCookieInt("userID").Result, Name, Price, ServerManager.GetService(Cookies.GetSessionCookieString("ID").Result, PageID).Created, DateOnly.FromDateTime(DateTime.Now), Listed, Description, DescriptionLong, null, false);
-       // ServerManager.UpdateService(Cookies.GetSessionCookieString("ID").Result, PageID, NewService);
+       DBService NewService = new DBService(LoginManager.UserID, Name, Price, ServerManager.GetService(PageID).Created, DateOnly.FromDateTime(DateTime.Now), Listed, Description, DescriptionLong, null, false);
+       ServerManager.UpdateService(LoginManager.SessionID, PageID, NewService);
     }
 
     private void SetValues()
@@ -65,14 +64,18 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
-        LoginManager = new LoginService.LoginManager(Cookies, ServerManager);
         CheckIfOwner();
     }
 
-    private void CheckIfOwner()
+    private async void CheckIfOwner()
     {
         //kickes user if not signed in
-        if (LoginManager.UserID != PageID)
+        if (!LoginManager.LoggedIn)
+        {
+            NavManager.NavigateTo("/login");
+        }
+        //kicks if not owner
+        if (LoginManager.UserID != ServerManager.GetService(PageID).UserId)
         {
             NavManager.NavigateTo("/login");
         }       

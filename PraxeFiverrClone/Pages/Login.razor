@@ -6,6 +6,7 @@
 @inject CookieService.CookieManager Cookies;
 @inject ServerManager ServerManager;
 @inject NavigationManager NavManager;
+@inject LoginService.LoginManager LoginManager;
 
 <h3>Login</h3>
 <br />
@@ -38,14 +39,14 @@
         try
         {
             DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
-            LoginService.LoginManager LoginManager = new LoginService.LoginManager(Cookies, ServerManager);
             LoginManager.Login(user);
+            NavManager.NavigateTo("/");
         } 
         catch (Exception e) {
 
             WarningText = e.Message;
         }
-        NavManager.NavigateTo("/");
+        
     }
 
     private static string HashString(string text, string salt = "DC4U")
