@@ -85,7 +85,7 @@ namespace ServerManagement
             DBUser user = dbManager.GetUser(userId);
             DBUser recievingUser = dbManager.GetUser(recieverId);
             if (user.CurrentCredits < transaction.Amount) throw new Exception($"User doesnt have enough credits to send the transaction {user.CurrentCredits} / {transaction.Amount}");
-            return dbManager.CreateTransaction(transaction, user.ID, recieverId, transaction.Amount);
+            return dbManager.CreateTransaction(transaction, user.ID, recieverId, Math.Abs(transaction.Amount));
         }
 
         /// <summary>

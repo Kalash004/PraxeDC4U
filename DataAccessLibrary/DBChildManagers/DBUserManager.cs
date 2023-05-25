@@ -7,6 +7,7 @@ using DataTemplateLibrary.Models;
 using DataAccessLibrary.DAOS;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Security;
+using System.Linq.Expressions;
 
 namespace DataAccessLibrary.DBChildManagers
 {
@@ -30,7 +31,13 @@ namespace DataAccessLibrary.DBChildManagers
         public DBUser? GetUserByName(string name)
         {
             DBUser returned = usersDAO.GetByName(name);
-            if (returned.ID < 0) throw new Exception("User wasnt found in the database");
+            try
+            {
+                if (returned.ID < 0);
+            } catch (NullReferenceException e)
+            {
+                throw new Exception("User wasnt found in the database");
+            }
             return returned;
         }
 

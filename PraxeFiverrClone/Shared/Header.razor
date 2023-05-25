@@ -1,5 +1,9 @@
-﻿@using LoginService;
+﻿@using ServerManagement;
+@using DataTemplateLibrary.Models;
+@using LoginService;
+@inject ServerManager serverManager;
 @inject LoginManager loginManger;
+
 <div class="header">
 
     <a class="logo" href="/"></a>
@@ -8,11 +12,8 @@
         <a href="/">
             Home
         </a>
-        <a href="/market">
-            Market
-        </a>
 
-        @if (!loginManger.LoggedIn)
+        @if (!isLoggedIn)
         {
             <a href="/signup" class="header-register">
                 Sign Up
@@ -23,6 +24,13 @@
             <a href="/user" class="header-register">
                 Dashboard
             </a>
+            <button class="header-logout" @onclick=Logout>
+                Log out
+            </button>
+
+            <p class="header-credits">
+                @userCredits K
+            </p>
         }
     </div>
 
@@ -30,11 +38,8 @@
         <a href="/" @onclick=ToggleMenu>
             Home
         </a>
-        <a href="/market" @onclick=ToggleMenu>
-            Market
-        </a>
 
-        @if (!loginManger.LoggedIn)
+        @if (!isLoggedIn)
         {
             <a href="/signup" class="header-register" @onclick=ToggleMenu>
                 Sign Up
@@ -58,8 +63,9 @@
 <div class="header-space"></div>
 
 @code {
-    private bool isMenuShown { get; set; }
-    private bool initialzed;
+    private bool isMenuShown;
+    private bool isLoggedIn;
+    private int userCredits = 0;
 
     protected override void OnInitialized()
     {
@@ -67,9 +73,22 @@
         {
             loginManger.OnUpdate += () =>
             {
+                isLoggedIn = loginManger.LoggedIn;
+                DBUser? user = serverManager.GetUserById(loginManger.UserID);
+
+                if (user != null)
+                {
+                    userCredits = user.CurrentCredits;
+                }
+
                 StateHasChanged();
             };
         }
+    }
+
+    private void Logout()
+    {
+        loginManger?.Logout();
     }
 
     private void ToggleMenu()
