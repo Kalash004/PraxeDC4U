@@ -1,9 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
 using DataTemplateLibrary.Models;
 using ServerManagement;
+using LoginService;
+using CookieService;
+using System;
+
 
 namespace PraxeFiverrClone.Pages
 {
+    
     public partial class ServicePage : ComponentBase
     {
         [Inject] public ServerManager? ServerManager { get; set; }
@@ -54,5 +59,6 @@ namespace PraxeFiverrClone.Pages
                 return Service != null ? Service.UserId : 0;
             }
         }
+
     }
 }

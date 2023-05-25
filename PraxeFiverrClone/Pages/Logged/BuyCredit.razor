@@ -1,5 +1,7 @@
 ﻿@page "/user/credit"
 @inject NavigationManager NavManager;
+@inject ServerManagement.ServerManager ServerManager;
+@inject LoginService.LoginManager LoginManager;
 
 
 <h3>buyCredit</h3>
@@ -9,7 +11,7 @@
 <input type="text" @bind="@Ammount" @oninput="@((e) => { try{Ammount=(int)e.Value;}catch(Exception){}})" />
 <br />
 <br />
-<button>buy</button>
+<button @onclick = "BuyCredits">buy</button>
 
 
 @code {
@@ -17,8 +19,20 @@
 
     private void BuyCredits()
     {
-        //TODO: add buy logic
-
+        ServerManager.BuyCredits(LoginManager.SessionID,Ammount);
         NavManager.NavigateTo("/");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        CheckLoggedIn();
+    }
+
+    private void CheckLoggedIn()
+    {
+        if (!LoginManager.LoggedIn)
+        {
+            NavManager.NavigateTo("/login");
+        }
     }
 }

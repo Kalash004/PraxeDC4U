@@ -3,9 +3,10 @@
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
 @using ServerManagement;
-@using LoginService;
-@inject LoginManager loginManager;
+@inject CookieService.CookieManager Cookies;
+@inject ServerManager ServerManager;
 @inject NavigationManager NavManager;
+@inject LoginService.LoginManager LoginManager;
 
 <h3>Login</h3>
 <br />
@@ -36,13 +37,14 @@
         try
         {
             DBUser user = new DBUser(UsernameValue, HashString(PasswordValue));
-            loginManager.Login(user);
+            LoginManager.Login(user);
+            NavManager.NavigateTo("/");
         } 
         catch (Exception e) {
 
             WarningText = e.Message;
         }
-        NavManager.NavigateTo("/");
+        
     }
 
     private static string HashString(string text, string salt = "DC4U")

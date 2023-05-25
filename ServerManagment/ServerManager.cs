@@ -149,16 +149,10 @@ namespace ServerManagement
             return dbManager.SingUpUser(user);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public DBUser? ReadUserByName(string name)
+        public DBUser GetUserById(int userId)
         {
-            return dbManager.ReadUserByName(name);
+           return dbManager.GetUser(userId);
         }
-
 
         // Methods that work with services :
 
@@ -170,6 +164,17 @@ namespace ServerManagement
         public List<DBService?> GetAllServices()
         {
             return dbManager.GetAllServices();
+        }
+
+        // Transaction Methods : 
+
+        public int GetAmountOfBuys(EnumAnaliticsTimeSpan time, string sessionId, int serviceId)
+        {
+            CheckSessionExistance(sessionId);
+            int userId = sessionManager.GetUserIdFromSessionId(sessionId);
+            if(!dbManager.ServiceExists(serviceId)) throw new Exception("Service doesnt exist");
+            if (!dbManager.UserOwnsService(userId, serviceId)) throw new Exception("User doesnt own the service");
+            return dbManager.GetAmountOfBuys(serviceId,(int)time);
         }
 
         // Private Methods

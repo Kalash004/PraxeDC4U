@@ -27,8 +27,12 @@ namespace DataAccessLibrary.DAOS
         private static String C_GET_BY_SERVICE_ID = $"SELECT * FROM {table_n} WHERE service_id = @service_id";
         private static String C_UPDATE_SENDER = $"UPDATE {users_table_n} SET current_credits = current_credits - @creditsSender WHERE users.id = @idSender;";
         private static String C_UPDATE_RECIEVER = $"UPDATE {users_table_n} SET current_credits = current_credits + @creditsReciever WHERE users.id = @idReciever;";
+        private static String C_GET_AMOUNT_OF_BUYS = $"SELECT COUNT(*) FROM {table_n} WHERE service_id = @service_id AND send_date > (SELECT SUBDATE(NOW(),INTERVAL @days DAY))";
+        // select count(*) from transactions where service_id = 14 and send_date > (select subdate(now(),interval 366 day));
+
 
         private static List<string> atributeList = new List<string>() { "reciever_id", "sender_id", "send_date", "send_time", "cost", "service_id" };
+
 
         public TransactionDAO()
         {
@@ -43,6 +47,16 @@ namespace DataAccessLibrary.DAOS
         {
             // Delete(C_DELETE, id);
             throw new NotImplementedException("This method is not supported. You cant Delete a transaction");
+        }
+
+        public int GetAmountOfBuys(int service_id, int amountOfDays)
+        {
+            List<MySqlParameter> paramers = new List<MySqlParameter>()
+            {
+                new MySqlParameter("@service_id",service_id),
+                new MySqlParameter("@days",amountOfDays)
+            };
+            return GetCount(C_GET_AMOUNT_OF_BUYS,paramers);
         }
 
         public List<DBTransaction> GetAll()

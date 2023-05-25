@@ -2,11 +2,10 @@
 @using DataAccessLibrary;
 @using DataAccessLibrary.DAOS;
 @using DataTemplateLibrary.Models;
+@using SessionService;
+@inject LoginService.LoginManager LoginManager;
 @inject ServerManagement.ServerManager ServerManager;
 @inject NavigationManager NavManager;
-
-@using LoginService;
-@inject LoginManager loginManager;
 
 <h3>Edit Service</h3>
 
@@ -31,20 +30,6 @@
 <button @onclick="EditService">confirm changes</button>
 
 @code {
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            if (loginManager != null)
-            {
-                await loginManager.Fetch();
-                CheckIfOwner();
-                StateHasChanged();
-            }
-        }
-    }
-
     [Parameter]
     public int PageID { get; set; }
 
@@ -52,15 +37,17 @@
     private int Price { get; set; }
     private String Description { get; set; }
     private string DescriptionLong { get; set; }
-    private bool Listed { get; set; }
+    private bool Listed { get; set; } = true;
+
+    bool first = true;
 
     private DBService service;
-    public LoginService.LoginManager LoginManager { get; set; }
 
     private void EditService()
     {
-        // DBService NewService = new DBService(Cookies.GetSessionCookieInt("userID").Result, Name, Price, ServerManager.GetService(Cookies.GetSessionCookieString("ID").Result, PageID).Created, DateOnly.FromDateTime(DateTime.Now), Listed, Description, DescriptionLong, null, false);
-        // ServerManager.UpdateService(Cookies.GetSessionCookieString("ID").Result, PageID, NewService);
+        DBService NewService = new DBService(LoginManager.UserID, Name, Price, ServerManager.GetService(PageID).Created, DateOnly.FromDateTime(DateTime.Now), Listed, Description, DescriptionLong, null, false);
+        ServerManager.UpdateService(LoginManager.SessionID, PageID, NewService);
+        NavManager.NavigateTo("/user");
     }
 
     private void SetValues()
@@ -70,6 +57,7 @@
         Description = service.ShortDescription;
         DescriptionLong = service.LongDescription;
         Listed = service.IsShown;
+        StateHasChanged();
     }
 
     public void CheckboxClicked(object CheckedValue)
@@ -77,12 +65,31 @@
         Listed = (bool)CheckedValue;
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await LoginManager.Fetch();
+        CheckIfOwner();
+
+
+    }
+
     private void CheckIfOwner()
     {
         //kickes user if not signed in
-        if (LoginManager.UserID != PageID)
+        if (!LoginManager.LoggedIn)
         {
             NavManager.NavigateTo("/login");
+        }
+        //kicks if not owner
+        if (LoginManager.UserID != ServerManager.GetService(PageID).UserId)
+        {
+            NavManager.NavigateTo("/login");
+        }
+
+        if (first) {
+            service = ServerManager.GetService(PageID);
+            SetValues();
+            first = false;
         }
     }
 }

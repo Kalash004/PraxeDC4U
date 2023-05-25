@@ -17,7 +17,7 @@ namespace DataAccessLibrary.DAOS
     /// </summary>
     /// <typeparam name="T">A class into which ones save the data from database</typeparam>
     /// <creator>Anton Kalashnikov</creator>>
-    public abstract class AbstractDAO<T> where T : IBaseClass
+    internal abstract class AbstractDAO<T> where T : IBaseClass
     {
         public void Update(String SQL, T obj, int id)
         {
@@ -176,7 +176,6 @@ namespace DataAccessLibrary.DAOS
                     {
                         conn.Close();
                     }
-
                 }
                 catch (Exception e1)
                 {
@@ -416,8 +415,27 @@ namespace DataAccessLibrary.DAOS
             {
                 conn.Close();
             }
+        }
 
-
+        internal int GetCount(string SQL, List<MySqlParameter> parameters)
+        {
+            MySqlConnection? conn = null;
+            MySqlCommand command;
+            conn = DBConnectionSingleton.GetInstance();
+            if (conn.State == ConnectionState.Closed) conn.Open();
+            MySqlDataReader? reader = null;
+            using (command = conn.CreateCommand())
+            {
+                command.CommandText = SQL;
+                foreach (var param in parameters)
+                {
+                    command.Parameters.Add(param);
+                }
+                reader = command.ExecuteReader();
+                if (reader == null) throw new Exception("No data was returned");
+                reader.Read();
+                return Convert.ToInt32(reader[0]);
+            }
         }
 
         protected string SetSQLUpdate(List<string> atributes, string table_n)
@@ -470,6 +488,8 @@ namespace DataAccessLibrary.DAOS
             createSql += ");";
             return createSql;
         }
+
+
 
         protected abstract T Map(MySqlDataReader reader);
         protected abstract List<MySqlParameter> Map(T obj);

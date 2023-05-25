@@ -3,46 +3,28 @@
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
 @using CookieService;
-@using LoginService;
-@inject LoginManager loginManager;
+@using SessionService;
+@using ServerManagement;
 @inject ServerManagement.ServerManager serverManager;
+@inject LoginService.LoginManager LoginManager;
 @inject NavigationManager NavManager;
 
 <h3>Create</h3>
 
 <h3>name:</h3>
 <input type="text" @bind="@Name" @oninput="@((e) => { Name=(string)e.Value;})" />
-
 <h3>price:</h3>
 <input type="text" @bind="@Price" @oninput="@((e) => { try {Price=Int32.Parse((string)e.Value + "");}catch(Exception){}})" />
-
 <h3>short:</h3>
 <input type="text" @bind="@Description" @oninput="@((e) => { Description=(string)e.Value;})" />
-
 <h3>long:</h3>
 <input type="text" @bind="@DescriptionLong" @oninput="@((e) => { DescriptionLong=(string)e.Value;})" />
-
 <h3>unlisted </h3>
 <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }" />
 
 <button @onclick = "CreateServis">create</button>
 
 @code {
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            loginManager.Fetch();
-
-            if (loginManager.LoggedIn)
-            {
-                NavManager.NavigateTo("/login");
-            }
-
-            StateHasChanged();
-        }
-    }
 
     private string Name;
     private string Description;
@@ -55,11 +37,26 @@
         Listed = (bool)CheckedValue;
     }
 
-    public async void CreateServis()
-    {
-        //TODO: Implement cookie system
-        DBService service = new DBService(0,Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null,false);
+    public void CreateServis() {
+
+        DBService service = new DBService(LoginManager.UserID,Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null,false);
+        serverManager.CreateService(LoginManager.SessionID,service);
         NavManager.NavigateTo("/");
+        
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        CheckLoggedIn();
+    }
+
+    private void CheckLoggedIn()
+    {
+        //kickes user if not signed in
+        if (!LoginManager.LoggedIn)
+        {
+            NavManager.NavigateTo("/login");
+        }
     }
 }
 
