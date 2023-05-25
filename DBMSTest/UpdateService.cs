@@ -34,7 +34,7 @@ namespace Tests
             DBService service_from_db = manager.CreateService(id,service);
             manager.UpdateService(id, service_from_db.ID, updating_to);
             updating_to.ID = service_from_db.ID;
-            DBService updated_service_from_db = manager.GetServiceFromDB(id,updating_to.ID);
+            DBService updated_service_from_db = manager.GetService(id,updating_to.ID);
             // Assert
             Assert.AreEqual(updating_to.ServiceName,updated_service_from_db.ServiceName);
         }

@@ -5,10 +5,11 @@
 @using CookieService;
 @using SessionService;
 @using ServerManagement;
+@inject CookieService.CookieManager Cookies;
 @inject ServerManagement.ServerManager serverManager;
-@inject NavigationManager NavManager;
 @inject CookieManager coockieManager;
 @inject LoginService.LoginManager LoginManager;
+@inject CookieManager coockieManager;
 
 <h3>Create</h3>
 
@@ -39,8 +40,9 @@
     }
 
     public async void CreateServis()
-    {
         DBService service = new DBService(LoginManager.UserID,Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null,false);
+        serverManager.CreateService(await coockieManager.GetSessionCookieString("SESSION_ID"),service);
+        DBService service = new DBService(0,Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null,false);
         serverManager.CreateService(await coockieManager.GetSessionCookieString("SESSION_ID"),service);
         NavManager.NavigateTo("/");
     }

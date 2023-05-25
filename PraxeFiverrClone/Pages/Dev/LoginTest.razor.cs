@@ -8,20 +8,16 @@ namespace PraxeFiverrClone.Pages.Dev
     {
         [Inject]
         public LoginManager? LoginManager { get; set; } = null;
-        public bool IsLoggedIn { get; set; }
-        public string SessionID { get; set; } = "";
-        public int UserID { get; set; } = -1;
 
-        protected override void OnAfterRender(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if(firstRender)
+            if (firstRender)
             {
-                if (LoginManager == null)
+                if(LoginManager != null)
                 {
-                    return;
-                }
-                
-                StateHasChanged();
+                    await LoginManager.Fetch();
+                    StateHasChanged();
+                }       
             }
         }
 
@@ -41,13 +37,11 @@ namespace PraxeFiverrClone.Pages.Dev
                 Console.WriteLine(e.Message);
             }
             
-            IsLoggedIn = true;
             StateHasChanged();
         }
         public void Logout()
         {
             LoginManager?.Logout();
-            IsLoggedIn = false;
         }
     }
 }

@@ -10,6 +10,20 @@ namespace LoginService
         protected CookieManager? CookieManager { get; set; }
         protected ServerManager? ServerManager { get; set; }
 
+        /// <summary>
+        /// This event is invoked when user is logged in.
+        /// This includes the first moment the user enters the website.
+        /// </summary>
+        public event Action? OnLogin;
+        /// <summary>
+        /// This event is being invoked whenever user logs out.
+        /// </summary>
+        public event Action? OnLogout;
+        /// <summary>
+        /// This event is being invoked whenever user logs in.
+        /// </summary>
+        public event Action? OnUpdate;
+
         public string SessionID { get; private set; } = "";
         public int UserID { get => GetUserID(); }
         public bool LoggedIn { get => IsLoggedIn(); }
@@ -18,11 +32,12 @@ namespace LoginService
         {
             CookieManager = cookieManager;
             ServerManager = serverManager;
-
-            Initialize();
         }
 
-        private async void Initialize()
+        /// <summary>
+        /// Fetches all the data required.
+        /// </summary>
+        public async Task Fetch()
         {
             if (CookieManager != null)
             {
@@ -30,12 +45,15 @@ namespace LoginService
                 if (CheckIfSessionExists(sessionID))
                 {
                     SessionID = sessionID;
+                    OnLogin?.Invoke();
                 }
                 else
                 {
                     SetCurrentSession("");
                 }
             }
+            OnUpdate?.Invoke();
+            return;
         }
 
         /// <summary>
@@ -47,7 +65,7 @@ namespace LoginService
         {
             if (IsLoggedIn())
             {
-                throw new LoginSignupException("The user is already logged in");
+                Logout();
             }
             if (ServerManager == null)
             {
@@ -63,6 +81,8 @@ namespace LoginService
             {
                 throw new LoginSignupException("Failed to create session");
             }
+            OnLogin?.Invoke();
+            OnUpdate?.Invoke();
         }
 
         /// <summary>
@@ -72,6 +92,8 @@ namespace LoginService
         {
             ServerSessionManager.Instance.RemoveSession(SessionID);
             SetCurrentSession("");
+            OnLogout?.Invoke();
+            OnUpdate?.Invoke();
         }
 
         private int GetUserID()

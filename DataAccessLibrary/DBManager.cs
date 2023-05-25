@@ -37,6 +37,16 @@ namespace DataAccessLibrary
         {
             return userManager.GetUserByName(name);
         }
+        
+        public bool ServiceExists(int serviceId)
+        {
+            return serviceManager.ServiceExists(serviceId);
+        }
+
+        public bool UserOwnsService(int userId, int serviceId)
+        {
+            return (serviceManager.GetOneServiceByUserIdAndServiceId(userId,serviceId) != null);
+        }
 
         /// <summary>
         /// Saves user to database and creates and retrievs his id
@@ -150,5 +160,10 @@ namespace DataAccessLibrary
             return userManager.GetUserById(userId);
         }
 
+        public int GetBoughtAmount(int userId, int serviceId)
+        {
+            throw new NotImplementedException();
+            // TODO:
+        }
     }
 }

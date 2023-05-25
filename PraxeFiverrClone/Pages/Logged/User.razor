@@ -8,8 +8,11 @@
 @inject NavigationManager NavManager;
 @inject LoginService.LoginManager LoginManager;
 
+@using LoginService;
+@inject LoginManager loginManager;
 
-<div class="block" >
+
+<div class="block">
     <h3>@ClientUser.Name</h3>
     <br />
     <h3>@ClientUser.CurrentCredits K</h3>
@@ -34,21 +37,22 @@
 
 @code {
     public DBUser ClientUser { get; set; } = new DBUser("","");
-
+    public LoginService.LoginManager LoginManager { get; set; }
 
     protected override void OnAfterRender(bool firstRender)
     {
+        CheckLoggedIn();
         CheckLoggedIn();
     }
 
     private void CheckLoggedIn()
     {
-        //kickes user if not signed in
         if (!LoginManager.LoggedIn)
+        if (!loginManager.LoggedIn)
         {
-            NavManager.NavigateTo("/login");
         } else {
             ClientUser = ServerManager.GetUserBySessionId(LoginManager.SessionID);
+            ClientUser = ServerManager.GetUserBySessionId(loginManager.SessionID);
             StateHasChanged();
         }
     }

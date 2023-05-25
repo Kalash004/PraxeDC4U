@@ -24,10 +24,10 @@
 <h3>unlisted </h3>
 <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }" />
 
-<button @onclick = "SetValues">revert all changes</button>
+<button @onclick="SetValues">revert all changes</button>
 <br />
 
-<button @onclick = "EditService">confirm changes</button>
+<button @onclick="EditService">confirm changes</button>
 
 @code {
     [Parameter]
@@ -68,6 +68,7 @@
     }
 
     private async void CheckIfOwner()
+    private void CheckIfOwner()
     {
         //kickes user if not signed in
         if (!LoginManager.LoggedIn)
@@ -78,6 +79,6 @@
         if (LoginManager.UserID != ServerManager.GetService(PageID).UserId)
         {
             NavManager.NavigateTo("/login");
-        }       
+        }
     }
 }

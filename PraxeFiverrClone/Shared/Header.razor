@@ -1,13 +1,21 @@
-﻿<div class="mobile-navigation @GetMenuClass()">
+﻿@using LoginService;
+@inject LoginManager loginManger;
+
+<div class="mobile-navigation @GetMenuClass()">
     <a href="/">
         Home
     </a>
-    <a href="/login">
-        Log In
-    </a>
-    <a href="/signup" class="header-register">
-        Sign Up
-    </a>
+
+    @if (!loginManger.LoggedIn)
+    {
+        <a href="/login">
+            Log In
+        </a>
+        <a href="/signup" class="header-register">
+            Sign Up
+        </a>
+    }
+
 </div>
 
 <div class="header">
@@ -18,12 +26,16 @@
         <a href="/">
             Home
         </a>
-        <a href="/login">
-            Log in
-        </a>
-        <a href="/signup" class="header-register">
-            Sign Up
-        </a>
+
+        @if (!loginManger.LoggedIn)
+        {
+            <a href="/login">
+                Log in
+            </a>
+            <a href="/signup" class="header-register">
+                Sign Up
+            </a>
+        }
     </div>
 
     <button class="hamburger @GetMenuClass()" @onclick="ToggleMenu">
@@ -31,12 +43,23 @@
         <span></span>
         <span></span>
     </button>
-    
+
 </div>
 <div class="header-space"></div>
 
-@code{
+@code {
     private bool isMenuShown { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if(loginManger != null)
+        {
+            loginManger.OnUpdate += () =>
+            {
+                StateHasChanged();
+            };
+        }
+    }
 
     private void ToggleMenu()
     {
