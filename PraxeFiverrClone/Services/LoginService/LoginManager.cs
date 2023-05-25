@@ -1,7 +1,10 @@
 ﻿using CookieService;
 using DataTemplateLibrary.Models;
+using MySqlX.XDevAPI.Common;
 using ServerManagement;
 using SessionService;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace LoginService
 {
@@ -61,7 +64,7 @@ namespace LoginService
         /// </summary>
         /// <param name="user"></param>
         /// <exception cref="LoginSignupException"></exception>
-        public void Login(DBUser user)
+        public void Login(string username, string password)
         {
             if (IsLoggedIn())
             {
@@ -74,12 +77,14 @@ namespace LoginService
 
             try
             {
+                DBUser user = new(username, HashString(password + "DC4U"));
+                Console.WriteLine(user.HashedPassword);
                 string sessionID = ServerManager.LogUserInCreateSession(user);
                 SetCurrentSession(sessionID);
             }
-            catch
+            catch(Exception e)
             {
-                throw new LoginSignupException("Failed to create session");
+                throw new LoginSignupException(e.Message);
             }
             OnLogin?.Invoke();
             OnUpdate?.Invoke();
@@ -95,7 +100,7 @@ namespace LoginService
             OnLogout?.Invoke();
             OnUpdate?.Invoke();
         }
-
+    
         private int GetUserID()
         {
             try
@@ -122,6 +127,15 @@ namespace LoginService
             return loginStatus;
         }
 
+        private static string HashString(string value)
+        {
+            byte[] data = Encoding.ASCII.GetBytes(value);
+            byte[] hashedData = SHA256.Create().ComputeHash(data);
+            string hash = BitConverter
+               .ToString(hashedData)
+               .Replace("-","");
+            return hash;
+        }
         private static bool CheckIfSessionExists(string sessionId)
         {
             try
