@@ -14,8 +14,13 @@
 <p>@ServiceDescription</p>
 <br />
 <button @onclick = "buyService">buy service</button>
+
 <p>@WarningText</p>
 
+@if (WarningText == "not enought credits")
+{
+    <button @onclick="buyCredits">buy credits</button>
+}
 <p></p>
 
 @code {
@@ -23,16 +28,22 @@
     private void buyService()
     {
         DBTransaction Transaction = new DBTransaction(ServiceOwner, LoginManager.UserID, DateTime.Now, ServicePrice, ServiceID);
-        if (ServerManager.CreateTransaction(LoginManager.SessionID, Transaction, ServiceOwner))
+        try
         {
-            WarningText = "thank you for buying!";
-        }
-        else
+            if (ServerManager.CreateTransaction(LoginManager.SessionID, Transaction, ServiceOwner))
+            {
+                WarningText = "thank you for buying!";
+            }
+        } 
+        catch (Exception e)
         {
-            WarningText = "ur poor";
+            WarningText = "not enought credits";
         }
+    }
 
-
+    private void buyCredits()
+    {
+        NavManager.NavigateTo("/user/credit");
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
