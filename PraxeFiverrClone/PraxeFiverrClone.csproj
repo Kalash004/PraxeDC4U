@@ -21,6 +21,8 @@
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
     <ProjectReference Include="..\DataTemplateLibrary\DataTemplateLibrary.csproj" />
+    <ProjectReference Include="..\ServerManagment\ServerManagment.csproj" />
+    <ProjectReference Include="..\SessionServices\SessionService.csproj" />
   </ItemGroup>
 
 </Project>

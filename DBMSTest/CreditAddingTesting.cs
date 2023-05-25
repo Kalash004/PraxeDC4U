@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataTemplateLibrary.Models;
 using ServerManagement;
-using SessionService.SessionTemplate_Creater;
+using SessionService;
 
 namespace Tests
 {
@@ -21,7 +21,7 @@ namespace Tests
             DBUser user = new DBUser($"{random.Next().ToString()}:TestingAddingCredits",$"{random.Next().ToString()}",0);
             // Act
             user = manager.SingUpUser(user);
-            SessionId sessionId = manager.LogUserInCreateSession(user);
+            string sessionId = manager.LogUserInCreateSession(user);
             DBUser updatedUser = manager.BuyCredits(sessionId, 100);
             // Assert
             Assert.AreEqual(100,updatedUser.CurrentCredits);

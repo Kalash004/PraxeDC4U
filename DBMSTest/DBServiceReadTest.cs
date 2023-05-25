@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLibrary;
 using DataTemplateLibrary.Models;
-using SessionService.SessionTemplate_Creater;
+using SessionService;
 using ServerManagement;
 
 namespace Tests
@@ -23,7 +23,7 @@ namespace Tests
             // Arrange
             ServerManager manager = new();
             DBUser user = new DBUser("1455980865", "565440666");
-            SessionId sessionId;
+            string sessionId;
             try
             {
                 sessionId = manager.LogUserInCreateSession(user);
@@ -39,12 +39,12 @@ namespace Tests
             try
             {
                 services = manager.GetAllUserServices(sessionId);
-                concrete_service = manager.GetServiceFromDB(sessionId, services.First().ID);
+                concrete_service = manager.GetService(sessionId, services.First().ID);
             } catch (System.InvalidOperationException e)
             {
                 manager.CreateService(sessionId, new DBService(user.ID, "DBServiceReadTest", -1, DateOnly.FromDateTime(DateTime.Now), null, true, "DBServiceReadTest", "DBServiceReadTest", null, false));
                 services = manager.GetAllUserServices(sessionId);
-                concrete_service = manager.GetServiceFromDB(sessionId, services.First().ID);
+                concrete_service = manager.GetService(sessionId, services.First().ID);
             }
             // Assert
             Assert.IsNotNull(services);
