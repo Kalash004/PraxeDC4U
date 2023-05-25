@@ -168,9 +168,12 @@ namespace DataAccessLibrary.DAOS
             {
                 try
                 {
-                    if (!reader.IsClosed)
+                    if (reader != null)
                     {
-                        reader.Close();
+                        if (!reader.IsClosed)
+                        {
+                            reader.Close();
+                        }
                     }
                     if (conn.State != ConnectionState.Closed)
                     {
@@ -179,7 +182,7 @@ namespace DataAccessLibrary.DAOS
                 }
                 catch (Exception e1)
                 {
-                    
+
                 }
             }
             return list;
@@ -218,9 +221,12 @@ namespace DataAccessLibrary.DAOS
             {
                 try
                 {
-                    if (!reader.IsClosed)
+                    if (reader != null)
                     {
-                        reader.Close();
+                        if (!reader.IsClosed)
+                        {
+                            reader.Close();
+                        }
                     }
                     if (conn.State != ConnectionState.Closed)
                     {
@@ -265,9 +271,12 @@ namespace DataAccessLibrary.DAOS
             {
                 try
                 {
-                    if (!reader.IsClosed)
+                    if (reader != null)
                     {
-                        reader.Close();
+                        if (!reader.IsClosed)
+                        {
+                            reader.Close();
+                        }
                     }
                     if (conn.State != ConnectionState.Closed)
                     {
@@ -313,9 +322,12 @@ namespace DataAccessLibrary.DAOS
             {
                 try
                 {
-                    if (!reader.IsClosed)
+                    if (reader != null)
                     {
-                        reader.Close();
+                        if (!reader.IsClosed)
+                        {
+                            reader.Close();
+                        }
                     }
                     if (conn.State != ConnectionState.Closed)
                     {
@@ -360,9 +372,12 @@ namespace DataAccessLibrary.DAOS
             {
                 try
                 {
-                    if (!reader.IsClosed)
+                    if (reader != null)
                     {
-                        reader.Close();
+                        if (!reader.IsClosed)
+                        {
+                            reader.Close();
+                        }
                     }
                     if (conn.State != ConnectionState.Closed)
                     {
