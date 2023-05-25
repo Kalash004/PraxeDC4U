@@ -35,8 +35,9 @@
 
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        await LoginManager.Fetch();
         CheckLoggedIn();
     }
 
@@ -46,6 +47,11 @@
         if (!LoginManager.LoggedIn)
         {
             NavManager.NavigateTo("/login");
+        }
+        //if owner redirects to the edit page
+        if (ServiceOwner == LoginManager.UserID)
+        {
+            NavManager.NavigateTo("/user/edit/" + ServiceID);
         }
     }
 }

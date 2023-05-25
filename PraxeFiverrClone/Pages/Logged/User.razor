@@ -8,10 +8,6 @@
 @inject NavigationManager NavManager;
 @inject LoginService.LoginManager LoginManager;
 
-@using LoginService;
-@inject LoginManager loginManager;
-
-
 <div class="block">
     <h3>@ClientUser.Name</h3>
     <br />
@@ -37,22 +33,19 @@
 
 @code {
     public DBUser ClientUser { get; set; } = new DBUser("","");
-    public LoginService.LoginManager LoginManager { get; set; }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        CheckLoggedIn();
-        CheckLoggedIn();
-    }
-
-    private void CheckLoggedIn()
-    {
+        await LoginManager.Fetch();
+        
         if (!LoginManager.LoggedIn)
-        if (!loginManager.LoggedIn)
+        {          
+            NavManager.NavigateTo("/login");
+
+        }
+        else
         {
-        } else {
             ClientUser = ServerManager.GetUserBySessionId(LoginManager.SessionID);
-            ClientUser = ServerManager.GetUserBySessionId(loginManager.SessionID);
             StateHasChanged();
         }
     }

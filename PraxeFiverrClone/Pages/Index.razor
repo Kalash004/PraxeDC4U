@@ -10,15 +10,5 @@
 
 <PageTitle>Home</PageTitle>
 <div class="page">
-    <Services />
-
+    <Services />  
 </div>
-
-@code {
-    bool logged = false;
-    public void Login()
-    {
-        logged = loginManager.LoggedIn;
-        StateHasChanged();
-    }
-}
