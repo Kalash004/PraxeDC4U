@@ -55,5 +55,9 @@ namespace DataAccessLibrary.DBChildManagers
             serviceDAO.Save(newService);
         }
 
+        internal bool ServiceExists(int serviceId)
+        {
+           return (serviceDAO.GetByID(serviceId) != null);
+        }
     }
 }
