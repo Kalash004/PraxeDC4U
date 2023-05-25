@@ -149,16 +149,10 @@ namespace ServerManagement
             return dbManager.SingUpUser(user);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public DBUser? ReadUserByName(string name)
+        public DBUser GetUserById(int userId)
         {
-            return dbManager.ReadUserByName(name);
+           return dbManager.GetUser(userId);
         }
-
 
         // Methods that work with services :
 
