@@ -1,4 +1,5 @@
 using CookieService;
+using LoginService;
 using ServerManagement;
 
 namespace PraxeFiverrClone
@@ -14,6 +15,7 @@ namespace PraxeFiverrClone
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<ServerManager>();
             builder.Services.AddScoped<CookieManager>();
+            builder.Services.AddScoped<LoginManager>();
             var app = builder.Build();
             
             // Configure the HTTP request pipeline.

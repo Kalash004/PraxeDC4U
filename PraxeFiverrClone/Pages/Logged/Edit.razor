@@ -2,11 +2,11 @@
 @using DataAccessLibrary;
 @using DataAccessLibrary.DAOS;
 @using DataTemplateLibrary.Models;
-@using SessionService;
-
-@inject CookieService.CookieManager Cookies;
 @inject ServerManagement.ServerManager ServerManager;
 @inject NavigationManager NavManager;
+
+@using LoginService;
+@inject LoginManager loginManager;
 
 <h3>Edit Service</h3>
 
@@ -25,12 +25,26 @@
 <h3>unlisted </h3>
 <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }" />
 
-<button @onclick = "SetValues">revert all changes</button>
+<button @onclick="SetValues">revert all changes</button>
 <br />
 
-<button @onclick = "EditService">confirm changes</button>
+<button @onclick="EditService">confirm changes</button>
 
 @code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (loginManager != null)
+            {
+                await loginManager.Fetch();
+                CheckIfOwner();
+                StateHasChanged();
+            }
+        }
+    }
+
     [Parameter]
     public int PageID { get; set; }
 
@@ -41,11 +55,12 @@
     private bool Listed { get; set; }
 
     private DBService service;
+    public LoginService.LoginManager LoginManager { get; set; }
 
     private void EditService()
     {
-        DBService NewService = new DBService(Cookies.GetSessionCookieInt("userID").Result, Name, Price, ServerManager.GetServiceFromDB(new SessionService.SessionTemplate_Creater.SessionId(Cookies.GetSessionCookieString("ID").Result), PageID).Created, DateOnly.FromDateTime(DateTime.Now), Listed, Description, DescriptionLong, null, false);
-        ServerManager.UpdateService(new SessionService.SessionTemplate_Creater.SessionId(Cookies.GetSessionCookieString("ID").Result), PageID, NewService);
+        // DBService NewService = new DBService(Cookies.GetSessionCookieInt("userID").Result, Name, Price, ServerManager.GetService(Cookies.GetSessionCookieString("ID").Result, PageID).Created, DateOnly.FromDateTime(DateTime.Now), Listed, Description, DescriptionLong, null, false);
+        // ServerManager.UpdateService(Cookies.GetSessionCookieString("ID").Result, PageID, NewService);
     }
 
     private void SetValues()
@@ -62,18 +77,12 @@
         Listed = (bool)CheckedValue;
     }
 
-    protected override async Task OnInitializedAsync()
+    private void CheckIfOwner()
     {
-
-        if (service.UserId != Cookies.GetSessionCookieInt("userID").Result)
-        {
-            NavManager.NavigateTo("/");
-        } 
-        else if (Cookies.GetSessionCookieInt("userID").Result.Equals(""))
+        //kickes user if not signed in
+        if (LoginManager.UserID != PageID)
         {
             NavManager.NavigateTo("/login");
         }
-
-        SetValues();
     }
 }

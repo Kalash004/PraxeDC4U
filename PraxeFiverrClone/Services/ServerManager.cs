@@ -4,9 +4,6 @@ using SessionService;
 
 namespace ServerManagement
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class ServerManager
     {
         private readonly DBManager dbManager = DBManager.GetInstance();
@@ -15,26 +12,7 @@ namespace ServerManagement
 
         // Methods that work with session id as an atribute:
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sessionId"></param>
-        /// <param name="serviceId"></param>
-        /// <param name="timeSpan"></param>
-        /// <returns></returns>
-        public int GetBoughtAmountFromService(SessionId sessionId, int serviceId,EnumAnaliticsTimeSpan timeSpan)
-        {
-            CheckSessionExistance(sessionId);
-            int userId = sessionManager.GetUserIdFromSessionId(sessionId);
-            dbManager.ServiceExists(serviceId);
-            // check if user owns the service
-            dbManager.UserOwnsService(userId, serviceId);
-            return dbManager.GetBoughtAmount(userId, serviceId);
-        }
-
-        public DBUser GetUserBySessionId(SessionId sessionId)
-
+        public DBUser GetUserBySessionId(string sessionId)
         {
             CheckSessionExistance(sessionId);
             return dbManager.GetUser(sessionManager.GetUserIdFromSessionId(sessionId));
@@ -139,11 +117,6 @@ namespace ServerManagement
 
         // Methods that work with user :
 
-        public DBUser GetUserById(int id)
-        {
-            return dbManager.GetUser(id);
-        }
-
         public DBUser GetUserByName(string name)
         {
            return dbManager.GetUserByName(name);
@@ -205,8 +178,5 @@ namespace ServerManagement
         {
             if (!sessionManager.SessionExists(sessionId)) throw new Exception($"Session with {sessionId} session id doensnt exist");
         }
-
-        
-
     }
 }

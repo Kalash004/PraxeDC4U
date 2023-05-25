@@ -1,0 +1,58 @@
+﻿@page "/user"
+@using DataAccessLibrary;
+@using DataAccessLibrary.DAOS;
+@using DataTemplateLibrary.Models;
+@using SessionService;
+@inject CookieService.CookieManager Cookies;
+@inject ServerManagement.ServerManager ServerManager;
+@inject NavigationManager NavManager;
+
+@using LoginService;
+@inject LoginManager loginManager;
+
+
+<div class="block">
+    <h3>@ClientUser.Name</h3>
+    <br />
+    <h3>@ClientUser.CurrentCredits K</h3>
+    <a href="user/credit"><button>buy more credits</button></a>
+</div>
+<br />
+
+<a href="user/create"><button>create new service</button></a>
+
+<div class="services-wrapper">
+</div>
+
+@code {
+    public DBUser ClientUser { get; set; } = new DBUser("", "");
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (loginManager != null)
+            {
+                await loginManager.Fetch();
+                CheckLoggedIn();
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void CheckLoggedIn()
+    {
+        //kickes user if not signed in
+        if (!loginManager.LoggedIn)
+        {
+            NavManager.NavigateTo("/login");
+        }
+        else
+        {
+            ClientUser = ServerManager.GetUserBySessionId(loginManager.SessionID);
+            StateHasChanged();
+        }
+    }
+
+}
+

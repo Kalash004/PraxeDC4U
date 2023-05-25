@@ -1,7 +1,7 @@
 ﻿@using DataTemplateLibrary.Models;
 
 <div class="service-wrapper">
-    <a href="/service/@service.ID">
+    <a href="/service/@ServiceID">
 
         <div>
             <h3>@ServiceName</h3>
@@ -18,31 +18,38 @@
 @code {
 
     [Parameter]
-    public DBService? service { get; set; }
+    public DBService? Service { get; set; }
 
+    private int ServiceID
+    {
+        get
+        {
+            return Service != null ? Service.ID : 0;
+        }
+    }
     private string ServiceName { 
         get {
-            return service != null ? service.ServiceName: ""; ;
+            return Service != null ? Service.ServiceName: ""; ;
         }
     }
     private string ServiceDescription
     {
         get
         {
-            return service != null ? service.ShortDescription : "";
+            return Service != null ? Service.ShortDescription : "";
         }
     }
     private int ServicePrice
     {
         get
         {
-            return service != null ? service.CurrentPrice : 0;
+            return Service != null ? Service.CurrentPrice : 0;
         }
     }
     private int ServiceOwner { 
         get
         {
-            return service != null ? service.UserId : 0;
+            return Service != null ? Service.UserId : 0;
         }
     }
 

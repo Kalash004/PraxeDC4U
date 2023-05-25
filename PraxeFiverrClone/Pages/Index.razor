@@ -1,11 +1,36 @@
 ﻿@page "/"
+@using DataAccessLibrary
+@using DataTemplateLibrary
+@using DataTemplateLibrary.Models;
+@using ServerManagement;
+@using LoginService;
 @inject NavigationManager NavManager;
+@inject ServerManager ServerManager;
+@inject LoginManager loginManager;
 
 <PageTitle>Home</PageTitle>
-
 <div class="page">
     <h1>Hello, world!</h1>
-
+    <button @onclick = "Login">check</button>
+    @logged
     Welcome to your new app.
 
 </div>
+
+@code {
+    bool logged = false;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            loginManager.Fetch();
+            StateHasChanged();
+        }
+    }
+
+    public void Login()
+    {
+        logged = loginManager.LoggedIn;
+    }
+}

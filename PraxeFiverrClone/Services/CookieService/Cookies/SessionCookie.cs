@@ -2,7 +2,7 @@
 
 namespace CookieService
 {
-    internal class SessionCookie : ISessionCookie
+    internal class SessionCookie
     {
         private readonly IJSRuntime JSRuntime;
         public SessionCookie(IJSRuntime jSRuntime)

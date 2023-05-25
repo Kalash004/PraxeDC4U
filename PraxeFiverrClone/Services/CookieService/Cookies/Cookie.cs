@@ -2,7 +2,7 @@
 
 namespace CookieService
 {
-    internal class Cookie : ICookie
+    internal class Cookie
     {
         readonly IJSRuntime JSRuntime;
         string expires = "";
@@ -31,7 +31,7 @@ namespace CookieService
                 {
                     if (val[..val.IndexOf('=')].Trim().Equals(key, StringComparison.OrdinalIgnoreCase))
                     {
-                        return val.Substring(val.IndexOf('=') + 1);
+                        return val[(val.IndexOf('=') + 1)..];
                     }                
                 }                  
             }

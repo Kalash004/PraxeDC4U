@@ -1,5 +1,5 @@
-﻿using Microsoft.JSInterop;
-using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.JSInterop;
 
 namespace CookieService
 {

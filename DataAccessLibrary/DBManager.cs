@@ -100,6 +100,11 @@ namespace DataAccessLibrary
             return serviceManager.GetOneServiceByUserIdAndServiceId(userId, serviceId);
         }
 
+        public DBService? GetServiceFromDB(int serviceId)
+        {
+            return serviceManager.GetService(serviceId);
+        }
+
         public void UpdateService(int serviceId, DBService updatedService)
         {
             updatedService.ID = serviceId;

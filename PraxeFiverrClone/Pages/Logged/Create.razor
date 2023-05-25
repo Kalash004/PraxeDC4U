@@ -3,13 +3,10 @@
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
 @using CookieService;
-@using SessionService;
-@using SessionService.SessionTemplate_Creater;
-@using ServerManagement;
-@inject CookieService.CookieManager Cookies;
+@using LoginService;
+@inject LoginManager loginManager;
 @inject ServerManagement.ServerManager serverManager;
 @inject NavigationManager NavManager;
-@inject CookieManager coockieManager;
 
 <h3>Create</h3>
 
@@ -32,12 +29,18 @@
 
 @code {
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnAfterRender(bool firstRender)
     {
-        //kickes user if not signed in
-        if (Cookies.GetSessionCookieInt("userID").Equals(""))
+        if (firstRender)
         {
-            NavManager.NavigateTo("/login");
+            loginManager.Fetch();
+
+            if (loginManager.LoggedIn)
+            {
+                NavManager.NavigateTo("/login");
+            }
+
+            StateHasChanged();
         }
     }
 
@@ -56,7 +59,6 @@
     {
         //TODO: Implement cookie system
         DBService service = new DBService(0,Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null,false);
-        serverManager.CreateService(new SessionId(await coockieManager.GetSessionCookieString("SESSION_ID")),service);
         NavManager.NavigateTo("/");
     }
 }
