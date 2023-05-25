@@ -109,6 +109,7 @@ namespace ServerManagement
         public DBUser? BuyCredits(string sessionId, int amount)
         {
             CheckSessionExistance(sessionId);
+            if (amount < 1) throw new Exception("You cant buy zero or negative credits");
             int userId = sessionManager.GetUserIdFromSessionId(sessionId);
             // Money API logic (not adding)
             DBUser? updatedUser = dbManager.AddCreditsToUser(userId, amount);
