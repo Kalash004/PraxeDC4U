@@ -21,10 +21,7 @@ namespace DataAccessLibrary.DBChildManagers
 
         public ReturnData<DBUser?, string> SingUpUser(DBUser user)
         {
-            if (usersDAO.GetByName(user) != null)
-            {
-                return new ReturnData<DBUser?, string>(null, "User already exists in the database");
-            }
+            if (usersDAO.GetByName(user) != null) throw new Exception("User already exists in the database");
             int id = usersDAO.Create(user);
             user.ID = id;
             return new ReturnData<DBUser?, string>(user, "Signed up");

@@ -160,10 +160,9 @@ namespace DataAccessLibrary
             return userManager.GetUserById(userId);
         }
 
-        public int GetBoughtAmount(int userId, int serviceId)
+        public int GetAmountOfBuys(int serviceId, int days)
         {
-            throw new NotImplementedException();
-            // TODO:
+            return transManager.GetAmountOfBuys(serviceId, days);
         }
     }
 }

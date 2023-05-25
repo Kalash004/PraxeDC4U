@@ -8,8 +8,8 @@ namespace DataTemplateLibrary.Models
 {
     public enum EnumAnaliticsTimeSpan
     {
-        Day,
-        Month,
-        Year
+        Day = 1,
+        Month = 30,
+        Year = 365
     }
 }
