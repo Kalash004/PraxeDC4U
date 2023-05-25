@@ -164,5 +164,10 @@ namespace DataAccessLibrary
         {
             return transManager.GetAmountOfBuys(serviceId, days);
         }
+
+        public int GetMoneyObtained(int serviceId)
+        {
+            return transManager.GetTotalMoney(serviceId);
+        }
     }
 }
