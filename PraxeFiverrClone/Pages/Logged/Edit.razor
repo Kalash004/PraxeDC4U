@@ -7,7 +7,20 @@
 @inject ServerManagement.ServerManager ServerManager;
 @inject NavigationManager NavManager;
 
-<h3>Edit Service</h3>
+<h2>Statistics</h2>
+<label for="timeframe">select timeframe:</label>
+<select name="timeframe" id="timeframe">
+    <option @onclick = "SetDay">day</option>
+    <option @onclick="SetWeek">week</option>
+    <option @onclick="SetMonth">month</option>
+    <option @onclick="SetYear">year</option>
+</select>
+<p>number of purchases in time frame: @NumberOfBuys</p>
+<br/>
+<p>total number of credits earned: @Money</p>
+<br/>
+<br/>
+<h2>Edit Service</h2>
 
 <h3>name:</h3>
 <input type="text" @bind="@Name" @oninput="@((e) => { Name=(string)e.Value;})" />
@@ -20,9 +33,6 @@
 
 <h3>long:</h3>
 <input type="text" @bind="@DescriptionLong" @oninput="@((e) => { DescriptionLong=(string)e.Value;})" />
-
-<h3>unlisted </h3>
-<input type="checkbox" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }" />
 
 <button @onclick="SetValues">revert all changes</button>
 <br />
@@ -39,15 +49,19 @@
     private string DescriptionLong { get; set; }
     private bool Listed { get; set; } = true;
 
-    bool first = true;
-
+    private bool first = true;
     private DBService service;
+
+    private int NumberOfBuys;
+    private EnumAnaliticsTimeSpan TimeSpan = EnumAnaliticsTimeSpan.Day;
+    private int Money;
 
     private void EditService()
     {
         DBService NewService = new DBService(LoginManager.UserID, Name, Price, ServerManager.GetService(PageID).Created, DateOnly.FromDateTime(DateTime.Now), Listed, Description, DescriptionLong, null, false);
         ServerManager.UpdateService(LoginManager.SessionID, PageID, NewService);
         NavManager.NavigateTo("/user");
+
     }
 
     private void SetValues()
@@ -57,20 +71,21 @@
         Description = service.ShortDescription;
         DescriptionLong = service.LongDescription;
         Listed = service.IsShown;
+        NumberOfBuys = ServerManager.GetAmountOfBuys(TimeSpan,LoginManager.SessionID,PageID);
+        Money = ServerManager.GetTotalMoneyRecieved(LoginManager.SessionID, PageID);
         StateHasChanged();
     }
 
-    public void CheckboxClicked(object CheckedValue)
-    {
-        Listed = (bool)CheckedValue;
-    }
+    private void SetDay() { TimeSpan = EnumAnaliticsTimeSpan.Day;  }
+    private void SetWeek() { TimeSpan = EnumAnaliticsTimeSpan.Week; }
+    private void SetMonth() { TimeSpan = EnumAnaliticsTimeSpan.Month; }
+    private void SetYear() { TimeSpan = EnumAnaliticsTimeSpan.Year; }
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await LoginManager.Fetch();
         CheckIfOwner();
-
-
     }
 
     private void CheckIfOwner()
