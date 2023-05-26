@@ -64,11 +64,6 @@
 
     private void CheckLoggedIn()
     {
-        //kickes user if not signed in
-        if (!LoginManager.LoggedIn)
-        {
-            NavManager.NavigateTo("/login");
-        }
         //if owner redirects to the edit page
         if (ServiceOwner == LoginManager.UserID)
         {
