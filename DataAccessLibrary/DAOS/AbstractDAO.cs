@@ -310,7 +310,15 @@ namespace DataAccessLibrary.DAOS
                 {
                     reader.Read();
                     if (reader == null) throw new Exception("No data was returned");
-                    return Convert.ToInt32(reader[0]);
+                    int? count = null;
+                    try
+                    {
+                        count = Convert.ToInt32(reader[0]);
+                    } catch (InvalidCastException e)
+                    {
+                        count = 0;
+                    }
+                    return (int)count;
                 }
             }
         }
