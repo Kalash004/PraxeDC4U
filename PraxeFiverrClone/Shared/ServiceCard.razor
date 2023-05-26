@@ -1,11 +1,13 @@
 ﻿@using DataTemplateLibrary.Models;
+@using ServerManagement;
+@inject ServerManager serverManager;
 
 <div class="service-wrapper">
     <a href="/service/@ServiceID">
 
         <div>
             <h3>@ServiceName</h3>
-            <p>@ServiceOwner</p>
+            <p>By: @ServiceOwner</p>
             <p>@ServiceDescription</p>
         </div>
 
@@ -46,10 +48,16 @@
             return Service != null ? Service.CurrentPrice : 0;
         }
     }
-    private int ServiceOwner { 
+    private string ServiceOwner { 
         get
         {
-            return Service != null ? Service.UserId : 0;
+            if(Service == null)
+            {
+                return "";
+            }
+            DBUser? user = null;
+            user = serverManager.GetUserById(Service.UserId);
+            return user.Name;
         }
     }
 }
