@@ -21,6 +21,7 @@
 <input type="text" @bind="@DescriptionLong" @oninput="@((e) => { DescriptionLong=(string)e.Value;})" />
 <h3>unlisted </h3>
 <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }" />
+<p style="color:red;">@WarningText</p>
 
 <p style="color: red;">@WarningText</p>
 <button @onclick = "CreateServis">create</button>
@@ -32,6 +33,7 @@
     private string DescriptionLong; //500char
     private int Price;
     private bool Listed;
+    public string WarningText = "";
 
     String WarningText;
 
@@ -66,8 +68,14 @@
         }
 
         DBService service = new DBService(LoginManager.UserID,Name, Price, DateOnly.FromDateTime(DateTime.Now), null, Listed, Description, DescriptionLong, null,false);
-        serverManager.CreateService(LoginManager.SessionID,service);
-        NavManager.NavigateTo("/");
+        try 
+        {
+            serverManager.CreateService(LoginManager.SessionID,service);
+            NavManager.NavigateTo("/");
+        } catch (Exception e)
+        {
+            WarningText = e.Message;
+        }
         
     }
 

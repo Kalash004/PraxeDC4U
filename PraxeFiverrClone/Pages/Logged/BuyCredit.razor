@@ -12,15 +12,25 @@
 <br />
 <br />
 <button @onclick = "BuyCredits">buy</button>
+<p style="color:red;">@WarningText</p>
 
 
 @code {
     public int Ammount = 0;
+    public string WarningText = "";
 
     private void BuyCredits()
     {
-        ServerManager.BuyCredits(LoginManager.SessionID,Ammount);
-        NavManager.NavigateTo("/");
+        if (Ammount > 10000) {
+            WarningText = "Cant buy more than 10000 credits";
+            return; 
+        }
+        try {
+            ServerManager.BuyCredits(LoginManager.SessionID,Ammount);
+            NavManager.NavigateTo("/");
+        } catch(Exception e) {
+            WarningText = e.Message;
+        }
     }
 
     protected override void OnAfterRender(bool firstRender)
