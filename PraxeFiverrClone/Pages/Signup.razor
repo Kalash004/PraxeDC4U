@@ -12,13 +12,11 @@
 		
 		@if (!string.IsNullOrEmpty(warningText))
 		{
-			<div class="warning-box">
-				<ErrorBox message=@warningText />
-			</div>
+			<ErrorBox message=@warningText />
 		}
 
-		<button class="signup-button" @onclick="CreateUser">Sign up</button>
-		<p>Already have an account? <a href="/login">Log in</a>	</p>
+		<button class="submit-button" @onclick="CreateUser">Sign up</button>
+		<p>Allready have an account? <a href="/login">Log in</a>	</p>
 	</div>
 </div>
 

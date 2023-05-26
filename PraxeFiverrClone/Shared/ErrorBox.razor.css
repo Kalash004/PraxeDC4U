@@ -9,9 +9,8 @@
     gap: 10px;
 }
 .warning-box-image {
-    width: auto;
-    height: 100%;
-    background-image: url(../Images/warning-sign-red.png)
+   height: 100%;
+    background-image: url(../Images/warning-sign-red.png);
 }
 .warning-box p {
     margin: 0;
