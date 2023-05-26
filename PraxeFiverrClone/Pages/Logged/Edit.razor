@@ -72,7 +72,7 @@
         DescriptionLong = service.LongDescription;
         Listed = service.IsShown;
         NumberOfBuys = ServerManager.GetAmountOfBuys(TimeSpan,LoginManager.SessionID,PageID);
-        Money = ServerManager.GetTotalMoneyRecieved(LoginManager.SessionID, PageID);
+        
         StateHasChanged();
     }
 
@@ -84,7 +84,6 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await LoginManager.Fetch();
         CheckIfOwner();
     }
 
