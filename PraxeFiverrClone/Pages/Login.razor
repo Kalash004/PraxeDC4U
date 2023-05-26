@@ -3,69 +3,55 @@
 @using DataTemplateLibrary
 @using DataTemplateLibrary.Models;
 @using ServerManagement;
-@inject CookieService.CookieManager Cookies;
+@using LoginService;
 @inject ServerManager ServerManager;
 @inject NavigationManager NavManager;
-@inject LoginService.LoginManager LoginManager;
+@inject LoginManager LoginManager;
 
-<h3>Login</h3>
-<br />
-<p>Username:</p>
-<input type="text" @bind="@UsernameValue" @oninput="@((e) => { UsernameValue=(string)e.Value;})" />
-<p>Password:</p>
-<input type="password" @bind="@PasswordValue" @oninput="@((e) => { PasswordValue=(string)e.Value;})" />
 
-<br />
-<br />
+<div class="login-wrapper">
+    <div class="login-form">
+        <h1>Login</h1>
+        <input type="text"     placeholder="Username" class="input-field" @bind="@usernameInput" @oninput="@((e) => { usernameInput = ConvertInputToString(e.Value); })" />
+        <input type="password" placeholder="Password" class="input-field" @bind="@passwordInput" @oninput="@((e) => { passwordInput = ConvertInputToString(e.Value); })" />
 
-<p style="color:red;">@WarningText</p>
-<button @onclick="login">Log in</button>
+        @if (!string.IsNullOrEmpty(warningText))
+        {
+            <ErrorBox message=@warningText />
+        }
+        <button class="login-button" @onclick="login">Log in</button>
+    </div>
+</div>
 
-<br/>
-<br/>
-
-<p>Don't have an account?</p> <a href="/signup">Sign up</a>
 
 @code {
-    private string UsernameValue { get; set; } = "";
-    private string PasswordValue { get; set; } = "";
-
-    private string WarningText = "";
+    private string usernameInput = "";
+    private string passwordInput = "";
+    private string warningText = "";
 
     public void login()
     {
         try
         {
-            LoginManager.Login(UsernameValue, PasswordValue);
+            LoginManager.Login(usernameInput, passwordInput);
             NavManager.NavigateTo("/");
-        } 
-        catch (Exception e) {
-
-            WarningText = e.Message;
         }
-        
+        catch (LoginSignupException e)
+        {
+            if(e.Message == "Users password is not right")
+            {
+                warningText = "Wrong credentials, invalid username or password";
+            }
+            if (e.Message == "User wasnt found in the database")
+            {
+                warningText = "Could not found an account with matching credentials.";
+            }
+        }
     }
 
-    private static string HashString(string text, string salt = "DC4U")
+
+    private string ConvertInputToString(object? input)
     {
-        if (String.IsNullOrEmpty(text))
-        {
-            return String.Empty;
-        }
-
-        // Uses SHA256 to create the hash
-        using (var sha = new System.Security.Cryptography.SHA256Managed())
-        {
-            // Convert the string to a byte array first, to be processed
-            byte[] textBytes = System.Text.Encoding.UTF8.GetBytes(text + salt);
-            byte[] hashBytes = sha.ComputeHash(textBytes);
-
-            // Convert back to a string, removing the '-' that BitConverter adds
-            string hash = BitConverter
-                .ToString(hashBytes)
-                .Replace("-", String.Empty);
-
-            return hash;
-        }
+        return input != null ? (string)input : "";
     }
 }

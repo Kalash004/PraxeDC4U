@@ -3,57 +3,57 @@
 @inject LoginManager loginManager;
 @inject NavigationManager NavManager;
 
+<div class="signup-wrapper">
+	<div class="signup-form">
+		<h1>Signup</h1>
+		<input type="text"	   placeholder="Username"		 class="input-field" @oninput="@((e) => { usernameInput = ConvertInputToString(e.Value); })" />
+		<input type="password" placeholder="Password"		 class="input-field" @oninput="@((e) => { passwordInput = ConvertInputToString(e.Value); })" />
+		<input type="password" placeholder="Repeat Password" class="input-field" @oninput="@((e) => { passwordInputCheck = ConvertInputToString(e.Value); })" />
+		
+		@if (!string.IsNullOrEmpty(warningText))
+		{
+			<div class="warning-box">
+				<ErrorBox message=@warningText />
+			</div>
+		}
 
-<h3>Signup</h3>
-<br />
-<p>Username:</p>
-<input type="text" @oninput="@((e) => { UsernameInput = ConvertInputToString(e.Value); })" />
-<p>Password:</p>
-<input type="password" @oninput="@((e) => { PasswordInput = ConvertInputToString(e.Value); })" />
-<p>Confirm password:</p>
-<input type="password" @oninput="@((e) => { PasswordInputCheck = ConvertInputToString(e.Value); })" />
-
-<br />
-<br />
-
-<p style="color:red;">@WarningText</p>
-<button @onclick="CreateUser">Sign up</button>
-
-<br />  
-<br />
-
-<p>Already have an account?</p> <a href="/login">log in</a>
+		<button class="signup-button" @onclick="CreateUser">Sign up</button>
+		<p>Allready have an account? <a href="/login">Log in</a>	</p>
+	</div>
+</div>
 
 @code {
+	private string usernameInput = "";
+	private string passwordInput = "";
+	private string passwordInputCheck = "";
 
-	private string UsernameInput { get; set; } = "";
-	private string PasswordInput { get; set; } = "";
-	private string PasswordInputCheck { get; set; } = "";
-
-	private string WarningText = "";
+	private string warningText = "";
 
 	public void CreateUser()
 	{
-		if (string.IsNullOrEmpty(UsernameInput)) {
-			WarningText = "The username can't be empty";
+		if (string.IsNullOrEmpty(usernameInput)) 
+		{
+			warningText = "The username field cannot be empty!";
 		}
-		if (string.IsNullOrEmpty(PasswordInputCheck)) {
-			WarningText = "The password cant be empty";
+		if (string.IsNullOrEmpty(passwordInputCheck)) 
+		{
+			warningText = "The password cannot be empty!";
 			return;
 		}
-		if (PasswordInput != PasswordInputCheck)
+		if (passwordInput != passwordInputCheck)
 		{
-			WarningText = "The passwords must match!";
+			warningText = "The passwords do not match!";
 			return;
 		}
 
 		try {
-			loginManager.Signup(UsernameInput, PasswordInput);
+			loginManager.Signup(usernameInput, passwordInput);
 		} 
 		catch (LoginSignupException e) {
-			WarningText = e.Message;
+			Console.WriteLine(e.Message);
+			warningText = "Encountered an error, please try again later.";
 			return;
-		} 
+		}
 		NavManager.NavigateTo("/");
 	}
 
