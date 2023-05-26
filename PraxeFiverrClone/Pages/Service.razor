@@ -37,6 +37,11 @@
     public string WarningText{ get; set; }
     private void buyService()
     {
+        if (!LoginManager.LoggedIn)
+        {
+            NavManager.NavigateTo("/signup");
+        }
+
         DBTransaction Transaction = new DBTransaction(ServiceOwner, LoginManager.UserID, DateTime.Now, ServicePrice, ServiceID);
         try
         {
