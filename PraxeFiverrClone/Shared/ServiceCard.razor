@@ -56,7 +56,14 @@
                 return "";
             }
             DBUser? user = null;
-            user = serverManager.GetUserById(Service.UserId);
+            try
+            {
+                user = serverManager.GetUserById(Service.UserId);
+            }
+            catch
+            {
+                return "";
+            }
             return user.Name;
         }
     }
