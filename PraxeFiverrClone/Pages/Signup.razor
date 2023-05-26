@@ -3,26 +3,22 @@
 @inject LoginManager loginManager;
 @inject NavigationManager NavManager;
 
+<div class="signup-wrapper">
+	<div class="signup-form">
+		<h1>Signup</h1>
+		<input type="text"	   placeholder="Username"		 class="input-field" @oninput="@((e) => { usernameInput = ConvertInputToString(e.Value); })" />
+		<input type="password" placeholder="Password"		 class="input-field" @oninput="@((e) => { passwordInput = ConvertInputToString(e.Value); })" />
+		<input type="password" placeholder="Repeat Password" class="input-field" @oninput="@((e) => { passwordInputCheck = ConvertInputToString(e.Value); })" />
+		
+		@if (!string.IsNullOrEmpty(warningText))
+		{
+			<ErrorBox message=@warningText />
+		}
 
-<h3>Signup</h3>
-<br />
-<p>Username:</p>
-<input type="text" @oninput="@((e) => { UsernameInput = ConvertInputToString(e.Value); })" />
-<p>Password:</p>
-<input type="password" @oninput="@((e) => { PasswordInput = ConvertInputToString(e.Value); })" />
-<p>Confirm password:</p>
-<input type="password" @oninput="@((e) => { PasswordInputCheck = ConvertInputToString(e.Value); })" />
-
-<br />
-<br />
-
-<p style="color:red;">@WarningText</p>
-<button @onclick="CreateUser">Sign up</button>
-
-<br />  
-<br />
-
-<p>Allready have an account?'</p> <a href="/login">log in</a>
+		<button class="submit-button" @onclick="CreateUser">Sign up</button>
+		<p>Allready have an account? <a href="/login">Log in</a>	</p>
+	</div>
+</div>
 
 @code {
 

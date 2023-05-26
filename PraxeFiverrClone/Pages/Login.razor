@@ -18,8 +18,13 @@
 <br />
 <br />
 
-<p style="color:red;">@WarningText</p>
-<button @onclick="login">Log in</button>
+        @if (!string.IsNullOrEmpty(warningText))
+        {
+            <ErrorBox message=@warningText />
+        }
+        <button class="submit-button" @onclick="login">Log in</button>
+    </div>
+</div>
 
 <br/>
 <br/>

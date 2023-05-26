@@ -9,14 +9,30 @@
 @inject LoginService.LoginManager LoginManager;
 @inherits ServicePage;
 
-<h3>@ServiceName</h3>
-<h2>@ServicePrice K</h2>
-<p>@ServiceDescription</p>
-<br />
-<button @onclick = "buyService">buy service</button>
-<p>@WarningText</p>
+<div class="service-wrapper">
 
-<p></p>
+    <div class="service-upper-wrapper">
+        <h1 class="service-heading">@ServiceName</h1>
+        <h2 class="price-tag">@ServicePrice K</h2>
+    </div>
+    <div class="service-lower-wrapper">
+        <p class="label">Description</p>
+
+        <p>@ServiceDescription</p>
+            <button class="submit-button" @onclick="buyService">buy service</button>
+
+        @if (WarningText == "not enought credits")
+        {
+            <button class="submit-button" @onclick="buyCredits">buy credits</button>
+        }
+        
+        @if (!string.IsNullOrEmpty(WarningText))
+        {
+            <ErrorBox message=@WarningText />
+        }
+    </div>
+</div>
+
 
 @code {
     public String WarningText{ get; set; }
