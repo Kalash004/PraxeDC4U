@@ -8,12 +8,21 @@
 @inject NavigationManager NavManager;
 @inject LoginService.LoginManager LoginManager;
 @inherits ServicePage;
+<div class="table">
+    <div class="block">
+    <h1 id="Name">@ServiceName</h1>
+    
+    </div>
 
-<h3>@ServiceName</h3>
-<h2>@ServicePrice K</h2>
-<p>@ServiceDescription</p>
-<br />
-<button @onclick = "buyService">buy service</button>
+    <div class="block" style="padding-bottom: 100px;">
+    <h2>@ServiceShortDescription</h2>
+    <br />
+    <p>@ServiceLongDescription</p>
+    <h3>@ServicePrice K</h3>
+    </div>
+    <button @onclick="buyService">buy service</button>
+</div>
+
 
 <p>@WarningText</p>
 

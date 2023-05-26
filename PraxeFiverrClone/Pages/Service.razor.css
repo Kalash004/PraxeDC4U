@@ -1,0 +1,23 @@
+﻿body {
+}
+
+.block {
+    text-align: center;
+    background-color: var(--card-color-normal);
+    width: 40Vw;
+    margin-top: 10Vh;
+    padding-bottom: 10px;
+}
+
+#Name {
+    margin-top: 50px;
+}
+
+button {
+    width: 40Vw;
+}
+
+.table {
+    margin-left: 50px;
+    color: white;
+}

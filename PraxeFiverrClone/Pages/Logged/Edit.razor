@@ -9,43 +9,44 @@
 
 <h2>Statistics</h2>
 <label for="timeframe">select timeframe:</label>
-<select name="timeframe" id="timeframe">
+<select class="select-field" name="timeframe" id="timeframe">
     <option @onclick = "SetDay">day</option>
     <option @onclick="SetWeek">week</option>
     <option @onclick="SetMonth">month</option>
     <option @onclick="SetYear">year</option>
 </select>
-<p>number of purchases in time frame: @NumberOfBuys</p>
+<h3>number of purchases in time frame: @NumberOfBuys</h3>
 <br/>
-<p>total number of credits earned: @Money</p>
+<h3>total number of credits earned: @Money</h3>
+<br/>
 <br/>
 <br/>
 <h2>Edit Service</h2>
 
 <h3>name:</h3>
-<input type="text" @bind="@Name" @oninput="@((e) => { Name=(string)e.Value;})" />
+<input class="input-field" type="text" @bind="@Name" @oninput="@((e) => { Name=(string)e.Value;})" />
 
 <h3>price:</h3>
-<input type="text" @bind="@Price" @oninput="@((e) => { try {Price=Int32.Parse((string)e.Value + "");}catch(Exception){}})" />
+<input class="input-field" type="text" @bind="@Price" @oninput="@((e) => { try {Price=Int32.Parse((string)e.Value + "");}catch(Exception){}})" />
 
 <h3>short:</h3>
-<input type="text" @bind="@Description" @oninput="@((e) => { Description=(string)e.Value;})" />
+<input class="input-field" type="text" @bind="@Description" @oninput="@((e) => { Description=(string)e.Value;})" />
 
 <h3>long:</h3>
-<input type="text" @bind="@DescriptionLong" @oninput="@((e) => { DescriptionLong=(string)e.Value;})" />
+<input class="input-field" type="text" @bind="@DescriptionLong" @oninput="@((e) => { DescriptionLong=(string)e.Value;})" />
 
 <label for="visibility">set visibility:</label>
-<select name="visibility" id="visbility">
+<select class="select-field" name="visibility" id="visbility">
     <option @onclick = "SetVisible">Listed</option>
     <option @onclick="SetNotVisible">Unlisted</option>
 </select>
 <br />
 <br />
-<button @onclick="SetValues">revert all changes</button>
+<button class="login-button" @onclick="SetValues">revert all changes</button>
 <br />
 <br />
 <p style="color: red;">@WarningText</p>
-<button @onclick="EditService">confirm changes</button>
+<button class="login-button" @onclick="EditService">confirm changes</button>
 
 @code {
     [Parameter]
