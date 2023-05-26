@@ -34,9 +34,17 @@
 <h3>long:</h3>
 <input type="text" @bind="@DescriptionLong" @oninput="@((e) => { DescriptionLong=(string)e.Value;})" />
 
+<label for="visibility">set visibility:</label>
+<select name="visibility" id="visbility">
+    <option @onclick = "SetVisible">Listed</option>
+    <option @onclick="SetNotVisible">Unlisted</option>
+</select>
+
+<br />
 <button @onclick="SetValues">revert all changes</button>
 <br />
-
+<br />
+<p style="color: red;">@WarningText</p>
 <button @onclick="EditService">confirm changes</button>
 
 @code {
@@ -55,9 +63,35 @@
     private int NumberOfBuys;
     private EnumAnaliticsTimeSpan TimeSpan = EnumAnaliticsTimeSpan.Day;
     private int Money;
+    private string WarningText = "";
 
     private void EditService()
     {
+        if (Name.Length < 3)
+        {
+            WarningText = "name is too short (min 3 characters)";
+            return;
+        }
+        if (Name.Length > 20)
+        {
+            WarningText = "name is too long (max 20 characters)";
+            return;
+        }
+        if (Description.Length > 50)
+        {
+            WarningText = "short description is too long (max 50 characters)";
+            return;
+        }
+        if (DescriptionLong.Length > 500)
+        {
+            WarningText = "long descrition is too long (max 500 characters)";
+            return;
+        }
+        if (Price > int.MaxValue)
+        {
+            WarningText = "Price is over the maximum";
+            return;
+        }
         DBService NewService = new DBService(LoginManager.UserID, Name, Price, ServerManager.GetService(PageID).Created, DateOnly.FromDateTime(DateTime.Now), Listed, Description, DescriptionLong, null, false);
         ServerManager.UpdateService(LoginManager.SessionID, PageID, NewService);
         NavManager.NavigateTo("/user");
@@ -72,7 +106,7 @@
         DescriptionLong = service.LongDescription;
         Listed = service.IsShown;
         NumberOfBuys = ServerManager.GetAmountOfBuys(TimeSpan,LoginManager.SessionID,PageID);
-        
+        Money = ServerManager.GetTotalMoneyRecieved(LoginManager.SessionID, PageID);
         StateHasChanged();
     }
 
@@ -80,6 +114,9 @@
     private void SetWeek() { TimeSpan = EnumAnaliticsTimeSpan.Week; }
     private void SetMonth() { TimeSpan = EnumAnaliticsTimeSpan.Month; }
     private void SetYear() { TimeSpan = EnumAnaliticsTimeSpan.Year; }
+
+    private void SetVisible() { Listed = true; }
+    private void SetNotVisible() { Listed = false; }
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

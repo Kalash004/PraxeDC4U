@@ -19,23 +19,29 @@
 <input type="text" @bind="@Description" @oninput="@((e) => { Description=(string)e.Value;})" />
 <h3>long:</h3>
 <input type="text" @bind="@DescriptionLong" @oninput="@((e) => { DescriptionLong=(string)e.Value;})" />
-<h3>unlisted </h3>
-<input type="checkbox" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }" />
-<p style="color:red;">@WarningText</p>
 
-<p style="color: red;">@WarningText</p>
+<label for="visibility">set visibility:</label>
+<select name="visibility" id="visbility">
+    <option @onclick="SetVisible">Listed</option>
+    <option @onclick="SetNotVisible">Unlisted</option>
+</select>
+<br />
+<p style="color:red;">@WarningText</p>
+<br />
+<br />
 <button @onclick = "CreateServis">create</button>
 
 @code {
 
-    private string Name; //20char
-    private string Description; //50char
-    private string DescriptionLong; //500char
+    private string Name = ""; //20char
+    private string Description = ""; //50char
+    private string DescriptionLong = ""; //500char
     private int Price;
     private bool Listed;
-    public string WarningText = "";
+    private string WarningText = "";
 
-    String WarningText;
+    private void SetVisible() { Listed = true; }
+    private void SetNotVisible() { Listed = false; }
 
     public void CheckboxClicked(object CheckedValue)
     {
@@ -45,7 +51,11 @@
     public void CreateServis() {
 
 
-
+        if (Name.Length < 3)
+        {
+            WarningText = "name is too short (min 3 characters)";
+            return;
+        }
         if (Name.Length > 20)
         {
             WarningText = "name is too long (max 20 characters)";
