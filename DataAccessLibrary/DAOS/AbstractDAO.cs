@@ -71,7 +71,7 @@ namespace DataAccessLibrary.DAOS
             }
             catch (Exception e)
             {
-                throw;
+                return -1;
             }
         }
         public void Delete(String SQL, int id)
@@ -122,7 +122,7 @@ namespace DataAccessLibrary.DAOS
             }
             catch (Exception e)
             {
-                throw;
+                return list;
             }
             return list;
         }
@@ -157,7 +157,7 @@ namespace DataAccessLibrary.DAOS
             }
             catch (Exception e)
             {
-                throw;
+                return list;
             }
             return list;
         }
@@ -188,7 +188,7 @@ namespace DataAccessLibrary.DAOS
             }
             catch (Exception e)
             {
-                throw;
+                return default(T);
             }
             return default(T);
         }
@@ -251,7 +251,7 @@ namespace DataAccessLibrary.DAOS
             }
             catch (Exception e)
             {
-                throw;
+                return default(T);
             }
             return default(T);
         }
