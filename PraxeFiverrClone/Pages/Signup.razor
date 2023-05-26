@@ -1,19 +1,17 @@
 ﻿@page "/signup"
-@using DataAccessLibrary
-@using DataTemplateLibrary
-@using DataTemplateLibrary.Models;
-@inject ServerManagement.ServerManager ServerManager;
+@using LoginService;
+@inject LoginManager loginManager;
 @inject NavigationManager NavManager;
 
 
 <h3>Signup</h3>
 <br />
 <p>Username:</p>
-<input type="text" @bind="@UsernameValue" @oninput="@((e) => { UsernameValue=(string)e.Value;})" />
+<input type="text" @oninput="@((e) => { UsernameInput = ConvertInputToString(e.Value); })" />
 <p>Password:</p>
-<input type="password" @bind="@PasswordValue" @oninput="@((e) => { PasswordValue=(string)e.Value;})" />
+<input type="password" @oninput="@((e) => { PasswordInput = ConvertInputToString(e.Value); })" />
 <p>Confirm password:</p>
-<input type="password" @bind="@PasswordValue2" @oninput="@((e) => { PasswordValue2=(string)e.Value;})" />
+<input type="password" @oninput="@((e) => { PasswordInputCheck = ConvertInputToString(e.Value); })" />
 
 <br />
 <br />
@@ -28,58 +26,40 @@
 
 @code {
 
-	private string UsernameValue { get; set; }
-	private string PasswordValue { get; set; }
-	private string PasswordValue2 { get; set; }
+	private string UsernameInput { get; set; } = "";
+	private string PasswordInput { get; set; } = "";
+	private string PasswordInputCheck { get; set; } = "";
 
 	private string WarningText = "";
+
 	public void CreateUser()
 	{
-		if (UsernameValue == null) {
-			WarningText = "The username cant be empty";
+		if (string.IsNullOrEmpty(UsernameInput)) {
+			WarningText = "The username can't be empty";
 		}
-		if (PasswordValue == null) {
+		if (string.IsNullOrEmpty(PasswordInputCheck)) {
 			WarningText = "The password cant be empty";
 			return;
 		}
-		if (PasswordValue != PasswordValue2)
+		if (PasswordInput != PasswordInputCheck)
 		{
 			WarningText = "The passwords must match!";
 			return;
 		}
-		DBUser? user = new DBUser(UsernameValue, HashString(PasswordValue));
-		DBUser? returned_user = null;
 
 		try {
-			returned_user = ServerManager.SingUpUser(user);
-		} catch (Exception e) {
+			loginManager.Signup(UsernameInput, PasswordInput);
+		} 
+		catch (LoginSignupException e) {
 			WarningText = e.Message;
 			return;
 		} 
-		NavManager.NavigateTo("/login");
+		NavManager.NavigateTo("/");
 	}
 
-	static string HashString(string text, string salt = "DC4U")
+
+	private string ConvertInputToString(object? input)
 	{
-		if (String.IsNullOrEmpty(text))
-		{
-			return String.Empty;
-		}
-
-		// Uses SHA256 to create the hash
-		using (var sha = new System.Security.Cryptography.SHA256Managed())
-		{
-			// Convert the string to a byte array first, to be processed
-			byte[] textBytes = System.Text.Encoding.UTF8.GetBytes(text + salt);
-			byte[] hashBytes = sha.ComputeHash(textBytes);
-
-			// Convert back to a string, removing the '-' that BitConverter adds
-			string hash = BitConverter
-				.ToString(hashBytes)
-				.Replace("-", String.Empty);
-
-			return hash;
-		}
+		return input != null ? (string)input : "";
 	}
-
 }
