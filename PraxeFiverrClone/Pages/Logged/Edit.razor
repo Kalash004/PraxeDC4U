@@ -15,9 +15,9 @@
     <option @onclick="SetMonth">month</option>
     <option @onclick="SetYear">year</option>
 </select>
-<h3>number of purchases in time frame: @NumberOfBuys</h3>
+<h4>number of purchases in time frame: @NumberOfBuys</h4>
 <br/>
-<h3>total number of credits earned: @Money</h3>
+<h4>total number of credits earned: @Money</h4>
 <br/>
 <br/>
 <br/>
@@ -33,7 +33,7 @@
 <input class="input-field" type="text" @bind="@Description" @oninput="@((e) => { Description=(string)e.Value;})" />
 
 <h3>long:</h3>
-<input class="input-field" type="text" @bind="@DescriptionLong" @oninput="@((e) => { DescriptionLong=(string)e.Value;})" />
+<textarea class="input-field" type="text" @bind="@DescriptionLong" @oninput="@((e) => { DescriptionLong=(string)e.Value;})" />
 
 <label for="visibility">set visibility:</label>
 <select class="select-field" name="visibility" id="visbility">
