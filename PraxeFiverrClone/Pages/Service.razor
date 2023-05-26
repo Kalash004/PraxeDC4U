@@ -8,6 +8,20 @@
 @inject NavigationManager NavManager;
 @inject LoginService.LoginManager LoginManager;
 @inherits ServicePage;
+<div class="table">
+    <div class="block">
+    <h1 id="Name">@ServiceName</h1>
+    
+    </div>
+
+    <div class="block" style="padding-bottom: 100px;">
+    <h2>@ServiceShortDescription</h2>
+    <br />
+    <p>@ServiceLongDescription</p>
+    <h3>@ServicePrice K</h3>
+    </div>
+    <button @onclick="buyService">buy service</button>
+</div>
 
 <div class="service-wrapper">
 
@@ -33,22 +47,27 @@
     </div>
 </div>
 
-
 @code {
     public String WarningText{ get; set; }
     private void buyService()
     {
         DBTransaction Transaction = new DBTransaction(ServiceOwner, LoginManager.UserID, DateTime.Now, ServicePrice, ServiceID);
-        if (ServerManager.CreateTransaction(LoginManager.SessionID, Transaction, ServiceOwner))
+        try
         {
-            WarningText = "thank you for buying!";
-        }
-        else
+            if (ServerManager.CreateTransaction(LoginManager.SessionID, Transaction, ServiceOwner))
+            {
+                WarningText = "thank you for buying!";
+            }
+        } 
+        catch (Exception e)
         {
-            WarningText = "ur poor";
+            WarningText = "not enought credits";
         }
+    }
 
-
+    private void buyCredits()
+    {
+        NavManager.NavigateTo("/user/credit");
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

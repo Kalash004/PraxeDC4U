@@ -23,6 +23,10 @@ namespace DataAccessLibrary
         }
         public static MySqlConnection GetInstance()
         {
+            if (conn != null)
+            {
+                if (conn.State == System.Data.ConnectionState.Open) conn.Close();
+            }
             try
             {
                 if (conn == null)
@@ -40,7 +44,7 @@ namespace DataAccessLibrary
             }
             catch (Exception e)
             {
-               throw new Exception($"Wasn`t able to connect to database, try again later or call an administrator ERR: {e.Message}");
+                throw new Exception($"Wasn`t able to connect to database, try again later or call an administrator ERR: {e.Message}");
             }
             return conn;
         }

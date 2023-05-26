@@ -21,35 +21,37 @@
 </div>
 
 @code {
+	private string usernameInput = "";
+	private string passwordInput = "";
+	private string passwordInputCheck = "";
 
-	private string UsernameInput { get; set; } = "";
-	private string PasswordInput { get; set; } = "";
-	private string PasswordInputCheck { get; set; } = "";
-
-	private string WarningText = "";
+	private string warningText = "";
 
 	public void CreateUser()
 	{
-		if (string.IsNullOrEmpty(UsernameInput)) {
-			WarningText = "The username can't be empty";
+		if (string.IsNullOrEmpty(usernameInput)) 
+		{
+			warningText = "The username field cannot be empty!";
 		}
-		if (string.IsNullOrEmpty(PasswordInputCheck)) {
-			WarningText = "The password cant be empty";
+		if (string.IsNullOrEmpty(passwordInputCheck)) 
+		{
+			warningText = "The password cannot be empty!";
 			return;
 		}
-		if (PasswordInput != PasswordInputCheck)
+		if (passwordInput != passwordInputCheck)
 		{
-			WarningText = "The passwords must match!";
+			warningText = "The passwords do not match!";
 			return;
 		}
 
 		try {
-			loginManager.Signup(UsernameInput, PasswordInput);
+			loginManager.Signup(usernameInput, passwordInput);
 		} 
 		catch (LoginSignupException e) {
-			WarningText = e.Message;
+			Console.WriteLine(e.Message);
+			warningText = "Encountered an error, please try again later.";
 			return;
-		} 
+		}
 		NavManager.NavigateTo("/");
 	}
 

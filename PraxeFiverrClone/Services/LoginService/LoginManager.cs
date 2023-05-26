@@ -83,7 +83,6 @@ namespace LoginService
             try
             {
                 DBUser user = new(username, HashString(password));
-                Console.WriteLine(user.HashedPassword);
                 string sessionID = ServerManager.LogUserInCreateSession(user);
                 SetCurrentSession(sessionID);
             }

@@ -6,6 +6,9 @@
 <div class="services-wrapper">
     @foreach(DBService? service in serverManger.GetAllServices())
     {
-        <ServiceCard Service=service />
+        if ((service.IsShown) && (!service.IsDeleted))
+        {
+            <ServiceCard Service=service />
+        }
     }
 </div>

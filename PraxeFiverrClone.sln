@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "DBMSTest\Tests.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTemplateLibrary", "DataTemplateLibrary\DataTemplateLibrary.csproj", "{27C62942-7FCC-4DB1-AAC9-8D8BEDC8B9BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerManagment", "ServerManagment\ServerManagment.csproj", "{16EA8872-1399-424C-888D-83B64BA65D95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerManagment", "ServerManagment\ServerManagment.csproj", "{16EA8872-1399-424C-888D-83B64BA65D95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SessionService", "SessionServices\SessionService.csproj", "{5C012248-C661-4FBD-A183-D8B113866DE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SessionService", "SessionServices\SessionService.csproj", "{5C012248-C661-4FBD-A183-D8B113866DE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

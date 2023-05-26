@@ -31,11 +31,18 @@ namespace PraxeFiverrClone.Pages
                 return Service != null ? Service.ServiceName : ""; ;
             }
         }
-        protected string ServiceDescription
+        protected string ServiceShortDescription
         {
             get
             {
                 return Service != null ? Service.ShortDescription : "";
+            }
+        }
+        protected string ServiceLongDescription
+        {
+            get
+            {
+                return Service != null ? Service.LongDescription : "";
             }
         }
         protected DateOnly ServiceCreation
